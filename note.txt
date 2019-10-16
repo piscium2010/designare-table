@@ -1,0 +1,36 @@
+todo
+
+Sorter - add name
+
+Filter - change icon
+
+Doc - TypeDoc
+
+Loading - done
+
+reSizable - ! done
+
+Drag and Drop
+
+Pagination - ! 1 day
+
+Add new row
+
+lime layer style - .5 day
+
+style - 5 day
+    - Filter
+    - loading
+    - Layer
+
+test cases - >= 2 day
+
+code block - tabs
+
+doc - >= 2 day
+
+css - 1 day
+
+css - restructure - .5 day
+
+ie - scrollbar width
