@@ -31,7 +31,7 @@ export default class Table extends React.Component {
         onChangeSorter: doNothing,
         onChangeFilters: doNothing,
         onChangePaging: doNothing,
-        rowHeight: 30
+        rowHeight: 38
     }
 
     constructor(props) {
@@ -400,9 +400,9 @@ export default class Table extends React.Component {
 }
 
 function sortColumns(columns) {
-    const leftColumns = columns.filter(c => c.fix === 'left')
-    const normalColumns = columns.filter(c => !c.fix)
-    const rightColumns = columns.filter(c => c.fix === 'right').reverse()
+    const leftColumns = columns.filter(c => c.fixed === 'left')
+    const normalColumns = columns.filter(c => !c.fixed)
+    const rightColumns = columns.filter(c => c.fixed === 'right').reverse()
     const r = [].concat(leftColumns).concat(normalColumns).concat(rightColumns)
 
     createLeafColumnIndex(r)
@@ -463,7 +463,7 @@ function syncWidthAndHeight(table, columns, rowHeight = -1, dimensionInfo, resiz
     const columnWidthArray = columns.map(c => isNaN(c.width) ? 0 : c.width)
     const resizedWidthArray = columns.map(c => resizedWidthInfo.get(c.metaKey) || -1)
 
-    const originalMaxWidthArray = max(
+    let originalMaxWidthArray = max(
         headerWidthArray,
         leftHeaderWidthArray,
         rightHeaderWidthArray,
@@ -482,9 +482,10 @@ function syncWidthAndHeight(table, columns, rowHeight = -1, dimensionInfo, resiz
     if (leftOver > 0) {
         for(let i = 0, len = columns.length; i < len; i++){
             const col = columns[i]
-            if(col.fix) continue
+            if(col.fixed) continue
             if(col.width === '*') {
                 maxWidthArray[i] += leftOver
+                originalMaxWidthArray[i] += leftOver
                 break
             }
         }
@@ -542,12 +543,11 @@ function syncWidthAndHeight(table, columns, rowHeight = -1, dimensionInfo, resiz
     const rightRows = getChildren(rightBody)
 
     for (let i = 0, len = maxHeaderHeightArray.length; i < len; i++) {
-        headers[i].style['height'] = `${maxHeaderHeightArray[i]}px`
-        leftHeaders[i].style['height'] = `${maxHeaderHeightArray[i]}px`
-        rightHeaders[i].style['height'] = `${maxHeaderHeightArray[i]}px`
+        const height = Math.max(maxHeaderHeightArray[i], rowHeight)
+        headers[i].style['height'] = `${height}px`
+        leftHeaders[i].style['height'] = `${height}px`
+        rightHeaders[i].style['height'] = `${height}px`
     }
-
-    // if(re) return
 
     for (let i = 0, len = maxBodyHeightArray.length; i < len; i++) {
         const height = Math.max(maxBodyHeightArray[i], rowHeight)

@@ -103,7 +103,7 @@ export default function (props) {
                                 </Header>
                             </table>
                         </div>
-                        {/* fix left header */}
+                        {/* fixed left header */}
                         <div style={{ overflow: 'hidden', top: 0, left: 0, position: 'absolute' }}>
                             <table>
                                 <colgroup>
@@ -115,7 +115,7 @@ export default function (props) {
                                 </Header>
                             </table>
                         </div>
-                        {/* fix right header */}
+                        {/* fixed right header */}
                         <div style={{ overflow: 'hidden', top: 0, right: 0, position: 'absolute' }}>
                             <table>
                                 <colgroup>
@@ -139,7 +139,7 @@ export default function (props) {
                             </Body>
                         </table>
                     </div>
-                    {/* fix left body */}
+                    {/* fixed left body */}
                     <div className='left' style={{ position: 'absolute', left: 0, top: 0, bottom: 15, overflow: 'hidden' }}>
                         <div style={{ height: '100%', overflowY: 'scroll', margin: '0 -15px -15px 0', padding: '0 15px 15px 0' }}>
                             <table>
@@ -154,7 +154,7 @@ export default function (props) {
                             </table>
                         </div>
                     </div>
-                    {/* fix right body */}
+                    {/* fixed right body */}
                     <div className='right' style={{ position: 'absolute', right: 0, top: 0, bottom: 15, overflow: 'hidden' }}>
                         <div style={{ height: '100%', overflowY: 'scroll' }}>
                             <table>

@@ -6,7 +6,7 @@ const a = [
     {
         Header: 'Name',
         key: 'name',
-        fix: 'right'
+        fixed: 'right'
     },
     {
         Header: () => <Th>PREV.CLOSE</Th>,
@@ -43,7 +43,7 @@ const a = [
     {
         Header: 'YTD',
         key: 'ytd',
-        fix: 'left'
+        fixed: 'left'
     }
 ]
 
@@ -71,7 +71,7 @@ const b = [
             { Header: '3 MO', key: 'three_month' },
             { Header: 'Lorem ipsum dolor sit amet.', key: 'six_month' }
         ],
-        fix: 'left'
+        fixed: 'left'
     },
     {
         Header: 'YTD',

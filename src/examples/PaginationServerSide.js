@@ -47,7 +47,7 @@ export default function (props) {
                             {
                                 Header: '+/-',
                                 dataKey: 'percent',
-                                // fix:'left'
+                                // fixed:'left'
                             },
                             {
                                 Header: 'Time',
@@ -69,7 +69,7 @@ export default function (props) {
                             {
                                 Header: 'YTD',
                                 dataKey: 'ytd',
-                                fix:'left' // bug
+                                fixed:'left' // bug
                             }
                         ]}
                         pageSize={pageSize}

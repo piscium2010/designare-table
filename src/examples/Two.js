@@ -34,13 +34,13 @@ export default class Two extends React.Component {
                             {
                                 Header: 'YTD',
                                 key: 'ytd',
-                                fix: 'left'
+                                fixed: 'left'
                             },
                             {
                                 Header: 'Tag',
                                 key: 'percent',
                                 Cell: ({ value }) => <Td><span style={{ color: value.includes('-') ? 'red' : 'green' }}>{value}</span></Td>,
-                                fix: 'left'
+                                fixed: 'left'
                             }
                         ]}
                         data={data}

@@ -7,7 +7,6 @@ const dragableStyle = {
     top: 0,
     bottom: 0,
     width: 3,
-    backgroundColor: 'aquamarine',
     cursor: 'col-resize'
 }
 
@@ -77,9 +76,9 @@ export default class Th extends React.Component {
             ...restProps
         } = this.props
         const column = this.column
-        const { colSpan, rowSpan, fix, isFirst, isLast, isLeaf } = column
-        const fixHeader = this.context.fix
-        const isMyColumn = fixHeader ? fix === fixHeader : !fix
+        const { colSpan, rowSpan, fixed, isFirst, isLast, isLeaf } = column
+        const fixHeader = this.context.fixed
+        const isMyColumn = fixHeader ? fixed === fixHeader : !fixed
         const thStyle = isMyColumn ? { zIndex: 1 } : { visibility: 'hidden', pointerEvents: 'none', zIndex: 0 }
 
         return (

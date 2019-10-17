@@ -72,7 +72,7 @@ export default function (props) {
                                     key: 'six_month'
                                 }
                             ],
-                            fix: 'left'
+                            fixed: 'left'
                         },
                         {
                             Header: 'YTD',
@@ -83,15 +83,15 @@ export default function (props) {
                 >
                     <Header />
                     <Body
-                        tr={({ index, fix, getColumns }) => {
+                        tr={({ index, fixed, getColumns }) => {
                             const Description = () => {
                                 if (!selectedKeys.includes(index)) return null
                                 const columns = getColumns()
-                                const leftSpan = columns.filter(c => c.fix === 'left').length
-                                const rightSpan = columns.filter(c => c.fix === 'right').length
-                                const span = columns.filter(c => !c.fix).length
+                                const leftSpan = columns.filter(c => c.fixed === 'left').length
+                                const rightSpan = columns.filter(c => c.fixed === 'right').length
+                                const span = columns.filter(c => !c.fixed).length
                                 let element
-                                switch (fix) {
+                                switch (fixed) {
                                     case 'left':
                                         element = <td colSpan={leftSpan}>&nbsp;</td>
                                         break;

@@ -23,10 +23,10 @@ export default class Header extends React.Component {
                         <Thead tr={tr} />
                     </Normal>
                     <Left>
-                        <Thead fix='left' tr={tr} />
+                        <Thead fixed='left' tr={tr} />
                     </Left>
                     <Right>
-                        <Thead fix='right' tr={tr} />
+                        <Thead fixed='right' tr={tr} />
                     </Right>
                 </div>
             </div>

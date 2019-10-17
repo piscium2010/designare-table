@@ -25,13 +25,13 @@ export default class Body extends React.Component {
                     syncScrolling={syncScrolling}
                     removeSyncScrolling={removeSyncScrolling}
                 >
-                    <Tbody fix='left' tr={tr} />
+                    <Tbody fixed='left' tr={tr} />
                 </Left>
                 <Right
                     syncScrolling={syncScrolling}
                     removeSyncScrolling={removeSyncScrolling}
                 >
-                    <Tbody fix='right' tr={tr} />
+                    <Tbody fixed='right' tr={tr} />
                 </Right>
             </div>
         )

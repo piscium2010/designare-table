@@ -13,9 +13,9 @@ export default class Headers extends React.Component {
     getLevelColumns = () => this.queue.first()
 
     render() {
-        const { tr: Tr, fix, ...restProps } = this.props
+        const { tr: Tr, fixed, ...restProps } = this.props
         const { columns = [] } = this.context
-        const myColumns = fix ? columns.filter(c => c.fix === fix) : columns
+        const myColumns = fixed ? columns.filter(c => c.fixed === fixed) : columns
 
         this.queue.clear()
 
@@ -23,7 +23,7 @@ export default class Headers extends React.Component {
             <TheadContext.Provider value={{
                 ...this.context,
                 getLevelColumns: this.getLevelColumns,
-                fix: fix
+                fixed: fixed
             }}
             >
                 <thead ref={this.ref} {...restProps}>

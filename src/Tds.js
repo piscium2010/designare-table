@@ -18,7 +18,7 @@ export default class Tds extends React.Component {
         const { data, getColumn } = this.context
         const row = data[rowIndex]
         const myColumns = getColumn()
-        const isMyCell = fix => fix === this.context.fix
+        const isMyCell = fixed => fixed === this.context.fixed
         return (
             <TdsContext.Provider value={{
                 ...this.context,
@@ -30,9 +30,9 @@ export default class Tds extends React.Component {
                     myColumns.map(i =>
                         flattenOne(i).map(
                             column => {
-                                const { dataKey, Cell = defaultCell, metaKey, fix, columnIndex } = column
+                                const { dataKey, Cell = defaultCell, metaKey, fixed, columnIndex } = column
                                 this.queue.push(column)
-                                return isMyCell(fix)
+                                return isMyCell(fixed)
                                     ? <Cell
                                         key={metaKey}
                                         value={row[dataKey]}

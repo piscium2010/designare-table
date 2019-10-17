@@ -17,12 +17,12 @@ export default class Three extends React.Component {
                             {
                                 Header: 'Name',
                                 key: 'name',
-                                fix: 'left'
+                                fixed: 'left'
                             },
                             {
                                 Header: () => <Th>PREV.CLOSE</Th>,
                                 key: 'prev_close',
-                                fix: 'right'
+                                fixed: 'right'
                             },
                             {
                                 Header: '-/+',
@@ -34,7 +34,7 @@ export default class Three extends React.Component {
                             },
                             {
                                 Header: 'Month',
-                                fix: 'left',
+                                fixed: 'left',
                                 children: [
                                     {
                                         Header: '3 MO',
@@ -49,13 +49,13 @@ export default class Three extends React.Component {
                             {
                                 Header: 'YTD',
                                 key: 'ytd',
-                                // fix: 'left'
+                                // fixed: 'left'
                             },
                             {
                                 Header: 'Tag',
                                 key: 'percent',
                                 Cell: ({ value }) => <Td><span style={{ color: value.includes('-') ? 'red' : 'green' }}>{value}</span></Td>,
-                                // fix: 'left'
+                                // fixed: 'left'
                             }
                         ]}
                         data={data}

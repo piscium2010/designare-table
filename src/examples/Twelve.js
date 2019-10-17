@@ -20,7 +20,7 @@ export default function (props) {
                     columns={[
                         {
                             Header: '',
-                            fix:'left',
+                            fixed:'left',
                             key: '',
                             Cell: ({ value, row, index, selectedKeys }) => {
                                 const checked = selectedKeys.includes(index)
@@ -45,7 +45,7 @@ export default function (props) {
                                     </Th>
                                 )
                             },
-                            fix:'left',
+                            fixed:'left',
                             key: 'prev_close',
                         },
                         {
@@ -56,17 +56,17 @@ export default function (props) {
                                     </Th>
                                 )
                             },
-                            fix:'left',
+                            fixed:'left',
                             key: 'percent'
                         },
                         {
                             Header: 'Time',
-                            fix:'left',
+                            fixed:'left',
                             key: 'time'
                         },
                         {
                             Header: 'Month',
-                            fix:'left',
+                            fixed:'left',
                             children: [
                                 {
                                     Header: '3 MO',

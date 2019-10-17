@@ -6,16 +6,16 @@ export default class Tbody extends React.Component {
     static contextType = Context
 
     render() {
-        const { tr: Tr, fix, ...restProps } = this.props
+        const { tr: Tr, fixed, ...restProps } = this.props
         const { columns, data } = this.context
-        const myColumns = fix ? columns.filter(c => c.fix === fix) : columns
+        const myColumns = fixed ? columns.filter(c => c.fixed === fixed) : columns
         const isEmpty = myColumns.length < 1
         // console.log(`data`,data)
         return (
             <TBodyContext.Provider value={{
                 ...this.context,
                 contextName: 'tbody',
-                fix,
+                fixed,
                 getColumn: () => myColumns
             }}
             >
@@ -28,7 +28,7 @@ export default class Tbody extends React.Component {
                                     key={rowIndex}
                                     row={row}
                                     rowIndex={rowIndex}
-                                    fix={fix}
+                                    fixed={fixed}
                                     getColumns={() => flatten(columns)}
                                 />
                         })

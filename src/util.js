@@ -19,14 +19,14 @@ export function createColumnMeta(
             ...column,
             metaKey: key + '#' + i,
             depth,
-            fix: parentFix || column.fix,
+            fixed: parentFix || column.fixed,
             colSpan: column.children ? childrenLength(column.children) : 1,
             rowSpan: column.children ? 1 : 1 + maxDepth - depth,
             columnIndex: i
         }
         if (clone.width && clone.width === '*') {
-            if (clone.fix) {
-                warnings.push(`width '*' can only be assigned to non-fix column. Warning from ${clone.Header}`)
+            if (clone.fixed) {
+                warnings.push(`width '*' can only be assigned to non-fixed column. Warning from ${clone.Header}`)
             }
             if (store.wildcard === true) {
                 warnings.push(`width '*' can only be assigned to one column. Warning from ${clone.Header}`)
@@ -37,7 +37,7 @@ export function createColumnMeta(
             if (clone.width !== undefined) {
                 warnings.push(`width can only be assigned to column without children. Warning from ${clone.Header}`)
             }
-            clone.children = createColumnMeta(clone.children, maxDepth, key, column.fix, depth + 1, warnings, store)
+            clone.children = createColumnMeta(clone.children, maxDepth, key, column.fixed, depth + 1, warnings, store)
         }
         columnsWithMeta.push(clone)
     })
