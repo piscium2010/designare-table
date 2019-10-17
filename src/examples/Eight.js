@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import SwiftTable, { Header, Body, Th, Td, Filter } from '../index'
+import Table, { Header, Body, Th, Td, Filter } from '../index'
 import { data } from '../data/two'
 
 export default function Eight(props) {
@@ -28,7 +28,7 @@ export default function Eight(props) {
 
     return (
         <div style={{ margin: 'auto' }}>
-            <SwiftTable
+            <Table
                 style={{ width: '80%' }}
                 columns={[
                     {
@@ -174,7 +174,7 @@ export default function Eight(props) {
                 />
                 <Body
                 />
-            </SwiftTable>
+            </Table>
         </div>
     )
 }

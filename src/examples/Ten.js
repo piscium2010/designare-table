@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import SwiftTable, { Header, Body, Tds, Ths, Th, Td, Sorter, Filter } from '../index'
+import Table, { Header, Body, Tds, Ths, Th, Td, Sorter, Filter } from '../index'
 import { data } from '../data/two'
 
 export default function Ten(props) {
@@ -29,7 +29,7 @@ export default function Ten(props) {
         <div style={{ margin: 'auto' }}>
             <div style={{width: '80%', margin: 'auto'}}>
                 <div>Header</div>
-                <SwiftTable
+                <Table
                     selectedKeys={selectedKeys}
                     selectAll={selectAll}
                     style={{ background: 'aliceblue' }}
@@ -148,7 +148,7 @@ export default function Ten(props) {
                     />
                     <Body
                     />
-                </SwiftTable>
+                </Table>
                 <div>Footer</div>
             </div>
         </div>

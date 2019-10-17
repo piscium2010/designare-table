@@ -1,6 +1,6 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
-import SwiftTable, { Headers, Tbody, Tds, Ths, Th, Td } from './index'
+import Table, { Headers, Tbody, Tds, Ths, Th, Td } from './index'
 import One from './examples/One'
 import Two from './examples/Two'
 import Three from './examples/Three'

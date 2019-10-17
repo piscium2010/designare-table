@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import SwiftTable, { Th } from '../index'
+import Table, { Th } from '../index'
 import { data } from '../data/five'
 
 const serverData = data(127)
@@ -34,7 +34,7 @@ export default function (props) {
         <div>
             {
                 data.length > 0
-                    ? <SwiftTable
+                    ? <Table
                         columns={[
                             {
                                 Header: () => <Th>ID</Th>,

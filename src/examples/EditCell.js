@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react'
-import SwiftTable, { Header, Body, Th, Td, Sorter } from '../index'
+import Table, { Header, Body, Th, Td, Sorter } from '../index'
 import { data as originData } from '../data/one'
 
 
@@ -61,7 +61,7 @@ export default function (props) {
 
     return (
         <div style={{ margin: 'auto' }}>
-            <SwiftTable
+            <Table
                 columns={[
                     {
                         Header: () => {

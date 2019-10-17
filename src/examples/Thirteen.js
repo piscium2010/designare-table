@@ -1,5 +1,5 @@
 import React from 'react'
-import SwiftTable, { Header, Body, Tds, Ths, Th, Td } from '../index'
+import Table, { Header, Body, Tds, Ths, Th, Td } from '../index'
 import { data } from '../data/one'
 
 const a = [
@@ -106,7 +106,7 @@ export default class One extends React.Component {
         return (
             <React.Fragment>
                 <div style={{ width: 600, margin: 'auto' }}>
-                    <SwiftTable
+                    <Table
                         columns={columns}
                         data={data}
                         style={{height: 200}}
@@ -114,7 +114,7 @@ export default class One extends React.Component {
                        
                 </div>
                 {/* <div style={{ width: 600, margin: 'auto', height: 500 }}>
-                    <SwiftTable
+                    <Table
                         columns={columns}
                         data={data}
                     />

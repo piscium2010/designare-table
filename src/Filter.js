@@ -44,7 +44,7 @@ export default class Filter extends React.Component {
         const activeFilters = [...this.activeFilters.values()]
         const filterHasSameColumnKeyButHasNoName = activeFilters.find(f => f.key === columnKey && !f.name)
         if (filterHasSameColumnKeyButHasNoName)
-            throw `More than one Filter component is found for ${print(filterHasSameColumnKeyButHasNoName)}.\n Please distinguish Filter component by specify unique prop 'name' \n e.g.\nfilter: <Filter name='address'/> \ntable: <SwiftTable filters={[{name:'address', value:'address'}]}/>`
+            throw `More than one Filter component is found for ${print(filterHasSameColumnKeyButHasNoName)}.\n Please distinguish Filter component by specify unique prop 'name' \n e.g.\nfilter: <Filter name='address'/> \ntable: <Table filters={[{name:'address', value:'address'}]}/>`
         const one = filters.find(f =>
             f.name ? f.name === name : f.key === columnKey
         )

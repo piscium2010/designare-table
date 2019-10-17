@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import SwiftTable, { Header, Body, Th, Td, Sorter, Tds } from '../index'
+import Table, { Header, Body, Th, Td, Sorter, Tds } from '../index'
 import { data as originData } from '../data/one'
 
 export default function (props) {
@@ -69,7 +69,7 @@ export default function (props) {
             {isEditing && <button onClick={onCancel}>Cancel</button>}
             {!isEditing && <button onClick={onEdit} disabled={selection.length === 0}>Edit</button>}
 
-            <SwiftTable
+            <Table
                 columns={[
                     {
                         Header: () => (
@@ -148,7 +148,7 @@ export default function (props) {
             >
                 <Header />
                 <Body tr={() => <tr><Tds /></tr>} />
-            </SwiftTable>
+            </Table>
         </div>
     )
 }

@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import SwiftTable, { Header, Body, Th, Td, Filter } from '../index'
+import Table, { Header, Body, Th, Td, Filter } from '../index'
 import { data } from '../data/five'
 
 export default function (props) {
@@ -28,7 +28,7 @@ export default function (props) {
 
     return (
         <div style={{ margin: 'auto' }}>
-            <SwiftTable
+            <Table
                 columns={[
                     {
                         Header: ({ value, row }) => {

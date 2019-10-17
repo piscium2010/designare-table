@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import SwiftTable, { Header, Body, Th, Td, Filter, Tree } from '../index'
+import Table, { Header, Body, Th, Td, Filter, Tree } from '../index'
 import { data as TreeData } from '../data/four'
 
 export default function (props) {
@@ -38,7 +38,7 @@ export default function (props) {
     console.log(`allParentKeys`, allParentKeys)
     return (
         <div style={{ margin: 'auto' }}>
-            <SwiftTable
+            <Table
                 selectAll={selectAll}
                 style={{ width: '90%', margin: 'auto' }}
                 columns={[
@@ -199,7 +199,7 @@ export default function (props) {
                 />
                 <Body
                 />
-            </SwiftTable>
+            </Table>
         </div>
     )
 }

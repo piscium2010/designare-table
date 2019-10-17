@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import SwiftTable, { Header, Body, Th, Td } from '../index'
+import Table, { Header, Body, Th, Td } from '../index'
 import { data as originData } from '../data/one'
 import VForm, { v } from '@piscium2010/v-form'
 
@@ -76,7 +76,7 @@ export default function (props) {
             {isEditing && <button onClick={onCancel}>Cancel</button>}
             {!isEditing && <button onClick={onEdit} disabled={selection.length === 0}>Edit</button>}
 
-            <SwiftTable
+            <Table
                 columns={[
                     {
                         Header: () => (
@@ -148,7 +148,7 @@ export default function (props) {
                     )
                 }}
                 />
-            </SwiftTable>
+            </Table>
         </div>
     )
 }

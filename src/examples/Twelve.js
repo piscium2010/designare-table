@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import SwiftTable, { Header, Body, Tds, Ths, Th, Td, Sorter, Filter } from '../index'
+import Table, { Header, Body, Tds, Ths, Th, Td, Sorter, Filter } from '../index'
 import { getData } from '../data/three'
 
 export default function (props) {
@@ -14,7 +14,7 @@ export default function (props) {
     return (
         <div style={{ margin: 'auto' }}>
             <div style={{ width: '80%', margin: 'auto' }}>
-                <SwiftTable
+                <Table
                     selectedKeys={selectedKeys}
                     style={{ background: 'aliceblue' }}
                     columns={[
@@ -88,7 +88,7 @@ export default function (props) {
 
                     <Header />
                     <Body />
-                </SwiftTable>
+                </Table>
             </div>
         </div>
     )
