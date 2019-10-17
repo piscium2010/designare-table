@@ -23,7 +23,6 @@ import EditRowWithValidation from './examples/EditRowWithValidation'
 import Loading from './examples/Loading'
 import Pagination from './examples/Pagination'
 import PaginationServerSide from './examples/PaginationServerSide'
-import Flipper from './examples/Flipper'
 import './app.less'
 import './a.css'
 
@@ -94,9 +93,6 @@ class App extends React.Component {
                 </div>
                 <div>
                     <PaginationServerSide />
-                </div>
-                <div>
-                    {/* <Flipper></Flipper> */}
                 </div>
             </div>
         )
