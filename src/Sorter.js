@@ -105,7 +105,7 @@ export default class Sorter extends React.Component {
         }
 
         return (
-            <div className={`swift-sort ${className}`} style={{ ...defaultStyle, ...style }} onClickCapture={onClick} {...restProps}>
+            <div className={`designare-sort ${className}`} style={{ ...defaultStyle, ...style }} onClickCapture={onClick} {...restProps}>
                 {render(isActive ? status[i] : 'default', directions, defaultColor, activeColor)}
             </div>
         )

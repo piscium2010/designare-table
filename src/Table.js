@@ -346,12 +346,12 @@ export default class Table extends React.Component {
         this.flattenSortedColumns = flatten(this.sortedColumns)
 
         return (
-            <div className={`swift-table ${className}`} ref={this.root} style={{ position: 'relative', ...style }}>
+            <div className={`designare-table ${className}`} ref={this.root} style={{ position: 'relative', ...style }}>
                 <div ref={this.filterLayersRef}>
                     {
                         groupByDepth(this.sortedColumns).map((levelColumns, i) => {
                             return levelColumns.map(column => (
-                                <div className={`swift-table-filter-layer-container ${column.metaKey}`} key={column.metaKey}></div>
+                                <div className={`designare-table-filter-layer-container ${column.metaKey}`} key={column.metaKey}></div>
                             ))
                         })
                     }
@@ -725,7 +725,7 @@ function createColgroup(widthArray) {
 }
 
 function find(table, a, b) {
-    const className = `swift-table-${a}${b ? '-' + b : ''}`
+    const className = `designare-table-${a}${b ? '-' + b : ''}`
     const wrapper = table.getElementsByClassName(className)[0]
     const container = wrapper && wrapper.getElementsByTagName('table')[0]
     const content = container && container.getElementsByTagName(a === 'header' ? 'thead' : 'tbody')[0]

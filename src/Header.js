@@ -44,7 +44,7 @@ function Normal(props) {
     }, [])
 
     return (
-        <div ref={ref} className='swift-table-header' style={{ overflowX: 'scroll', overflowY: 'hidden' }}>
+        <div ref={ref} className='designare-table-header' style={{ overflowX: 'scroll', overflowY: 'hidden' }}>
             <table>
                 {props.children}
             </table>
@@ -54,7 +54,7 @@ function Normal(props) {
 
 function Left(props) {
     return (
-        <div className='swift-table-header-left' style={{ position: 'absolute', overflow: 'hidden', top: 0, left: 0, }}>
+        <div className='designare-table-header-left' style={{ position: 'absolute', overflow: 'hidden', top: 0, left: 0, }}>
             <table>
                 {props.children}
             </table>
@@ -64,7 +64,7 @@ function Left(props) {
 
 function Right(props) {
     return (
-        <div className='swift-table-header-right' style={{ overflow: 'hidden', top: 0, right: 0, position: 'absolute' }}>
+        <div className='designare-table-header-right' style={{ overflow: 'hidden', top: 0, right: 0, position: 'absolute' }}>
             <table>
                 {props.children}
             </table>

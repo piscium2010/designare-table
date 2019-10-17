@@ -76,7 +76,7 @@ export default class Filter extends React.Component {
         console.log(`blur`, className)
         if (className.includes
             && className.includes(this.columnMetaKey)
-            && className.includes('swift-table-filter')) {
+            && className.includes('designare-table-filter')) {
             // evt from filter icon, do nothing, leave it to onToggleFilter func
             return
         }
@@ -121,7 +121,7 @@ export default class Filter extends React.Component {
         ReactDOM.render(
             <Layer
                 animation={'slide-down'}
-                className='swift-table-layer'
+                className='designare-table-layer'
                 onBlur={this.onBlur}
                 top={top}
                 right={window.innerWidth - right}
@@ -169,7 +169,7 @@ export default class Filter extends React.Component {
             <div style={{ minWidth: minWidth, width: width, display: 'table-cell' }}>
                 <div
                     ref={this.ref}
-                    className={`swift-table-filter ${className} ${this.columnMetaKey}`}
+                    className={`designare-table-filter ${className} ${this.columnMetaKey}`}
                     onClick={this.onToggleFilter}
                     style={{ width: width, ...defaultStyle, ...style }}
                     {...restProps}>
