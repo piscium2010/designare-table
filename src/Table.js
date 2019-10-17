@@ -23,7 +23,7 @@ const loadingLayout = {
     alignItems: 'center'
 }
 
-export default class SwiftTable extends React.Component {
+export default class Table extends React.Component {
     static defaultProps = {
         children: <React.Fragment><Header /><Body /></React.Fragment>,
         defaultSorter: {},
