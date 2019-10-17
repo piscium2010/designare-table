@@ -3,7 +3,15 @@ export function flatten(columns, result = []) {
     return result
 }
 
-export function createColumnMeta(columns, maxDepth, parentKey = '', parentFix, depth = 1/* start from 1 */) {
+export function createColumnMeta(
+    columns,
+    maxDepth,
+    parentKey = '',
+    parentFix,
+    depth = 1/* start from 1 */,
+    warnings = [],
+    store = {}
+) {
     const columnsWithMeta = []
     columns.forEach((column, i) => {
         const key = `${parentKey ? parentKey + '-' : ''}` + getColumnKey(column)
@@ -16,13 +24,25 @@ export function createColumnMeta(columns, maxDepth, parentKey = '', parentFix, d
             rowSpan: column.children ? 1 : 1 + maxDepth - depth,
             columnIndex: i
         }
+        if (clone.width && clone.width === '*') {
+            if (clone.fix) {
+                warnings.push(`width '*' can only be assigned to non-fix column. Warning from ${clone.Header}`)
+            }
+            if (store.wildcard === true) {
+                warnings.push(`width '*' can only be assigned to one column. Warning from ${clone.Header}`)
+            }
+            store.wildcard = true
+        }
         if (clone.children) {
-            clone.children = createColumnMeta(clone.children, maxDepth, key, column.fix, depth + 1)
+            if (clone.width !== undefined) {
+                warnings.push(`width can only be assigned to column without children. Warning from ${clone.Header}`)
+            }
+            clone.children = createColumnMeta(clone.children, maxDepth, key, column.fix, depth + 1, warnings, store)
         }
         columnsWithMeta.push(clone)
     })
 
-    return columnsWithMeta
+    return [columnsWithMeta, warnings]
 }
 
 export function forEachLeafColumn(columns, visitor, n = { count: 0 }, isLast = true) {

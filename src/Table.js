@@ -6,6 +6,7 @@ import Body from './Body'
 import Pagination from './Pagination'
 import { flatten, createColumnMeta, forEachLeafColumn, depthOf, groupByDepth } from './util'
 import SyncScrolling from './SyncScrolling'
+import './app.less'
 
 const doNothing = () => { }
 const loadingLayout = {
@@ -46,6 +47,7 @@ export default class Table extends React.Component {
         this.resizedWidthInfo = new Map()
         this.debouncedUpdate = debounce(this._update, 40)
         this.debouncedReSyncWidthAndHeight = debounce(this.reSyncWidthAndHeight, 100)
+        this.warnings = new Map()
 
         this.contextAPI = {
             getFilterLayerContainer: this.getFilterLayerContainer,
@@ -290,6 +292,15 @@ export default class Table extends React.Component {
         this.forceUpdate()
     }
 
+    printWarnings = warnings => {
+        warnings.forEach(str => {
+            if (!this.warnings.has(str)) {
+                console.warn(`designare-table: ${str} `)
+                this.warnings.set(str, 'printed')
+            }
+        })
+    }
+
     reSyncWidthAndHeight = () => {
         const { rowHeight } = this.props
         const { root, flattenSortedColumns } = this
@@ -300,7 +311,6 @@ export default class Table extends React.Component {
             this.dimensionInfo
         )
         if (isReSized) {
-            console.log(`in resize`,)
             syncWidthAndHeight(
                 root.current,
                 columns,
@@ -312,8 +322,6 @@ export default class Table extends React.Component {
     }
 
     componentDidUpdate() {
-        // console.log(`table did`, this.isInit)
-        // this.reSyncWidthAndHeight()
         this.debouncedReSyncWidthAndHeight()
     }
 
@@ -324,7 +332,6 @@ export default class Table extends React.Component {
         this.isInit = true
         window.requestAnimationFrame(() => {
             this.tableDidMountListeners.forEach((v, k) => k())
-            // this.debouncedUpdate()
             this._update()
         })
     }
@@ -338,8 +345,9 @@ export default class Table extends React.Component {
             loading: Loading,
             pageSizeOptions,
         } = this.props
-        const columnsWithMeta = createColumnMeta(columns, depthOf(columns))
+        const [columnsWithMeta, warnings] = createColumnMeta(columns, depthOf(columns))
 
+        this.printWarnings(warnings)
         this.sortedColumns = sortColumns(columnsWithMeta)
         this.data = this.filterAndSort(data)
         this.data = this.paging(this.data)
@@ -452,7 +460,7 @@ function syncWidthAndHeight(table, columns, rowHeight = -1, dimensionInfo, resiz
     const bodyWidthArray = widthArray(body, columnSize)
     const leftBodyWidthArray = widthArray(leftBody, columnSize, 'end')
     const rightBodyWidthArray = widthArray(rightBody, columnSize, 'start')
-    const columnWidthArray = columns.map(c => c.width || 0)
+    const columnWidthArray = columns.map(c => isNaN(c.width) ? 0 : c.width)
     const resizedWidthArray = columns.map(c => resizedWidthInfo.get(c.metaKey) || -1)
 
     const originalMaxWidthArray = max(
@@ -472,8 +480,14 @@ function syncWidthAndHeight(table, columns, rowHeight = -1, dimensionInfo, resiz
     let sum = maxWidthArray.reduce((prev, curr) => prev + curr, 0)
     const leftOver = rootWidth - sum - 2 // exclude root border
     if (leftOver > 0) {
-        const len = maxWidthArray.length
-        maxWidthArray[len - 1] += leftOver
+        for(let i = 0, len = columns.length; i < len; i++){
+            const col = columns[i]
+            if(col.fix) continue
+            if(col.width === '*') {
+                maxWidthArray[i] += leftOver
+                break
+            }
+        }
         sum += leftOver
     }
 
