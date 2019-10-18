@@ -454,7 +454,7 @@ function syncWidthAndHeight(table, columns, rowHeight = -1, dimensionInfo, resiz
 
 
     // for sync width
-    const headerWidthArray = widthArray(header, columnSize, 'end')
+    const headerWidthArray = widthArray(header, columnSize, 'end', 'debug')
     const leftHeaderWidthArray = widthArray(leftHeader, columnSize, 'end')
     const rightHeaderWidthArray = widthArray(rightHeader, columnSize, 'start')
     const bodyWidthArray = widthArray(body, columnSize)
@@ -462,7 +462,7 @@ function syncWidthAndHeight(table, columns, rowHeight = -1, dimensionInfo, resiz
     const rightBodyWidthArray = widthArray(rightBody, columnSize, 'start')
     const columnWidthArray = columns.map(c => isNaN(c.width) ? 0 : c.width)
     const resizedWidthArray = columns.map(c => resizedWidthInfo.get(c.metaKey) || -1)
-
+    console.log(`headerWidthArray`, headerWidthArray)
     let originalMaxWidthArray = max(
         headerWidthArray,
         leftHeaderWidthArray,
@@ -480,12 +480,27 @@ function syncWidthAndHeight(table, columns, rowHeight = -1, dimensionInfo, resiz
     let sum = maxWidthArray.reduce((prev, curr) => prev + curr, 0)
     const leftOver = rootWidth - sum - 2 // exclude root border
     if (leftOver > 0) {
-        for(let i = 0, len = columns.length; i < len; i++){
+        let remained = leftOver
+
+        // add 2px width to each column whose width !== '*'
+        for (let i = 0, len = columns.length; i < len; i++) {
             const col = columns[i]
-            if(col.fixed) continue
-            if(col.width === '*') {
-                maxWidthArray[i] += leftOver
-                originalMaxWidthArray[i] += leftOver
+            if (col.fixed || col.width !== '*') {
+                if (remained > 2) {
+                    maxWidthArray[i] += 2
+                    originalMaxWidthArray[i] += 2
+                    remained -= 2
+                }
+                continue
+            }
+        }
+
+        // add remained space to column whose width === '*'
+        for (let i = 0, len = columns.length; i < len; i++) {
+            const col = columns[i]
+            if (col.width === '*') {
+                maxWidthArray[i] += remained
+                originalMaxWidthArray[i] += remained
                 break
             }
         }
@@ -601,7 +616,7 @@ function isDimensionChanged(table, columnSize, dimensionInfo) {
     const [leftBodyWrapper, leftBodyRoot, leftBody] = findDOM('body', 'left')
     const [rightBodyWrapper, rightBodyRoot, rightBody] = findDOM('body', 'right')
 
-    const headerWidthArray = widthArray(header, columnSize, 'end', 'debug')
+    const headerWidthArray = widthArray(header, columnSize, 'end')
     // console.log(`headerWidthArray`,headerWidthArray)
     const leftHeaderWidthArray = widthArray(leftHeader, columnSize, 'end')
     const rightHeaderWidthArray = widthArray(rightHeader, columnSize, 'start')
@@ -636,7 +651,7 @@ function isDimensionChanged(table, columnSize, dimensionInfo) {
         || isArrayChange(dimensionInfo.maxBodyHeightArray, maxBodyHeightArray)
 }
 
-function widthArray(element, requiredLen, startOrend = 'end') {
+function widthArray(element, requiredLen, startOrend = 'end', debug) {
     let child = element && element.firstElementChild
     let rowIndex = 0, placeholder = -1, matrix = [], result = [], n = 0
     const rowOf = index => matrix[index] || (matrix[index] = [])
@@ -662,6 +677,7 @@ function widthArray(element, requiredLen, startOrend = 'end') {
             }
 
             const width = cell.offsetWidth
+            if (debug) { console.log(`w`, width) }
             rowOf(rowIndex)[colIndex] = width
 
             if (rowSpan > 1) {
