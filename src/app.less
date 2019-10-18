@@ -23,19 +23,34 @@ td {
         border-collapse: collapse !important;
         // box-sizing: border-box;
     }
+
+    thead {
+        td, th {
+            border-bottom: none;
+        }
+    }
     
-    th,
-    td {
+    th, td {
         padding: 0 16px;
         border-bottom: 1px solid rgba(0, 0, 0, 0.12);
         width: auto;
         min-width: unset !important;
-        // box-sizing: border-box;
     }
 
     thead,
     tbody {
         // box-sizing: border-box;
+    }
+
+    &-fixed {
+        &-header {
+            border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+        }
+    }
+
+    &-header, &-header-left, &-header-right {
+        padding: 9px 0 !important;
+        margin-bottom: -18px !important;
     }
 
     &-pagination {
