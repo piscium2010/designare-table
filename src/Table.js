@@ -50,10 +50,10 @@ export default class Table extends React.Component {
         this.syncScrollingInstance = new SyncScrolling()
         this.dimensionInfo = {}
         this.resizedWidthInfo = new Map()
-        this.debouncedUpdate = debounce(this._update, 40)
+        this.debouncedUpdate = debounce(this._update, 60)
         this.debouncedReSyncWidthAndHeight = debounce(this.reSyncWidthAndHeight, 100)
         this.warnings = new Map()
-
+        this.cells = new Map()
         this.contextAPI = {
             getFilterLayerContainer: this.getFilterLayerContainer,
 
@@ -83,6 +83,8 @@ export default class Table extends React.Component {
             setResizedWidthInfo: this.setResizedWidthInfo,
 
             isInit: () => this.isInit,
+
+            cells: this.cells
         }
         this.state = {
             hasError: false,
@@ -336,6 +338,11 @@ export default class Table extends React.Component {
         if(this.state.hasError) return
         const { dimensionInfo, flattenSortedColumns, root, resizedWidthInfo } = this
         const { rowHeight } = this.props
+
+        if(flattenSortedColumns.length > 0 && this.cells.size % flattenSortedColumns.length !== 0) {
+            throw 'designare-table: each Cell component should render one and only one Td component of designare-table'
+        }
+        // console.log(`cells`,this.cells.size, flattenSortedColumns.length)
         syncWidthAndHeight(root.current, flattenSortedColumns, rowHeight, dimensionInfo, resizedWidthInfo)
         this.isInit = true
         window.requestAnimationFrame(() => {

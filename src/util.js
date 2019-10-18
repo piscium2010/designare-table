@@ -24,10 +24,7 @@ export function createColumnMeta(
             rowSpan: column.children ? 1 : 1 + maxDepth - depth,
             columnIndex: i
         }
-        if(clone.Cell) {
-            if(typeof clone.Cell !== 'function') throw 'designare-table: Cell must be react function or class component'
-            if(!/Td/.test(clone.Cell.toString())) throw 'designare-table: Cell component must be wrapper with Td component from designare-table'
-        }
+        if (clone.Cell && typeof clone.Cell !== 'function') throw 'designare-table: Cell must be react function or class component'
         if (clone.width && clone.width === '*') {
             if (clone.fixed) {
                 warnings.push(`width '*' can only be assigned to non-fixed column. Warning from ${clone.Header}`)
