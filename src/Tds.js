@@ -1,28 +1,13 @@
 import React from 'react'
 import { TBodyContext, TdsContext } from './context'
 import Td from './Td'
-import { Queue } from './util'
 
-const defaultCell = ({ value, row }) => <Td>{value}</Td>
+const defaultCell = ({ value }) => <Td>{value}</Td>
 
 export default class Tds extends React.Component {
     static contextType = TBodyContext
-
-    queue = new Queue()
-
-    getColumn = () => this.queue.first()
-
     
-    componentDidUpdate() {
-
-    }
-
-    componentDidMount() {
-
-    }
-
     render() {
-        this.queue.clear()
         const { rowIndex } = this.props
         const { data, getColumn } = this.context
         const row = data[rowIndex]
@@ -32,7 +17,6 @@ export default class Tds extends React.Component {
         return (
             <TdsContext.Provider value={{
                 ...this.context,
-                getColumn: this.getColumn,
                 contextName: 'tds'
             }}
             >
@@ -41,7 +25,6 @@ export default class Tds extends React.Component {
                         flattenOne(i).map(
                             column => {
                                 const { dataKey, Cell = defaultCell, metaKey, fixed, columnIndex } = column
-                                this.queue.push(column)
                                 return isMyCell(fixed)
                                     ? <Cell
                                         key={metaKey}
