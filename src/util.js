@@ -24,6 +24,10 @@ export function createColumnMeta(
             rowSpan: column.children ? 1 : 1 + maxDepth - depth,
             columnIndex: i
         }
+        if(clone.Cell) {
+            if(typeof clone.Cell !== 'function') throw 'designare-table: Cell must be react function or class component'
+            if(!/Td/.test(clone.Cell.toString())) throw 'designare-table: Cell component must be wrapper with Td component from designare-table'
+        }
         if (clone.width && clone.width === '*') {
             if (clone.fixed) {
                 warnings.push(`width '*' can only be assigned to non-fixed column. Warning from ${clone.Header}`)
@@ -109,11 +113,10 @@ export class Queue {
         this.q = []
     }
 
-    push = v => {
-        this.q.push(v)
-    }
+    push = v => this.q.push(v)
+    first = () => this.q[this.i++]
 
-    first = () => {
-        return this.q[this.i++]
+    get length() {
+        return this.q.length - this.i
     }
 }

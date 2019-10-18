@@ -12,6 +12,15 @@ export default class Tds extends React.Component {
 
     getColumn = () => this.queue.first()
 
+    
+    componentDidUpdate() {
+
+    }
+
+    componentDidMount() {
+
+    }
+
     render() {
         this.queue.clear()
         const { rowIndex } = this.props
@@ -32,10 +41,6 @@ export default class Tds extends React.Component {
                         flattenOne(i).map(
                             column => {
                                 const { dataKey, Cell = defaultCell, metaKey, fixed, columnIndex } = column
-                                // console.log(`Cell`,/Td/.test(Cell.toString()))
-                                // console.log(`Cell`,process.env.NODE_ENV)
-                                if(!/Td/.test(Cell.toString())) throw 'designare-table: Cell component must be wrapper with Td component from designare-table'
-
                                 this.queue.push(column)
                                 return isMyCell(fixed)
                                     ? <Cell

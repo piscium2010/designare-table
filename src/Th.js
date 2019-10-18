@@ -41,7 +41,6 @@ export default class Th extends React.Component {
         if (this.colgroups.length !== this.wrappers.length) throw 'length of colgroup and table are not match'
         window.addEventListener('mousemove', this.onMouseMove)
         window.addEventListener('mouseup', this.onMouseUp)
-        // console.log(`down metaKey`,this.metaKey, leafIndex)
     }
 
     onMouseMove = evt => {
