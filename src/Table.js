@@ -54,6 +54,7 @@ export default class Table extends React.Component {
         this.debouncedReSyncWidthAndHeight = debounce(this.reSyncWidthAndHeight, 100)
         this.warnings = new Map()
         this.cells = new Map()
+        this.headerCells = new Map()
         this.contextAPI = {
             getFilterLayerContainer: this.getFilterLayerContainer,
 
@@ -84,7 +85,8 @@ export default class Table extends React.Component {
 
             isInit: () => this.isInit,
 
-            cells: this.cells
+            cells: this.cells,
+            headerCells: this.headerCells
         }
         this.state = {
             hasError: false,
@@ -338,11 +340,14 @@ export default class Table extends React.Component {
         if(this.state.hasError) return
         const { dimensionInfo, flattenSortedColumns, root, resizedWidthInfo } = this
         const { rowHeight } = this.props
-
-        if(flattenSortedColumns.length > 0 && this.cells.size % flattenSortedColumns.length !== 0) {
-            throw 'designare-table: Cell component should render one and only one Td component of designare-table'
+        const columnSize = flattenSortedColumns.length
+        if(columnSize > 0) {
+            if(this.cells.size % columnSize !== 0)
+                throw 'designare-table: Cell component should render one and only one Td component of designare-table'
+            if(this.headerCells.size % columnSize !== 0 )
+                throw 'designare-table: Header component should render one and only one Th component of designare-table'
         }
-        
+
         syncWidthAndHeight(root.current, flattenSortedColumns, rowHeight, dimensionInfo, resizedWidthInfo)
         this.isInit = true
         window.requestAnimationFrame(() => {

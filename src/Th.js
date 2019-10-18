@@ -20,7 +20,7 @@ export default class Th extends React.Component {
     onMouseDown = (evt, leftOrRight) => {
         const { leafIndex, metaKey } = this.column
         const { getColGroups, setResizedWidthInfo, flattenSortedColumns } = this.context
-        
+
         this.setResizedWidthInfo = setResizedWidthInfo
         this.leftOrRight = leftOrRight
         this.resizing = new ReSizing(evt)
@@ -28,7 +28,7 @@ export default class Th extends React.Component {
         this.parent = evt.target.parentElement
         this.parentOriginalZIndex = this.parent.style.zIndex / 1
         this.parent.style.zIndex = this.parentOriginalZIndex + 1
-        this.leftOrRight === 'left' ? this.dragable.style.left = '-50px' : this.dragable.style.right = '-50px' 
+        this.leftOrRight === 'left' ? this.dragable.style.left = '-50px' : this.dragable.style.right = '-50px'
         this.metaKey = this.leftOrRight === 'left' ? flattenSortedColumns[leafIndex - 1].metaKey : metaKey
         this.dragable.style.width = 'calc(100% + 50px)'
         const [wrappers, colgroups, minWidthArray] = getColGroups()
@@ -37,7 +37,7 @@ export default class Th extends React.Component {
         this.colWidth = this.colgroups[0][this.colIndex].getAttribute('width').replace('px', '') / 1
         this.minWidthArray = minWidthArray
         this.wrappers = wrappers
-        this.wrapperWidthArray = this.wrappers.map(w => w.style.minWidth.replace('px','') / 1)
+        this.wrapperWidthArray = this.wrappers.map(w => w.style.minWidth.replace('px', '') / 1)
         if (this.colgroups.length !== this.wrappers.length) throw 'length of colgroup and table are not match'
         window.addEventListener('mousemove', this.onMouseMove)
         window.addEventListener('mouseup', this.onMouseUp)
@@ -47,7 +47,7 @@ export default class Th extends React.Component {
         const move = this.resizing.move(evt)
         for (let i = 0, len = this.colgroups.length; i < len; i++) {
             const col = this.colgroups[i][this.colIndex]
-            if(col && (move + this.colWidth) > this.minWidthArray[this.colIndex]) {
+            if (col && (move + this.colWidth) > this.minWidthArray[this.colIndex]) {
                 this.wrappers[i].style.minWidth = move + this.wrapperWidthArray[i] + 'px'
                 col.setAttribute('width', move + this.colWidth + 'px')
                 this.setResizedWidthInfo(this.metaKey, move + this.colWidth)
@@ -57,10 +57,18 @@ export default class Th extends React.Component {
 
     onMouseUp = evt => {
         this.parent.style.zIndex = this.parentOriginalZIndex
-        this.leftOrRight === 'left' ? this.dragable.style.left = '0' : this.dragable.style.right = '0' 
+        this.leftOrRight === 'left' ? this.dragable.style.left = '0' : this.dragable.style.right = '0'
         this.dragable.style.width = '3px'
         window.removeEventListener('mousemove', this.onMouseMove)
         window.removeEventListener('mouseup', this.onMouseUp)
+    }
+
+    componentDidMount() {
+        if (this.column.isLeaf) this.context.headerCells.set(this)
+    }
+
+    componentWillUnmount() {
+        if (this.column.isLeaf) this.context.headerCells.delete(this)
     }
 
     render() {
