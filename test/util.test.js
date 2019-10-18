@@ -1,4 +1,4 @@
-import { createColumnMeta } from '../util'
+import { createColumnMeta } from '../src/util'
 
 test('width', () => {
     const maxDepth = 1
