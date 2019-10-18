@@ -160,7 +160,7 @@ export default class Filter extends React.Component {
     }
 
     render() {
-        if (this.context.contextName !== 'thead') throw 'Sorder should be within Header component'
+        if (this.context.contextName !== 'thead') throw 'Filter component should be within Header component'
         const { by, className = '', children: C, style = {}, onClick, ...restProps } = this.props
         const width = style.width || 15
         const minWidth = style.minWidth || width

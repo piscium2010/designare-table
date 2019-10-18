@@ -462,7 +462,6 @@ function syncWidthAndHeight(table, columns, rowHeight = -1, dimensionInfo, resiz
     const rightBodyWidthArray = widthArray(rightBody, columnSize, 'start')
     const columnWidthArray = columns.map(c => isNaN(c.width) ? 0 : c.width)
     const resizedWidthArray = columns.map(c => resizedWidthInfo.get(c.metaKey) || -1)
-    console.log(`headerWidthArray`, headerWidthArray)
     let originalMaxWidthArray = max(
         headerWidthArray,
         leftHeaderWidthArray,
@@ -677,7 +676,6 @@ function widthArray(element, requiredLen, startOrend = 'end', debug) {
             }
 
             const width = cell.offsetWidth
-            if (debug) { console.log(`w`, width) }
             rowOf(rowIndex)[colIndex] = width
 
             if (rowSpan > 1) {
@@ -686,7 +684,6 @@ function widthArray(element, requiredLen, startOrend = 'end', debug) {
                 continue
             }
         }
-        // console.log(`child`, padMatrix(matrix))
         matrix = padMatrix(matrix)
         result = matrix.length > 0 ? max.apply(null, matrix) : []
         const hasPlaceHolder = result.filter(i => i === placeholder).length > 0

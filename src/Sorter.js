@@ -86,7 +86,7 @@ export default class Sorter extends React.Component {
     render() {
         const { contextName, getActiveSorter, getSorter, onChangeSorter } = this.context
         // console.log(`this.context`,this.context)
-        if (contextName !== 'thead') throw 'Sorder should be within Header component'
+        if (contextName !== 'thead') throw 'Sorter component should be within Header component'
         const { activeColor, by, defaultColor, className = '', directions = [], style, onClickCapture, render, ...restProps } = this.props
         const s = getActiveSorter(), key = this.key
         const isActive = s.key === key && directions.includes(s.direction)
