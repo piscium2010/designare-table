@@ -11,7 +11,6 @@ export default class SyncScrolling {
         let master, slave
         const scrollable = evt.target
         const { scrollLeft, scrollTop } = scrollable
-        // console.log(`scrollTop`, scrollTop, evt.target.getAttribute('class'))
         this.map.forEach((v, k) => {
             k === scrollable ? master = k : slave = k
             if (slave) {
@@ -47,7 +46,6 @@ export default class SyncScrolling {
     }
 
     remove = scrollable => {
-        console.log(`remove scroll`)
         scrollable.removeEventListener('scroll', this.onScroll)
         this.map.delete(scrollable)
     }

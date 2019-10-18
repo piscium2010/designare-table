@@ -10,7 +10,7 @@ export default class Tbody extends React.Component {
         const { columns, data } = this.context
         const myColumns = fixed ? columns.filter(c => c.fixed === fixed) : columns
         const isEmpty = myColumns.length < 1
-        // console.log(`data`,data)
+        
         return (
             <TBodyContext.Provider value={{
                 ...this.context,

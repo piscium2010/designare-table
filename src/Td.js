@@ -2,6 +2,9 @@ import React from 'react'
 import { TdsContext } from './context'
 
 export default class Td extends React.Component {
+    static defaultProps = {
+        ['hidden-name']:'td'
+    }
     static contextType = TdsContext
 
     componentDidUpdate() {

@@ -34,6 +34,11 @@ export default class Table extends React.Component {
         rowHeight: 38
     }
 
+    static getDerivedStateFromError(error) {
+        console.error(error)
+        return { hasError: true }
+    }
+
     constructor(props) {
         super(props)
         this.root = React.createRef()
@@ -80,6 +85,7 @@ export default class Table extends React.Component {
             isInit: () => this.isInit,
         }
         this.state = {
+            hasError: false,
             pageNo: 'defaultPageNo' in props ? props.defaultPageNo : 1,
             pageSize: 'defaultPageSize' in props ? props.defaultPageSize : 10,
         }
@@ -322,10 +328,12 @@ export default class Table extends React.Component {
     }
 
     componentDidUpdate() {
+        if(this.state.hasError) return
         this.debouncedReSyncWidthAndHeight()
     }
 
     componentDidMount() {
+        if(this.state.hasError) return
         const { dimensionInfo, flattenSortedColumns, root, resizedWidthInfo } = this
         const { rowHeight } = this.props
         syncWidthAndHeight(root.current, flattenSortedColumns, rowHeight, dimensionInfo, resizedWidthInfo)
@@ -337,6 +345,8 @@ export default class Table extends React.Component {
     }
 
     render() {
+        if(this.state.hasError) return <div className='designare-table-error'></div>
+
         const {
             className = '',
             columns = [],
