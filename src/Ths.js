@@ -13,6 +13,10 @@ export default class Ths extends React.Component {
                 {
                     columnsOfRow.map(column => {
                         const { Header, metaKey } = column
+                        // console.log(`Header`,typeof Header)
+                        // console.log(`Header`,Header.type.name)
+                        const type = typeof Header
+
                         return (
                             <ThsContext.Provider
                                 key={metaKey}
@@ -23,9 +27,11 @@ export default class Ths extends React.Component {
                                 }}
                             >
                                 {
-                                    typeof Header === 'function'
+                                    type === 'function'
                                         ? <Header key={metaKey} />
-                                        : <Th key={metaKey}>{Header}</Th>
+                                        : type === 'string'
+                                            ? <Th key={metaKey}>{Header}</Th>
+                                            : <React.Fragment key={metaKey}>{Header}</React.Fragment>
                                 }
                             </ThsContext.Provider>
                         )

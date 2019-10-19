@@ -8,6 +8,9 @@ import { flatten, createColumnMeta, forEachLeafColumn, depthOf, groupByDepth } f
 import SyncScrolling from './SyncScrolling'
 import './app.less'
 
+export const ERR0 = 'designare-table: Cell component should render one and only one Td component of designare-table'
+export const ERR1 = 'designare-table: if Header is not string, it should render one and only one Th component of designare-table'
+
 const doNothing = () => { }
 const loadingLayout = {
     position: 'absolute',
@@ -343,9 +346,9 @@ export default class Table extends React.Component {
         const columnSize = flattenSortedColumns.length
         if(columnSize > 0) {
             if(this.cells.size % columnSize !== 0)
-                throw 'designare-table: Cell component should render one and only one Td component of designare-table'
+                throw ERR0
             if(this.headerCells.size % columnSize !== 0 )
-                throw 'designare-table: Header component should render one and only one Th component of designare-table'
+                throw ERR1
         }
 
         syncWidthAndHeight(root.current, flattenSortedColumns, rowHeight, dimensionInfo, resizedWidthInfo)
