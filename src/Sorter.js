@@ -43,8 +43,8 @@ export default class Sorter extends React.Component {
         }
     }
 
-    get key() {
-        return this.context.getColumn().key
+    get dataKey() {
+        return this.context.getColumn().dataKey
     }
 
     get columnMetaKey() {
@@ -52,14 +52,15 @@ export default class Sorter extends React.Component {
     }
 
     setActiveSorter = sorter => {
-        if (sorter && this.key === sorter.key) {
+        if (sorter && this.dataKey === sorter.dataKey) {
+            console.log(`in`,this.dataKey)
             const direction = sorter.direction
             const { by, directions = [] } = this.props
             const status = ['default'].concat(directions)
             if (!status.includes(direction)) {
-                throw `direction: ${direction || 'empty'} is not in Sorter of ${this.key}`
+                throw `direction: ${direction || 'empty'} is not in Sorter of ${this.dataKey}`
             }
-            this.context.setActiveSorter({ columnMetaKey: this.columnMetaKey, direction, by: sortMethod(by), key: this.key })
+            this.context.setActiveSorter({ columnMetaKey: this.columnMetaKey, direction, by: sortMethod(by), dataKey: this.dataKey })
         }
     }
 
@@ -88,19 +89,20 @@ export default class Sorter extends React.Component {
         // console.log(`this.context`,this.context)
         if (contextName !== 'thead') throw 'Sorter component should be within Header component'
         const { activeColor, by, defaultColor, className = '', directions = [], style, onClickCapture, render, ...restProps } = this.props
-        const s = getActiveSorter(), key = this.key
-        const isActive = s.key === key && directions.includes(s.direction)
+        const s = getActiveSorter(), dataKey = this.dataKey
+        const isActive = s.dataKey === dataKey && directions.includes(s.direction)
         const status = directions.concat('default')
         const i = isActive ? status.indexOf(s.direction) : 0
         const onClick = () => {
             const isSorterInControlledMode = getSorter() ? true : false
             const next = isActive ? i + 1 : 0
+            console.log(`sorter`,s)
             const direction = status[next % status.length]
 
-            onChangeSorter({ key, direction, by })
+            onChangeSorter({ dataKey, direction, by })
             onClickCapture()
             if (!isSorterInControlledMode) {
-                this.setActiveSorter({ key, direction })
+                this.setActiveSorter({ dataKey, direction })
             }
         }
 

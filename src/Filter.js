@@ -15,7 +15,7 @@ export default class Filter extends React.Component {
     state = { show: false, top: 0, right: 0 }
 
     get columnKey() {
-        return this.context.getColumn().key
+        return this.context.getColumn().dataKey
     }
 
     get columnMetaKey() {

@@ -160,7 +160,7 @@ export default class Table extends React.Component {
     setActiveSorter = ({ columnMetaKey, dataKey, direction, by }) => {
 
         if (dataKey !== this.activeSorter.key || direction !== this.activeSorter.direction) {
-            this.activeSorter = { columnMetaKey, key: dataKey, direction, by }
+            this.activeSorter = { columnMetaKey, dataKey, direction, by }
             this._update()
         }
     }
@@ -249,9 +249,9 @@ export default class Table extends React.Component {
 
     sort = data => {
         const result = Array.from(data)
-        const { key, direction, by } = this.getActiveSorter() // typescript?
-        if (key && direction && direction !== 'default' && typeof by === 'function') {
-            result.sort((a, b) => by(a[key], b[key]))
+        const { dataKey, direction, by } = this.getActiveSorter() // typescript?
+        if (dataKey && direction && direction !== 'default' && typeof by === 'function') {
+            result.sort((a, b) => by(a[dataKey], b[dataKey]))
             if (direction === 'des') result.reverse()
         }
 

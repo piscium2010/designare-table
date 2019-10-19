@@ -8,7 +8,7 @@ const dragableStyle = {
     bottom: 0,
     width: 3,
     cursor: 'col-resize',
-    backgroundColor: 'aliceblue'
+    // backgroundColor: 'aliceblue'
 }
 
 export default class Th extends React.Component {
