@@ -1,5 +1,5 @@
 import React, { useRef, useEffect } from 'react'
-import Tbody from './Tbody'
+import Tbody from './HTMLTbody'
 import Tds from './Tds'
 import { Context } from './context'
 

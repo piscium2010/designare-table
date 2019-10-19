@@ -29,24 +29,27 @@ body {
         min-width: unset !important;
     }
 
-    &-body, &-header {
-        // box-sizing: border-box;
-    }
-
     &-fixed {
         &-header {
-            // box-sizing: border-box;
             border-bottom: 1px solid rgba(0, 0, 0, 0.12);
-        }
-
-        &-body {
-            // box-sizing: border-box;
+            > div {
+                margin: -9px 0 -9px 0 !important; // hide header scroll bar
+            }
         }
     }
 
+    // hide header scroll bar
     &-header, &-header-left, &-header-right {
         padding: 9px 0 !important;
         margin-bottom: -18px !important;
+
+        &::-webkit-scrollbar {
+            -webkit-appearance: none;
+        }
+        
+        &::-webkit-scrollbar:horizontal {
+            height: 18px;
+        }
     }
 
     &-pagination {

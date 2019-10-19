@@ -6,15 +6,13 @@ export default class Ths extends React.Component {
     static contextType = TheadContext
 
     render() {
-        const columnsOfRow = this.context.getLevelColumns()
+        const { columnsOfRow } = this.props
 
         return (
             <React.Fragment>
                 {
                     columnsOfRow.map(column => {
                         const { Header, metaKey } = column
-                        // console.log(`Header`,typeof Header)
-                        // console.log(`Header`,Header.type.name)
                         const type = typeof Header
 
                         return (

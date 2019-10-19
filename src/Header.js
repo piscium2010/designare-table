@@ -1,14 +1,12 @@
 import React, { useRef, useEffect } from 'react'
-import Thead from './Thead'
-import Ths from './Ths'
+import Thead from './HTMLThead'
 import { Context } from './context'
 
 export default class Header extends React.Component {
     static contextType = Context
-    static Row = Ths
     static defaultProps = {
         className: '',
-        tr: props => <tr><Ths {...props} /></tr>
+        tr: ({ Cells }) => <tr><Cells /></tr>
     }
 
     render() {
