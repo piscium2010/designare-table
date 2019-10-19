@@ -7,7 +7,8 @@ const dragableStyle = {
     top: 0,
     bottom: 0,
     width: 3,
-    cursor: 'col-resize'
+    cursor: 'col-resize',
+    backgroundColor: 'aliceblue'
 }
 
 export default class Th extends React.Component {
@@ -28,13 +29,13 @@ export default class Th extends React.Component {
         this.parent = evt.target.parentElement
         this.parentOriginalZIndex = this.parent.style.zIndex / 1
         this.parent.style.zIndex = this.parentOriginalZIndex + 1
-        this.leftOrRight === 'left' ? this.dragable.style.left = '-50px' : this.dragable.style.right = '-50px'
+        this.dragable.style.width = '1000px'
+        this.leftOrRight === 'left' ? this.dragable.style.left = '-500px' : this.dragable.style.right = '-500px'
         this.metaKey = this.leftOrRight === 'left' ? flattenSortedColumns[leafIndex - 1].metaKey : metaKey
-        this.dragable.style.width = 'calc(100% + 50px)'
         const [wrappers, colgroups, minWidthArray] = getColGroups()
         this.colgroups = colgroups.map(g => g.children)
         this.colIndex = this.leftOrRight === 'left' ? leafIndex - 1 : leafIndex
-        this.colWidth = this.colgroups[0][this.colIndex].getAttribute('width').replace('px', '') / 1
+        this.colWidth = this.colgroups[0][this.colIndex].style.width.replace('px', '') / 1
         this.minWidthArray = minWidthArray
         this.wrappers = wrappers
         this.wrapperWidthArray = this.wrappers.map(w => w.style.minWidth.replace('px', '') / 1)
@@ -46,10 +47,11 @@ export default class Th extends React.Component {
     onMouseMove = evt => {
         const move = this.resizing.move(evt)
         for (let i = 0, len = this.colgroups.length; i < len; i++) {
-            const col = this.colgroups[i][this.colIndex]
+            const colgroup = this.colgroups[i]
+            const col = colgroup[this.colIndex]
             if (col && (move + this.colWidth) > this.minWidthArray[this.colIndex]) {
                 this.wrappers[i].style.minWidth = move + this.wrapperWidthArray[i] + 'px'
-                col.setAttribute('width', move + this.colWidth + 'px')
+                col.style.width = move + this.colWidth + 'px'
                 this.setResizedWidthInfo(this.metaKey, move + this.colWidth)
             }
         }

@@ -7,14 +7,19 @@ export default class Body extends React.Component {
     static contextType = Context
     static Row = Tds
     static defaultProps = {
-        tr: props => <tr><Tds {...props}/></tr>
+        className:'',
+        tr: props => <tr><Tds {...props} /></tr>
     }
 
     render() {
         const { isInit, syncScrolling, removeSyncScrolling } = this.context
-        const { tr } = this.props
+        const { className, tr, style, ...restProps } = this.props
         return (
-            <div style={{ flex: '0 1 100%', position: 'relative', overflow: 'hidden', opacity: isInit() ? 1 : 0 }}>
+            <div
+                className={`designare-table-fixed-body ${className}`}
+                style={{ flex: '0 1 100%', position: 'relative', overflow: 'hidden', opacity: isInit() ? 1 : 0, ...style }}
+                {...restProps}
+            >
                 <Normal
                     syncScrolling={syncScrolling}
                     removeSyncScrolling={removeSyncScrolling}

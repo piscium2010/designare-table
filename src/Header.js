@@ -7,14 +7,19 @@ export default class Header extends React.Component {
     static contextType = Context
     static Row = Ths
     static defaultProps = {
-        tr: props => <tr><Ths {...props}/></tr>
+        className: '',
+        tr: props => <tr><Ths {...props} /></tr>
     }
 
     render() {
         const { isInit, syncScrolling, removeSyncScrolling } = this.context
-        const { tr, ...restProps } = this.props
+        const { className, tr, style, ...restProps } = this.props
         return (
-            <div className={`designare-table-fixed-header`} style={{ flex: '0 0 auto', overflow: 'hidden', opacity: isInit() ? 1 : 0 }} {...restProps}>
+            <div
+                className={`designare-table-fixed-header ${className}`}
+                style={{ flex: '0 0 auto', overflow: 'hidden', opacity: isInit() ? 1 : 0, ...style }}
+                {...restProps}
+            >
                 <div style={{ marginBottom: 0, position: 'relative', overflowX: 'hidden' }}>
                     <Normal
                         syncScrolling={syncScrolling}

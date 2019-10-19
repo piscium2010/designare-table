@@ -214,8 +214,9 @@ export default class Table extends React.Component {
         rightBodyRoot ? roots.push(rightBodyRoot) : undefined
 
         const minWidthArray = Array.from(this.dimensionInfo.originalMaxWidthArray)
+        const maxWidthArray = Array.from(this.dimensionInfo.maxWidthArray)
 
-        return [roots, colgroups, minWidthArray]
+        return [roots, colgroups, minWidthArray, maxWidthArray]
     }
 
     addEventListener = (type = 'tableDidMount', func) => {
@@ -334,19 +335,19 @@ export default class Table extends React.Component {
     }
 
     componentDidUpdate() {
-        if(this.state.hasError) return
+        if (this.state.hasError) return
         this.debouncedReSyncWidthAndHeight()
     }
 
     componentDidMount() {
-        if(this.state.hasError) return
+        if (this.state.hasError) return
         const { dimensionInfo, flattenSortedColumns, root, resizedWidthInfo } = this
         const { rowHeight } = this.props
         const columnSize = flattenSortedColumns.length
-        if(columnSize > 0) {
-            if(this.cells.size % columnSize !== 0)
+        if (columnSize > 0) {
+            if (this.cells.size % columnSize !== 0)
                 throw ERR0
-            if(this.headerCells.size % columnSize !== 0 )
+            if (this.headerCells.size % columnSize !== 0)
                 throw ERR1
         }
 
@@ -359,7 +360,7 @@ export default class Table extends React.Component {
     }
 
     render() {
-        if(this.state.hasError) return <div className='designare-table-error'>{this.state.error}</div>
+        if (this.state.hasError) return <div style={{ color: '#b51a28' }}>{this.state.error}</div>
 
         const {
             className = '',
@@ -501,55 +502,52 @@ function syncWidthAndHeight(table, columns, rowHeight = -1, dimensionInfo, resiz
         resizedWidthArray
     )
     let sum = maxWidthArray.reduce((prev, curr) => prev + curr, 0)
-    const leftOver = rootWidth - sum - 2 // exclude root border
+    const leftOver = rootWidth - sum
     if (leftOver > 0) {
-        let remained = leftOver
+        // let remained = leftOver
 
         // add 2px width to each column whose width !== '*'
-        for (let i = 0, len = columns.length; i < len; i++) {
-            const col = columns[i]
-            if (col.fixed || col.width !== '*') {
-                if (remained > 2) {
-                    maxWidthArray[i] += 2
-                    originalMaxWidthArray[i] += 2
-                    remained -= 2
-                }
-                continue
-            }
-        }
+        // for (let i = 0, len = columns.length; i < len; i++) {
+        //     const col = columns[i]
+        //     if (col.fixed || col.width !== '*') {
+        //         if (remained > 2) {
+        //             maxWidthArray[i] += 2
+        //             originalMaxWidthArray[i] += 2
+        //             remained -= 2
+        //         }
+        //         continue
+        //     }
+        // }
 
-        // add remained space to column whose width === '*'
+        // add leftOver space to column whose width === '*'
         for (let i = 0, len = columns.length; i < len; i++) {
-            const col = columns[i]
-            if (col.width === '*') {
-                maxWidthArray[i] += remained
-                originalMaxWidthArray[i] += remained
+            if (columns[i].width === '*') {
+                maxWidthArray[i] += leftOver
+                originalMaxWidthArray[i] += leftOver
                 break
             }
         }
         sum += leftOver
     }
 
-    const tableWidth = sum + 1 // thead/tbody width tends to be 1px less than table's
+    const tableWidth = sum + 'px'
     const mergeMax = (w, i) => w > -1 ? maxWidthArray[i] : w
-    const greaterThanInitial = w => w > -1
+    const positive = w => w > -1
+
 
     const headerColgroup = createColgroup(maxWidthArray)
-    const leftHeaderColgroup = createColgroup(leftHeaderWidthArray.map(mergeMax).filter(greaterThanInitial))
-    const rightHeaderColgroup = createColgroup(rightHeaderWidthArray.map(mergeMax).filter(greaterThanInitial))
+    const leftHeaderColgroup = createColgroup(leftHeaderWidthArray.map(mergeMax).filter(positive))
+    const rightHeaderColgroup = createColgroup(rightHeaderWidthArray.map(mergeMax).filter(positive))
 
     const bodyColgroup = createColgroup(maxWidthArray)
-    const leftBodyColgroup = createColgroup(leftBodyWidthArray.map(mergeMax).filter(greaterThanInitial))
-    const rightBodyColgroup = createColgroup(rightBodyWidthArray.map(mergeMax).filter(greaterThanInitial))
-
-
+    const leftBodyColgroup = createColgroup(leftBodyWidthArray.map(mergeMax).filter(positive))
+    const rightBodyColgroup = createColgroup(rightBodyWidthArray.map(mergeMax).filter(positive))
 
     // sync width
-    setStyle(headerRoot, 'minWidth', `${tableWidth}px`)
-    setStyle(leftHeaderRoot, 'minWidth', `${tableWidth}px`)
-    setStyle(rightHeaderRoot, 'minWidth', `${tableWidth}px`)
-    setStyle(bodyRoot, 'minWidth', `${tableWidth}px`)
-
+    setStyle(headerRoot, 'minWidth', `${tableWidth}`)
+    setStyle(leftHeaderRoot, 'minWidth', `${tableWidth}`)
+    setStyle(rightHeaderRoot, 'minWidth', `${tableWidth}`)
+    setStyle(bodyRoot, 'minWidth', `${tableWidth}`)
 
     appendChild(headerRoot, headerColgroup)
     appendChild(leftHeaderRoot, leftHeaderColgroup)
@@ -557,8 +555,6 @@ function syncWidthAndHeight(table, columns, rowHeight = -1, dimensionInfo, resiz
     appendChild(bodyRoot, bodyColgroup)
     appendChild(leftBodyRoot, leftBodyColgroup)
     appendChild(rightBodyRoot, rightBodyColgroup)
-
-
 
     // for sync height - should happen after width is synced
     const headerHeightArray = heightArray(header)
@@ -570,7 +566,6 @@ function syncWidthAndHeight(table, columns, rowHeight = -1, dimensionInfo, resiz
     const leftBodyHeightArray = heightArray(leftBody)
     const rightBodyHeightArray = heightArray(rightBody)
     const maxBodyHeightArray = max(bodyHeightArray, leftBodyHeightArray, rightBodyHeightArray)
-
 
     // sync height
     const headers = getChildren(header)
@@ -594,8 +589,6 @@ function syncWidthAndHeight(table, columns, rowHeight = -1, dimensionInfo, resiz
         rightRows[i].style['height'] = `${height}px`
     }
 
-    // if(re) return
-    // if body scroll vertically
     if (bodyRoot && bodyRoot.offsetHeight > bodyRoot.parentElement.offsetHeight) {
         syncHeaderBodyVerticalScrollStatus(headerRoot, true /* scroll */)
         hideVerticalScrollBarOfFixBody(leftBodyRoot, true /* scroll */)
@@ -765,11 +758,24 @@ function removeHeight(element) {
 }
 
 function createColgroup(widthArray) {
+    // let a = 100, sum = 0
+    // if (asPercent) {
+        // }
+    const sum = widthArray.reduce((prev, curr) => prev + curr, 0)
     const colgroup = document.createElement('colgroup')
     for (let i = 0, len = widthArray.length; i < len; i++) {
-        const width = widthArray[i]
+        const width = i === len - 1 ? Math.ceil(widthArray[i] / sum * 100) + '%' : widthArray[i] + 'px'
+        // if(debug) {
+        //     console.log(`sum`,sum)
+        //     console.log(`w`,widthArray[i])
+        // }
         const col = document.createElement('col')
-        col.setAttribute('width', `${width}px`)
+        col.style.width = width
+            // ? i === len - 1 ? `${a}%` : `${width}%`
+            // : `${width}px`
+        // a -= width
+        // col.style.minWidth = `${width}px`
+        // col.setAttribute('width', `${width}px`)
         colgroup.appendChild(col)
     }
     return colgroup
