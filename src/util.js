@@ -38,11 +38,11 @@ export function createColumnMeta(
             if (clone.width !== undefined) {
                 warnings.push(`width can only be assigned to column without children. Warning from ${clone.Header}`)
             }
-            clone.children = createColumnMeta(clone.children, maxDepth, key, column.fixed, depth + 1, warnings, store)
+            const [ children ] = createColumnMeta(column.children, maxDepth, key, column.fixed, depth + 1, warnings, store)
+            clone.children = children 
         }
         columnsWithMeta.push(clone)
     })
-
     return [columnsWithMeta, warnings]
 }
 
@@ -89,6 +89,7 @@ export function depthOf(columns, depth = 1) {
 }
 
 export function groupByDepth(columns) {
+    // console.log(`columns`,columns)
     const result = []
     const walkOne = (column, depth = 1/* start from 1 */) => {
         const index = depth - 1

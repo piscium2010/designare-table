@@ -14,9 +14,11 @@ export default class HTMLThead extends React.Component {
             <TheadContext.Provider value={{ ...this.context, fixed: fixed }}>
                 <thead {...restProps}>
                     {
-                        groupByDepth(columns).map((columnsOfRow, i) => (
-                            <Tr key={i} Cells={() => <Ths columnsOfRow={columnsOfRow} />} />
-                        ))
+                        groupByDepth(columns).map((columnsOfRow, i) => {
+                            return (
+                                <Tr key={i} Cells={() => <Ths columnsOfRow={columnsOfRow} />} />
+                            )
+                        })
                     }
                 </thead>
             </TheadContext.Provider>

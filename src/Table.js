@@ -316,20 +316,21 @@ export default class Table extends React.Component {
 
     reSyncWidthAndHeight = () => {
         const { rowHeight } = this.props
-        const { root, flattenSortedColumns } = this
+        const { dimensionInfo, flattenSortedColumns, root, resizedWidthInfo, depthOfColumns } = this
         const columns = flattenSortedColumns
         const isReSized = isDimensionChanged(
             root.current,
             columns.length,
-            this.dimensionInfo
+            dimensionInfo
         )
         if (isReSized) {
             syncWidthAndHeight(
                 root.current,
                 columns,
                 rowHeight,
-                this.dimensionInfo,
-                this.resizedWidthInfo
+                dimensionInfo,
+                resizedWidthInfo,
+                depthOfColumns
             )
         }
     }
@@ -341,7 +342,7 @@ export default class Table extends React.Component {
 
     componentDidMount() {
         if (this.state.hasError) return
-        const { dimensionInfo, flattenSortedColumns, root, resizedWidthInfo } = this
+        const { dimensionInfo, flattenSortedColumns, root, resizedWidthInfo, depthOfColumns } = this
         const { rowHeight } = this.props
         const columnSize = flattenSortedColumns.length
         if (columnSize > 0) {
@@ -351,7 +352,7 @@ export default class Table extends React.Component {
                 throw ERR1
         }
 
-        syncWidthAndHeight(root.current, flattenSortedColumns, rowHeight, dimensionInfo, resizedWidthInfo)
+        syncWidthAndHeight(root.current, flattenSortedColumns, rowHeight, dimensionInfo, resizedWidthInfo, depthOfColumns)
         this.isInit = true
         window.requestAnimationFrame(() => {
             this.tableDidMountListeners.forEach((v, k) => k())
@@ -370,8 +371,8 @@ export default class Table extends React.Component {
             loading: Loading,
             pageSizeOptions,
         } = this.props
-        const [columnsWithMeta, warnings] = createColumnMeta(columns, depthOf(columns))
-
+        this.depthOfColumns = depthOf(columns)
+        const [columnsWithMeta, warnings] = createColumnMeta(columns, this.depthOfColumns)
         this.printWarnings(warnings)
         this.sortedColumns = sortColumns(columnsWithMeta)
         this.data = this.filterAndSort(data)
@@ -443,7 +444,7 @@ function createLeafColumnIndex(columns) {
     })
 }
 
-function syncWidthAndHeight(table, columns, rowHeight = -1, dimensionInfo, resizedWidthInfo, re) {
+function syncWidthAndHeight(table, columns, rowHeight = -1, dimensionInfo, resizedWidthInfo, depthOfColumns) {
     // console.log(`columns`,columns)
     const columnSize = columns.length
     const findDOM = find.bind(null, table)
@@ -576,7 +577,7 @@ function syncWidthAndHeight(table, columns, rowHeight = -1, dimensionInfo, resiz
     const rightRows = getChildren(rightBody)
 
     for (let i = 0, len = maxHeaderHeightArray.length; i < len; i++) {
-        const height = Math.max(maxHeaderHeightArray[i], rowHeight)
+        const height = Math.max(maxHeaderHeightArray[i], Math.ceil(rowHeight / depthOfColumns))
         headers[i].style['height'] = `${height}px`
         leftHeaders[i].style['height'] = `${height}px`
         rightHeaders[i].style['height'] = `${height}px`
@@ -584,7 +585,7 @@ function syncWidthAndHeight(table, columns, rowHeight = -1, dimensionInfo, resiz
 
     for (let i = 0, len = maxBodyHeightArray.length; i < len; i++) {
         const height = Math.max(maxBodyHeightArray[i], rowHeight)
-        rows[i].style['height'] = `${height}px` // jumping
+        rows[i].style['height'] = `${height}px`
         leftRows[i].style['height'] = `${height}px`
         rightRows[i].style['height'] = `${height}px`
     }
@@ -705,7 +706,6 @@ function widthArray(element, requiredLen, startOrend = 'end', debug) {
         result = matrix.length > 0 ? max.apply(null, matrix) : []
         const hasPlaceHolder = result.filter(i => i === placeholder).length > 0
         const hasNaN = result.filter(isNaN).length > 0
-
         if (result.length > 0 && (hasPlaceHolder || hasNaN)) {
             child = child.nextSibling
             rowIndex++
