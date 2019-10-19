@@ -38,8 +38,7 @@ export default class Table extends React.Component {
     }
 
     static getDerivedStateFromError(error) {
-        console.error(error)
-        return { hasError: true }
+        return { hasError: true, error }
     }
 
     constructor(props) {
@@ -360,7 +359,7 @@ export default class Table extends React.Component {
     }
 
     render() {
-        if(this.state.hasError) return <div className='designare-table-error'></div>
+        if(this.state.hasError) return <div className='designare-table-error'>{this.state.error}</div>
 
         const {
             className = '',

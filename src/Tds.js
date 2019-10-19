@@ -4,8 +4,14 @@ import Td from './Td'
 
 const defaultCell = ({ value }) => <Td>{value}</Td>
 
+export const ERR2 = 'designare-table: rowIndex is required for Tbody.Row'
+
 export default class Tds extends React.Component {
     static contextType = TBodyContext
+    constructor(props) {
+        super(props)
+        if(isNaN(props.rowIndex)) throw ERR2
+    }
     
     render() {
         const { rowIndex } = this.props
