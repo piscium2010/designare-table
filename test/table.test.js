@@ -11,89 +11,123 @@ const data = [
     { name: 'Exxon Mobil Corp.', last: 68.14, chg: -0.09, chgp: -0.13 }
 ]
 
-test('Error: Td', () => {
-    const { queryByText } = render(
-        <TestingError>
-            <Table
-                columns={[
-                    {
-                        Header: 'COMPANY',
-                        dataKey: 'name',
-                        Cell: () => <span></span>
-                    },
-                    {
-                        Header: 'CHG',
-                        dataKey: 'chg'
-                    },
-                    {
-                        Header: 'CHG %',
-                        dataKey: 'chgp'
-                    }
-                ]}
-                data={data}
-            />
-        </TestingError>
-    )
-    const msg = queryByText(ERR0)
-    expect(msg).toBeTruthy()
-})
+// test('Error: Td', () => {
+//     const { queryByText } = render(
+//         <TestingError>
+//             <Table
+//                 columns={[
+//                     {
+//                         Header: 'COMPANY',
+//                         dataKey: 'name',
+//                         Cell: () => <span></span>
+//                     },
+//                     {
+//                         Header: 'CHG',
+//                         dataKey: 'chg'
+//                     },
+//                     {
+//                         Header: 'CHG %',
+//                         dataKey: 'chgp'
+//                     }
+//                 ]}
+//                 data={data}
+//             />
+//         </TestingError>
+//     )
+//     const msg = queryByText(ERR0)
+//     expect(msg).toBeTruthy()
+// })
 
-test('Error: Th', () => {
-    const { queryByText } = render(
-        <TestingError>
-            <Table
-                columns={[
-                    {
-                        Header: () => <th></th>,
-                        dataKey: 'name'
-                    },
-                    {
-                        Header: 'LAST',
-                        dataKey: 'last'
-                    },
-                    {
-                        Header: 'CHG',
-                        dataKey: 'chg'
-                    },
-                    {
-                        Header: 'CHG %',
-                        dataKey: 'chgp'
-                    }
-                ]}
-                data={data}
-            />
-        </TestingError>
-    )
-    const msg = queryByText(ERR1)
-    expect(msg).toBeTruthy()
-})
+// test('Error: Th', () => {
+//     const { queryByText } = render(
+//         <TestingError>
+//             <Table
+//                 columns={[
+//                     {
+//                         Header: () => <th></th>,
+//                         dataKey: 'name'
+//                     },
+//                     {
+//                         Header: 'LAST',
+//                         dataKey: 'last'
+//                     },
+//                     {
+//                         Header: 'CHG',
+//                         dataKey: 'chg'
+//                     },
+//                     {
+//                         Header: 'CHG %',
+//                         dataKey: 'chgp'
+//                     }
+//                 ]}
+//                 data={data}
+//             />
+//         </TestingError>
+//     )
+//     const msg = queryByText(ERR1)
+//     expect(msg).toBeTruthy()
+// })
 
-test('Error: Sorter', () => {
-    const { queryByText } = render(
+// test('Error: Sorter', () => {
+//     const { queryByText } = render(
+//         <Table
+//             columns={[
+//                 {
+//                     Header: <Th><span style={{ display: 'table-cell' }}>COMPANY</span><Sorter /></Th>,
+//                     width: '*'
+//                 },
+//                 {
+//                     Header: 'LAST',
+//                     dataKey: 'last'
+//                 },
+//                 {
+//                     Header: 'CHG',
+//                     dataKey: 'chg'
+//                 },
+//                 {
+//                     Header: 'CHG %',
+//                     dataKey: 'chgp'
+//                 }
+//             ]}
+//             data={data}
+//         />
+//     )
+//     const msg = queryByText(ERR3)
+//     expect(msg).toBeTruthy()
+// })
+
+test('Sorter: sorter vs defaultSorter', () => {
+    const { queryByText, container } = render(
         <Table
             columns={[
                 {
-                    Header: <Th><span style={{ display: 'table-cell' }}>COMPANY</span><Sorter /></Th>,
+                    Header: <Th>COMPANY<Sorter directions={['asc']} /></Th>,
+                    dataKey: 'name',
                     width: '*'
                 },
                 {
-                    Header: 'LAST',
+                    Header: <Th>LAST<Sorter directions={['des']} by='number' /></Th>,
                     dataKey: 'last'
-                },
-                {
-                    Header: 'CHG',
-                    dataKey: 'chg'
-                },
-                {
-                    Header: 'CHG %',
-                    dataKey: 'chgp'
                 }
             ]}
-            data={data}
+            defaultSorter={{
+                dataKey: 'last',
+                direction: 'des'
+            }}
+            sorter={{ dataKey: 'name', direction: 'asc' }} // has priority
+            data={[
+                { name: 'BQWERT', last: 2 },
+                { name: 'CQWERT', last: 3 },
+                { name: 'AQWERT', last: 1 },
+            ]}
         />
     )
-    const msg = queryByText(ERR3)
-    expect(msg).toBeTruthy()
+    return expect(new Promise((resolve, rejct) => {
+        setTimeout(() => {
+            const html = container.innerHTML
+            resolve(html.indexOf('AQWERT') - html.indexOf('CQWERT'))
+        }, 3000);
+    })).resolves.toBeLessThan(0)
 })
 
 // test('Error: Sorter asc', () => {
@@ -119,7 +153,7 @@ test('Error: Sorter', () => {
 // })
 
 class TestingError extends React.Component {
-    static getDerivedStateFromError(error) { console.log(`capture`,error); return { hasError: true, error } }
+    static getDerivedStateFromError(error) { console.log(`capture`, error); return { hasError: true, error } }
     state = { hasError: false }
     render() {
         return this.state.hasError ? <label>{this.state.error}</label> : this.props.children
