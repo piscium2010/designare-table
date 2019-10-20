@@ -1,6 +1,6 @@
 {
   "name": "designare-table",
-  "version": "1.0.0",
+  "version": "1.0.0-beta",
   "description": "",
   "scripts": {
     "test": "jest",
@@ -8,7 +8,7 @@
     "build": "webpack --config webpack.prod.js"
   },
   "keywords": [],
-  "author": "",
+  "author": "piscium2010 <541032442@qq.com>",
   "license": "ISC",
   "dependencies": {
     "@piscium2010/lime": "^2.3.4",

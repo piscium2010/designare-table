@@ -3,8 +3,8 @@ import { ThsContext } from './context'
 import Icons from './icons'
 import { ERR3 } from './errorMessage'
 
-const defaultStyle = { position: 'relative', cursor: 'pointer', userSelect: 'none', marginLeft: 4 }
-const commonStyle = { position: 'absolute', left: '50%', top: '50%', width: 9, transform: 'translate(0,-8px)' }
+const defaultStyle = { position: 'relative', cursor: 'pointer', userSelect: 'none', margin: '0 4px' }
+const commonStyle = { position: 'absolute', left: 0, top: '50%', width: 9, transform: 'translate(0,-8px)' }
 
 export default class Sorter extends React.Component {
     static contextType = ThsContext
@@ -22,15 +22,15 @@ export default class Sorter extends React.Component {
                     {
                         icons.length === 2
                             ? <React.Fragment>
-                                <div className={`designare-table-sorter-icon`} style={{ ...commonStyle, color: direction === 'asc' ? activeColor : defaultColor }}>
+                                <div className={`designare-icon designare-transition`} style={{ ...commonStyle, color: direction === 'asc' ? activeColor : defaultColor }}>
                                     <Icons.SortUp />
                                 </div>
-                                <div className={`designare-table-sorter-icon`} style={{ ...commonStyle, color: direction === 'des' ? activeColor : defaultColor }}>
+                                <div className={`designare-icon designare-transition`} style={{ ...commonStyle, color: direction === 'des' ? activeColor : defaultColor }}>
                                     <Icons.SortDown />
                                 </div>
                             </React.Fragment>
                             :
-                            <div className={`designare-table-sorter-icon`} style={{
+                            <div className={`designare-icon designare-transition`} style={{
                                 ...commonStyle,
                                 top: '50%',
                                 transform: icons[0] === 'asc' ? 'translateY(-30%)' : 'translateY(-55%)',
@@ -93,7 +93,6 @@ export default class Sorter extends React.Component {
 
     render() {
         const { contextName, getActiveSorter, getSorter, onChangeSorter } = this.context
-        // console.log(`this.context`,this.context)
         if (contextName !== 'thead') throw 'Sorter component should be within Header component'
         const { activeColor, by, defaultColor, className = '', directions = [], style, onClickCapture, render: Render, ...restProps } = this.props
         const s = getActiveSorter(), dataKey = this.dataKey
@@ -105,7 +104,7 @@ export default class Sorter extends React.Component {
             const next = isActive ? i + 1 : 0
             const direction = status[next % status.length]
 
-            onChangeSorter({ dataKey, direction, by })
+            onChangeSorter({ dataKey, direction, by, ...restProps })
             onClickCapture()
             if (!isSorterInControlledMode) {
                 this.setActiveSorter({ dataKey, direction })
@@ -114,7 +113,7 @@ export default class Sorter extends React.Component {
 
         return (
             <span className={`designare-table-sorter ${className}`} style={{ ...defaultStyle, ...style }} onClickCapture={onClick} {...restProps}>
-                {/* &nbsp; */}
+                &nbsp;&nbsp;
                 {/* Render(isActive ? status[i] : 'default', directions, defaultColor, activeColor) */}
                 <Render direction={isActive ? status[i] : 'default'} directions={directions} defaultColor={defaultColor} activeColor={activeColor} />
             </span>
