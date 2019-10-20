@@ -3,8 +3,8 @@ import { ThsContext } from './context'
 import Icons from './icons'
 import { ERR3 } from './errorMessage'
 
-const defaultStyle = { display: 'table-cell', position: 'relative', cursor: 'pointer', userSelect: 'none', width: 15 }
-const commonStyle = { position: 'absolute', left: '50%', top: '50%', width: 9, transform: 'translate(-50%,-9px)' }
+const defaultStyle = { position: 'relative', cursor: 'pointer', userSelect: 'none', marginLeft: 4 }
+const commonStyle = { position: 'absolute', left: '50%', top: '50%', width: 9, transform: 'translate(0,-8px)' }
 
 export default class Sorter extends React.Component {
     static contextType = ThsContext
@@ -15,7 +15,7 @@ export default class Sorter extends React.Component {
         defaultColor: '#bfbfbf',
         directions: ['asc', 'des'],
         onClickCapture: () => { },
-        render: ({direction, directions, defaultColor, activeColor}) => {
+        render: ({ direction, directions, defaultColor, activeColor }) => {
             const icons = directions.filter(d => d !== 'default')
             return (
                 <React.Fragment>
@@ -32,7 +32,9 @@ export default class Sorter extends React.Component {
                             :
                             <div className={`designare-table-sorter-icon`} style={{
                                 ...commonStyle,
-                                top: '50%', transform: icons[0] === 'asc' ? 'translateY(-30%)' : 'translateY(-55%)'
+                                top: '50%',
+                                transform: icons[0] === 'asc' ? 'translateY(-30%)' : 'translateY(-55%)',
+                                color: direction === icons[0] ? activeColor : defaultColor
                             }}
                             >
                                 {icons[0] === 'asc' ? <Icons.SortUp /> : icons[0] === 'des' ? <Icons.SortDown /> : null}
@@ -72,7 +74,7 @@ export default class Sorter extends React.Component {
     }
 
     componentDidMount() {
-        if(!this.dataKey) throw ERR3
+        if (!this.dataKey) throw ERR3
         const { addEventListener, getSorter } = this.context
         const sorter = getSorter()
         addEventListener('tableDidMount', this.tableDidMount)
@@ -105,16 +107,19 @@ export default class Sorter extends React.Component {
         }
 
         return (
-            <div className={`designare-table-sorter ${className}`} style={{ ...defaultStyle, ...style }} onClickCapture={onClick} {...restProps}>
+            <span className={`designare-table-sorter ${className}`} style={{ ...defaultStyle, ...style }} onClickCapture={onClick} {...restProps}>
+                {/* &nbsp; */}
                 {/* Render(isActive ? status[i] : 'default', directions, defaultColor, activeColor) */}
                 <Render direction={isActive ? status[i] : 'default'} directions={directions} defaultColor={defaultColor} activeColor={activeColor} />
-            </div>
+            </span>
         )
     }
 }
 
 function sortByNumeric(a, b) {
-    const left = a / 1, right = b / 1 // convert to number
+    let left = a / 1, right = b / 1 // convert to number
+    left = isNaN(left) ? 0 : left
+    right = isNaN(right) ? 0 : right
     if (left > right) { return 1 }
     if (left === right) { return 0 }
     if (left < right) { return -1 }
