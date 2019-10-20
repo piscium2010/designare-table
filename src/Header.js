@@ -79,11 +79,8 @@ function Animate(props) {
     const ref = useRef(null)
     useEffect(() => {
         window.requestAnimationFrame(() => {
-        })
-        setTimeout(()=>{
             ref.current.classList.add('animate')
-
-        },1000)
+        })
     }, [])
     return (
         <div ref={ref} {...props}>{props.children}</div>

@@ -3,8 +3,8 @@ import { ThsContext } from './context'
 import Icons from './icons'
 import { ERR3 } from './errorMessage'
 
-const defaultStyle = { position: 'relative', cursor: 'pointer', userSelect: 'none', margin: '0 4px' }
-const commonStyle = { position: 'absolute', left: 0, top: '50%', width: 9, transform: 'translate(0,-8px)' }
+const defaultStyle = { position: 'relative', cursor: 'pointer', userSelect: 'none', padding: '0 4px' }
+const commonStyle = { position: 'absolute', left: 4, top: '50%', width: 9, transform: 'translate(0,-8px)' }
 
 export default class Sorter extends React.Component {
     static contextType = ThsContext

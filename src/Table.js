@@ -314,17 +314,16 @@ export default class Table extends React.Component {
         })
     }
 
-    reSyncWidthAndHeight = () => {
+    reSyncWidthAndHeight = (force = false) => {
         const { rowHeight } = this.props
         const { dimensionInfo, flattenSortedColumns, root, resizedWidthInfo, depthOfColumns } = this
         const columns = flattenSortedColumns
-        const isReSized = isDimensionChanged(
+        const isReSized = force || isDimensionChanged(
             root.current,
             columns.length,
             dimensionInfo
         )
         if (isReSized) {
-            console.log(`resize`)
             syncWidthAndHeight(
                 root.current,
                 columns,
@@ -335,6 +334,8 @@ export default class Table extends React.Component {
             )
         }
     }
+
+    resize = () => this.reSyncWidthAndHeight(true)
 
     componentDidUpdate() {
         if (this.state.hasError) return
@@ -354,11 +355,16 @@ export default class Table extends React.Component {
         }
 
         syncWidthAndHeight(root.current, flattenSortedColumns, rowHeight, dimensionInfo, resizedWidthInfo, depthOfColumns)
+        window.addEventListener('resize', this.resize)
         this.isInit = true
         window.requestAnimationFrame(() => {
             this.tableDidMountListeners.forEach((v, k) => k())
             this._update()
         })
+    }
+
+    componentWillUnmount() {
+        window.removeEventListener('resize', this.resize)
     }
 
     render() {
