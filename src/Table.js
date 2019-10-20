@@ -158,7 +158,6 @@ export default class Table extends React.Component {
     }
 
     setActiveSorter = ({ columnMetaKey, dataKey, direction, by }) => {
-
         if (dataKey !== this.activeSorter.key || direction !== this.activeSorter.direction) {
             this.activeSorter = { columnMetaKey, dataKey, direction, by }
             this._update()
@@ -302,7 +301,8 @@ export default class Table extends React.Component {
     }
 
     _update = () => {
-        this.forceUpdate()
+        this.setState({})
+        // this.forceUpdate()
     }
 
     printWarnings = warnings => {
@@ -324,6 +324,7 @@ export default class Table extends React.Component {
             dimensionInfo
         )
         if (isReSized) {
+            console.log(`resize`)
             syncWidthAndHeight(
                 root.current,
                 columns,
@@ -498,6 +499,7 @@ function syncWidthAndHeight(table, columns, rowHeight = -1, dimensionInfo, resiz
         columnWidthArray
     )
 
+
     let maxWidthArray = max(
         originalMaxWidthArray,
         resizedWidthArray
@@ -530,6 +532,8 @@ function syncWidthAndHeight(table, columns, rowHeight = -1, dimensionInfo, resiz
         }
         sum += leftOver
     }
+
+    // console.log(`sync`,originalMaxWidthArray)
 
     const tableWidth = sum + 'px'
     const mergeMax = (w, i) => w > -1 ? maxWidthArray[i] : w
@@ -615,13 +619,18 @@ function syncWidthAndHeight(table, columns, rowHeight = -1, dimensionInfo, resiz
         syncBodyHorizontalScrollStatus(rightBodyRoot, false /* scroll */)
     }
 
-    dimensionInfo.maxWidthArray = maxWidthArray
-    dimensionInfo.maxHeaderHeightArray = maxHeaderHeightArray
-    dimensionInfo.maxBodyHeightArray = maxBodyHeightArray
-    dimensionInfo.originalMaxWidthArray = originalMaxWidthArray
+
+    window.requestAnimationFrame(() => {
+        const { maxWidthArray, maxHeaderHeightArray, maxBodyHeightArray } = getDimensionInfo(table, columnSize)
+        dimensionInfo.maxWidthArray = maxWidthArray
+        dimensionInfo.maxHeaderHeightArray = maxHeaderHeightArray
+        dimensionInfo.maxBodyHeightArray = maxBodyHeightArray
+        dimensionInfo.originalMaxWidthArray = originalMaxWidthArray
+    })
+
 }
 
-function isDimensionChanged(table, columnSize, dimensionInfo) {
+function getDimensionInfo(table, columnSize) {
     const findDOM = find.bind(null, table)
     // header
     const [headerWrapper, headerRoot, header] = findDOM('header')
@@ -650,9 +659,6 @@ function isDimensionChanged(table, columnSize, dimensionInfo) {
         rightBodyWidthArray
     )
 
-    // console.log(`headerArray`,headerWidthArray)
-    // console.log(`headerArray`,headerWidthArray)
-
     const headerHeightArray = heightArray(header)
     const leftHeaderHeightArray = heightArray(leftHeader)
     const rightHeaderHeightArray = heightArray(rightHeader)
@@ -663,9 +669,21 @@ function isDimensionChanged(table, columnSize, dimensionInfo) {
     const rightBodyHeightArray = heightArray(rightBody)
     const maxBodyHeightArray = max(bodyHeightArray, leftBodyHeightArray, rightBodyHeightArray)
 
+    return {
+        maxWidthArray,
+        maxHeaderHeightArray,
+        maxBodyHeightArray
+    }
+}
+
+function isDimensionChanged(table, columnSize, dimensionInfo) {
+    const { maxWidthArray, maxHeaderHeightArray, maxBodyHeightArray } = getDimensionInfo(table, columnSize)
+
+    // console.log(`dimentionInfo`,dimensionInfo.maxWidthArray)
+    // console.log(`maxWidthArray`, maxWidthArray)
     return isArrayChange(dimensionInfo.maxWidthArray, maxWidthArray)
-        || isArrayChange(dimensionInfo.maxHeaderHeightArray, maxHeaderHeightArray)
-        || isArrayChange(dimensionInfo.maxBodyHeightArray, maxBodyHeightArray)
+    || isArrayChange(dimensionInfo.maxHeaderHeightArray, maxHeaderHeightArray)
+    || isArrayChange(dimensionInfo.maxBodyHeightArray, maxBodyHeightArray)
 }
 
 function widthArray(element, requiredLen, startOrend = 'end', debug) {

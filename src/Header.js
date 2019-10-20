@@ -6,7 +6,7 @@ export default class Header extends React.Component {
     static contextType = Context
     static defaultProps = {
         className: '',
-        tr: ({ Cells }) => <tr><Cells /></tr>
+        tr: ({ cells }) => <tr>{cells}</tr>
     }
 
     render() {
@@ -79,8 +79,11 @@ function Animate(props) {
     const ref = useRef(null)
     useEffect(() => {
         window.requestAnimationFrame(() => {
-            ref.current.classList.add('animate')
         })
+        setTimeout(()=>{
+            ref.current.classList.add('animate')
+
+        },1000)
     }, [])
     return (
         <div ref={ref} {...props}>{props.children}</div>

@@ -8,7 +8,7 @@ export default class Body extends React.Component {
     static Row = Tds
     static defaultProps = {
         className:'',
-        tr: props => <tr><Tds {...props} /></tr>
+    tr: ({cells}) => <tr>{cells}</tr>
     }
 
     render() {

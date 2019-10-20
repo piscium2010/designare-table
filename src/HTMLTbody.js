@@ -3,7 +3,7 @@ import { Context, TBodyContext } from './context'
 import { flatten } from './util'
 import Tds from './Tds'
 
-export default class HTMlTbody extends React.Component {
+export default class HTMLTbody extends React.Component {
     static contextType = Context
 
     render() {
@@ -31,7 +31,7 @@ export default class HTMlTbody extends React.Component {
                                     rowIndex={rowIndex}
                                     fixed={fixed}
                                     getColumns={() => flatten(columns)}
-                                    Cells={()=><Tds rowIndex={rowIndex}/>}
+                                    cells={<Tds rowIndex={rowIndex}/>}
                                 />
                         })
                     }

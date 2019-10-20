@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { ThsContext } from './context'
 import Icons from './icons'
 
@@ -14,22 +14,22 @@ export default class Sorter extends React.Component {
         defaultColor: '#bfbfbf',
         directions: ['asc', 'des'],
         onClickCapture: () => { },
-        render: ( direction, directions, defaultColor, activeColor ) => {
+        render: ({direction, directions, defaultColor, activeColor}) => {
             const icons = directions.filter(d => d !== 'default')
             return (
                 <React.Fragment>
                     {
                         icons.length === 2
                             ? <React.Fragment>
-                                <div className={`designare-table-sorter ${direction === 'asc' ? 'active' : 'default'}`} style={{ ...commonStyle, color: direction === 'asc' ? activeColor : defaultColor }}>
+                                <div className={`designare-table-sorter-icon`} style={{ ...commonStyle, color: direction === 'asc' ? activeColor : defaultColor }}>
                                     <Icons.SortUp />
                                 </div>
-                                <div className={`designare-table-sorter ${direction === 'des' ? 'active' : 'default'}`} style={{ ...commonStyle, color: direction === 'des' ? activeColor : defaultColor }}>
+                                <div className={`designare-table-sorter-icon`} style={{ ...commonStyle, color: direction === 'des' ? activeColor : defaultColor }}>
                                     <Icons.SortDown />
                                 </div>
                             </React.Fragment>
                             :
-                            <div className={`designare-table-sorter ${direction === icons[0] ? 'active' : 'default'}`} style={{
+                            <div className={`designare-table-sorter-icon`} style={{
                                 ...commonStyle,
                                 top: '50%', transform: icons[0] === 'asc' ? 'translateY(-30%)' : 'translateY(-55%)'
                             }}
@@ -105,9 +105,9 @@ export default class Sorter extends React.Component {
         }
 
         return (
-            <div className={`designare-sort ${className}`} style={{ ...defaultStyle, ...style }} onClickCapture={onClick} {...restProps}>
-                {Render(isActive ? status[i] : 'default', directions, defaultColor, activeColor)}
-                {/* <Render direction={isActive ? status[i] : 'default'} directions={directions} defaultColor={defaultColor} activeColor={activeColor} /> */}
+            <div className={`designare-table-sorter ${className}`} style={{ ...defaultStyle, ...style }} onClickCapture={onClick} {...restProps}>
+                {/* Render(isActive ? status[i] : 'default', directions, defaultColor, activeColor) */}
+                <Render direction={isActive ? status[i] : 'default'} directions={directions} defaultColor={defaultColor} activeColor={activeColor} />
             </div>
         )
     }
@@ -145,4 +145,27 @@ function sortMethod(by) {
             if (typeof func !== 'function') throw `prop 'by' of Sorter should be one of 'number', 'string', 'date' or function`
     }
     return func
+}
+
+function ColorTransition(props) {
+    const { activeColor, defaultColor, isActive, style, ...restProps } = props
+    const [color, setColor] = useState(isActive ? defaultColor : activeColor)
+    // const ref = useRef(null)
+    // console.log(`colr`,color)
+    useEffect(() => {
+        // window.requestAnimationFrame(() => {
+        //     // ref.current.classList.add('animate')
+        //     console.log(`set color`,activeColor)
+        //     setColor(isActive ? activeColor : defaultColor)
+        // })
+        // setTimeout(() => {
+        //     console.log(`set color`,activeColor)
+        //     setColor(isActive ? activeColor : defaultColor)
+            
+        // }, 3000);
+        setColor(isActive ? activeColor : defaultColor)
+    }, [])
+    return (
+        <div {...restProps} style={{ color: color, ...style }}>{props.children}</div>
+    )
 }

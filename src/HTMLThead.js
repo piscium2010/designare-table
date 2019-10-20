@@ -16,7 +16,7 @@ export default class HTMLThead extends React.Component {
                     {
                         groupByDepth(columns).map((columnsOfRow, i) => {
                             return (
-                                <Tr key={i} Cells={() => <Ths columnsOfRow={columnsOfRow} />} />
+                                <Tr key={i} cells={<Ths columnsOfRow={columnsOfRow} />} />
                             )
                         })
                     }
