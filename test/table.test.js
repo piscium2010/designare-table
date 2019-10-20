@@ -1,7 +1,6 @@
 import React from 'react'
 import { render, fireEvent } from '@testing-library/react'
 import Table, { Td, ERR0, ERR1, Tbody, Thead, Sorter, Th } from '../src'
-// import { ERR2 } from '../src/Tds'
 import { ERR2, ERR3 } from '../src/errorMessage'
 
 const data = [
@@ -74,7 +73,7 @@ test('Error: Sorter', () => {
         <Table
             columns={[
                 {
-                    Header: <Th><span style={{display:'table-cell'}}>COMPANY</span><Sorter/></Th>,
+                    Header: <Th><span style={{ display: 'table-cell' }}>COMPANY</span><Sorter /></Th>,
                     width: '*'
                 },
                 {
@@ -97,8 +96,30 @@ test('Error: Sorter', () => {
     expect(msg).toBeTruthy()
 })
 
+// test('Error: Sorter asc', () => {
+//     const { queryByText } = render(
+//         <TestingError debug>
+//             <Table
+//                 columns={[
+//                     {
+//                         Header: <Th>COMPANY<Sorter directions={['asc']} /></Th>,
+//                         dataKey: 'name'
+//                     }
+//                 ]}
+//                 defaultSorter={{
+//                     dataKey: 'name',
+//                     direction: 'des'
+//                 }}
+//                 data={data}
+//             />
+//         </TestingError>
+//     )
+//     const msg = queryByText(ERR3)
+//     expect(msg).toBeTruthy()
+// })
+
 class TestingError extends React.Component {
-    static getDerivedStateFromError(error) { return { hasError: true, error } }
+    static getDerivedStateFromError(error) { console.log(`capture`,error); return { hasError: true, error } }
     state = { hasError: false }
     render() {
         return this.state.hasError ? <label>{this.state.error}</label> : this.props.children

@@ -54,6 +54,7 @@ export default class Sorter extends React.Component {
     }
 
     setActiveSorter = sorter => {
+        if (!this.dataKey) throw ERR3
         if (sorter && this.dataKey === sorter.dataKey) {
             const direction = sorter.direction
             const { by, directions = [] } = this.props
@@ -67,17 +68,22 @@ export default class Sorter extends React.Component {
 
     tableDidMount = () => {
         const { getDefaultSorter, getSorter } = this.context
-        const sorter = getSorter(), defaultSorter = getDefaultSorter()
-        if (!sorter && defaultSorter) {
-            this.setActiveSorter(defaultSorter)
-        }
+        const sorter = getSorter() || getDefaultSorter()
+        this.setActiveSorter(sorter)
     }
 
     componentDidMount() {
-        if (!this.dataKey) throw ERR3
-        const { addEventListener, getSorter } = this.context
-        const sorter = getSorter()
+        const { addEventListener } = this.context
         addEventListener('tableDidMount', this.tableDidMount)
+    }
+
+    componentDidUpdate() {
+        this.update()
+    }
+
+    update() {
+        const { getSorter } = this.context
+        const sorter = getSorter()
         if (sorter) this.setActiveSorter(sorter)
     }
 

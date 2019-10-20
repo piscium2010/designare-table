@@ -158,7 +158,7 @@ export default class Table extends React.Component {
     }
 
     setActiveSorter = ({ columnMetaKey, dataKey, direction, by }) => {
-        if (dataKey !== this.activeSorter.key || direction !== this.activeSorter.direction) {
+        if (dataKey !== this.activeSorter.dataKey || direction !== this.activeSorter.direction) {
             this.activeSorter = { columnMetaKey, dataKey, direction, by }
             this._update()
         }
