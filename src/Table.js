@@ -315,6 +315,7 @@ export default class Table extends React.Component {
     }
 
     reSyncWidthAndHeight = (force = false) => {
+        // console.log(`resync`,)
         const { rowHeight } = this.props
         const { dimensionInfo, flattenSortedColumns, root, resizedWidthInfo, depthOfColumns } = this
         const columns = flattenSortedColumns
@@ -324,6 +325,7 @@ export default class Table extends React.Component {
             dimensionInfo
         )
         if (isReSized) {
+            console.log(`resized`,)
             syncWidthAndHeight(
                 root.current,
                 columns,
@@ -343,6 +345,7 @@ export default class Table extends React.Component {
     }
 
     componentDidMount() {
+        console.log(`table did mount`,)
         if (this.state.hasError) return
         const { dimensionInfo, flattenSortedColumns, root, resizedWidthInfo, depthOfColumns } = this
         const { rowHeight } = this.props
@@ -452,6 +455,7 @@ function createLeafColumnIndex(columns) {
 }
 
 function syncWidthAndHeight(table, columns, rowHeight = -1, dimensionInfo, resizedWidthInfo, depthOfColumns) {
+    console.log(`ysnc`,)
     // console.log(`columns`,columns)
     const columnSize = columns.length
     const findDOM = find.bind(null, table)
@@ -577,7 +581,7 @@ function syncWidthAndHeight(table, columns, rowHeight = -1, dimensionInfo, resiz
     const leftBodyHeightArray = heightArray(leftBody)
     const rightBodyHeightArray = heightArray(rightBody)
     const maxBodyHeightArray = max(bodyHeightArray, leftBodyHeightArray, rightBodyHeightArray)
-
+    console.log(`bodyHeightArray`,bodyHeightArray)
     // sync height
     const headers = getChildren(header)
     const leftHeaders = getChildren(leftHeader)
@@ -685,8 +689,8 @@ function getDimensionInfo(table, columnSize) {
 function isDimensionChanged(table, columnSize, dimensionInfo) {
     const { maxWidthArray, maxHeaderHeightArray, maxBodyHeightArray } = getDimensionInfo(table, columnSize)
 
-    // console.log(`dimentionInfo`,dimensionInfo.maxWidthArray)
-    // console.log(`maxWidthArray`, maxWidthArray)
+    console.log(`dimentionInfo`,dimensionInfo.maxHeaderHeightArray)
+    console.log(`maxHeaderHeightArray`, maxHeaderHeightArray)
     return isArrayChange(dimensionInfo.maxWidthArray, maxWidthArray)
     || isArrayChange(dimensionInfo.maxHeaderHeightArray, maxHeaderHeightArray)
     || isArrayChange(dimensionInfo.maxBodyHeightArray, maxBodyHeightArray)
