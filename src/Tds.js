@@ -1,10 +1,9 @@
 import React from 'react'
 import { TBodyContext, TdsContext } from './context'
 import Td from './Td'
+import { ERR2 } from './errorMessage'
 
 const defaultCell = ({ value }) => <Td>{value}</Td>
-
-export const ERR2 = 'designare-table: rowIndex is required for Tbody.Row'
 
 export default class Tds extends React.Component {
     static contextType = TBodyContext

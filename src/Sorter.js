@@ -1,6 +1,7 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React from 'react'
 import { ThsContext } from './context'
 import Icons from './icons'
+import { ERR3 } from './errorMessage'
 
 const defaultStyle = { display: 'table-cell', position: 'relative', cursor: 'pointer', userSelect: 'none', width: 15 }
 const commonStyle = { position: 'absolute', left: '50%', top: '50%', width: 9, transform: 'translate(-50%,-9px)' }
@@ -52,7 +53,6 @@ export default class Sorter extends React.Component {
 
     setActiveSorter = sorter => {
         if (sorter && this.dataKey === sorter.dataKey) {
-            console.log(`in`, this.dataKey)
             const direction = sorter.direction
             const { by, directions = [] } = this.props
             const status = ['default'].concat(directions)
@@ -72,7 +72,7 @@ export default class Sorter extends React.Component {
     }
 
     componentDidMount() {
-        console.log(`sorter did mount`)
+        if(!this.dataKey) throw ERR3
         const { addEventListener, getSorter } = this.context
         const sorter = getSorter()
         addEventListener('tableDidMount', this.tableDidMount)
@@ -147,25 +147,3 @@ function sortMethod(by) {
     return func
 }
 
-function ColorTransition(props) {
-    const { activeColor, defaultColor, isActive, style, ...restProps } = props
-    const [color, setColor] = useState(isActive ? defaultColor : activeColor)
-    // const ref = useRef(null)
-    // console.log(`colr`,color)
-    useEffect(() => {
-        // window.requestAnimationFrame(() => {
-        //     // ref.current.classList.add('animate')
-        //     console.log(`set color`,activeColor)
-        //     setColor(isActive ? activeColor : defaultColor)
-        // })
-        // setTimeout(() => {
-        //     console.log(`set color`,activeColor)
-        //     setColor(isActive ? activeColor : defaultColor)
-            
-        // }, 3000);
-        setColor(isActive ? activeColor : defaultColor)
-    }, [])
-    return (
-        <div {...restProps} style={{ color: color, ...style }}>{props.children}</div>
-    )
-}

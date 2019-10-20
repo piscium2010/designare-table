@@ -1,7 +1,8 @@
 import React from 'react'
 import { render, fireEvent } from '@testing-library/react'
-import Table, { Td, ERR0, ERR1, Tbody, Thead } from '../src'
-import { ERR2 } from '../src/Tds'
+import Table, { Td, ERR0, ERR1, Tbody, Thead, Sorter, Th } from '../src'
+// import { ERR2 } from '../src/Tds'
+import { ERR2, ERR3 } from '../src/errorMessage'
 
 const data = [
     { name: 'Chevron Corp.', last: 115.35, chg: 0.24, chgp: 0.21 },
@@ -68,13 +69,13 @@ test('Error: Th', () => {
     expect(msg).toBeTruthy()
 })
 
-test('Error: Tbody.Row', () => {
+test('Error: Sorter', () => {
     const { queryByText } = render(
         <Table
             columns={[
                 {
-                    Header: 'COMPANY',
-                    dataKey: 'name'
+                    Header: <Th><span style={{display:'table-cell'}}>COMPANY</span><Sorter/></Th>,
+                    width: '*'
                 },
                 {
                     Header: 'LAST',
@@ -90,19 +91,9 @@ test('Error: Tbody.Row', () => {
                 }
             ]}
             data={data}
-        >
-            <Thead />
-            <Tbody tr={
-                ({ rowIndex }) => (
-                    <tr>
-                        <Tbody.Row />
-                    </tr>
-                )
-            }
-            />
-        </Table>
+        />
     )
-    const msg = queryByText(ERR2)
+    const msg = queryByText(ERR3)
     expect(msg).toBeTruthy()
 })
 

@@ -5,10 +5,9 @@ import { Context } from './context'
 
 export default class Body extends React.Component {
     static contextType = Context
-    static Row = Tds
     static defaultProps = {
-        className:'',
-    tr: ({cells}) => <tr>{cells}</tr>
+        className: '',
+        tr: ({ cells }) => <tr>{cells}</tr>
     }
 
     render() {
