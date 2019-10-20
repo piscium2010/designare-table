@@ -758,24 +758,12 @@ function removeHeight(element) {
 }
 
 function createColgroup(widthArray) {
-    // let a = 100, sum = 0
-    // if (asPercent) {
-        // }
     const sum = widthArray.reduce((prev, curr) => prev + curr, 0)
     const colgroup = document.createElement('colgroup')
     for (let i = 0, len = widthArray.length; i < len; i++) {
         const width = i === len - 1 ? Math.ceil(widthArray[i] / sum * 100) + '%' : widthArray[i] + 'px'
-        // if(debug) {
-        //     console.log(`sum`,sum)
-        //     console.log(`w`,widthArray[i])
-        // }
         const col = document.createElement('col')
         col.style.width = width
-            // ? i === len - 1 ? `${a}%` : `${width}%`
-            // : `${width}px`
-        // a -= width
-        // col.style.minWidth = `${width}px`
-        // col.setAttribute('width', `${width}px`)
         colgroup.appendChild(col)
     }
     return colgroup

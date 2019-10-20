@@ -16,13 +16,16 @@ body {
     }
 
     thead {
-        td, th {
+
+        td,
+        th {
             border-bottom: none;
             background-color: transparent;
         }
     }
-    
-    th, td {
+
+    th,
+    td {
         padding: 0 16px;
         border-bottom: 1px solid rgba(0, 0, 0, 0.12);
         width: auto;
@@ -32,21 +35,24 @@ body {
     &-fixed {
         &-header {
             border-bottom: 1px solid rgba(0, 0, 0, 0.12);
-            > div {
+
+            >div {
                 margin: -9px 0 -9px 0 !important; // hide header scroll bar
             }
         }
     }
 
     // hide header scroll bar
-    &-header, &-header-left, &-header-right {
+    &-header,
+    &-header-left,
+    &-header-right {
         padding: 9px 0 !important;
         margin-bottom: -18px !important;
 
         &::-webkit-scrollbar {
             -webkit-appearance: none;
         }
-        
+
         &::-webkit-scrollbar:horizontal {
             height: 18px;
         }
@@ -103,18 +109,52 @@ body {
             min-width: 36px;
             color: rgba(0, 0, 0, 0.26);
             transition: background-color .3s;
-            
+
             &.active {
                 color: rgba(0, 0, 0, 0.87);
             }
+
             &.option {
                 cursor: pointer;
+
                 &:hover {
                     background-color: rgba(0, 0, 0, 0.03);
                 }
             }
         }
     }
+
+    &-sorter {
+        &.animate {
+            transition: color 3s;
+        }
+
+        // &.active {
+        //     animation: color .3s ease both;
+        // }
+
+        // &.default {
+        //     animation: color .3s ease both;
+        //     animation-direction: reverse;
+        // }
+
+        @keyframes color {
+            0% {
+                color: rgb(191, 191, 191);
+            }
+
+            100% {
+                color: rgb(24, 144, 255);
+            }
+        }
+
+    }
 }
 
-
+.animate {
+    .designare-table {
+        &-sorter {
+            transition: color 3s;
+        }
+    }
+}

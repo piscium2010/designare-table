@@ -18,7 +18,7 @@ export default class Header extends React.Component {
                 style={{ flex: '0 0 auto', overflow: 'hidden', opacity: isInit() ? 1 : 0, ...style }}
                 {...restProps}
             >
-                <div style={{ marginBottom: 0, position: 'relative', overflowX: 'hidden' }}>
+                <Animate style={{ marginBottom: 0, position: 'relative', overflowX: 'hidden' }}>
                     <Normal
                         syncScrolling={syncScrolling}
                         removeSyncScrolling={removeSyncScrolling}
@@ -31,7 +31,7 @@ export default class Header extends React.Component {
                     <Right>
                         <Thead fixed='right' tr={tr} />
                     </Right>
-                </div>
+                </Animate>
             </div>
         )
     }
@@ -72,5 +72,17 @@ function Right(props) {
                 {props.children}
             </table>
         </div>
+    )
+}
+
+function Animate(props) {
+    const ref = useRef(null)
+    useEffect(() => {
+        window.requestAnimationFrame(() => {
+            ref.current.classList.add('animate')
+        })
+    }, [])
+    return (
+        <div ref={ref} {...props}>{props.children}</div>
     )
 }
