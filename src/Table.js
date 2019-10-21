@@ -316,7 +316,7 @@ export default class Table extends React.Component {
 
     reSyncWidthAndHeight = (force = false) => {
         // console.log(`resync`,)
-        // return 
+        return 
         const { rowHeight } = this.props
         const { dimensionInfo, flattenSortedColumns, root, resizedWidthInfo, depthOfColumns } = this
         const columns = flattenSortedColumns
@@ -342,7 +342,7 @@ export default class Table extends React.Component {
 
     componentDidUpdate() {
         if (this.state.hasError) return
-        this.debouncedReSyncWidthAndHeight()
+        // this.debouncedReSyncWidthAndHeight()
     }
 
     componentDidMount() {
@@ -495,9 +495,7 @@ function syncWidthAndHeight(table, columns, rowHeight = -1, dimensionInfo, resiz
     const leftHeaderWidthArray = widthArray(leftHeader, columnSize, 'end')
     const rightHeaderWidthArray = widthArray(rightHeader, columnSize, 'start')
     const bodyWidthArray = widthArray(body, columnSize)
-    console.log(`bodyWidthArray`,bodyWidthArray)
     const leftBodyWidthArray = widthArray(leftBody, columnSize, 'end')
-    // console.log(`leftBodyWidthArray`,leftBodyWidthArray)
     const rightBodyWidthArray = widthArray(rightBody, columnSize, 'start')
     const columnWidthArray = columns.map(c => isNaN(c.width) ? 0 : c.width)
     const resizedWidthArray = columns.map(c => resizedWidthInfo.get(c.metaKey) || -1)
@@ -511,7 +509,6 @@ function syncWidthAndHeight(table, columns, rowHeight = -1, dimensionInfo, resiz
         columnWidthArray
     )
 
-
     let maxWidthArray = max(
         originalMaxWidthArray,
         resizedWidthArray
@@ -519,21 +516,6 @@ function syncWidthAndHeight(table, columns, rowHeight = -1, dimensionInfo, resiz
     let sum = maxWidthArray.reduce((prev, curr) => prev + curr, 0)
     const leftOver = rootWidth - sum
     if (leftOver > 0) {
-        // let remained = leftOver
-
-        // add 2px width to each column whose width !== '*'
-        // for (let i = 0, len = columns.length; i < len; i++) {
-        //     const col = columns[i]
-        //     if (col.fixed || col.width !== '*') {
-        //         if (remained > 2) {
-        //             maxWidthArray[i] += 2
-        //             originalMaxWidthArray[i] += 2
-        //             remained -= 2
-        //         }
-        //         continue
-        //     }
-        // }
-
         // add leftOver space to column whose width === '*'
         for (let i = 0, len = columns.length; i < len; i++) {
             if (columns[i].width === '*') {
@@ -544,8 +526,6 @@ function syncWidthAndHeight(table, columns, rowHeight = -1, dimensionInfo, resiz
         }
         sum += leftOver
     }
-
-    // console.log(`sync`,originalMaxWidthArray)
 
     const tableWidth = sum + 'px'
     const mergeMax = (w, i) => w > -1 ? maxWidthArray[i] : w
