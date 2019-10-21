@@ -9,16 +9,47 @@ export default class Tds extends React.Component {
     static contextType = TBodyContext
     constructor(props) {
         super(props)
-        if(isNaN(props.rowIndex)) throw ERR2
+        if (isNaN(props.rowIndex)) throw ERR2
     }
-    
+
     render() {
         const { rowIndex } = this.props
-        const { data, getColumn } = this.context
+        const { data, getColumns } = this.context
         const row = data[rowIndex]
-        const myColumns = getColumn()
+        const myColumns = getColumns()
         const isMyCell = fixed => fixed === this.context.fixed
 
+        // return (
+        //     <React.Fragment>
+        //         {
+        //             myColumns.map(i =>
+        //                 flattenOne(i).map(
+        //                     column => {
+        //                         const { dataKey, Cell = defaultCell, metaKey, fixed, columnIndex } = column
+        //                         return isMyCell(fixed)
+        //                             ? <TdsContext.Provider
+        //                                 value={{
+        //                                     ...this.context,
+        //                                     contextName: 'tds',
+        //                                     column
+        //                                 }}
+        //                             >
+        //                                 <Cell
+        //                                     key={metaKey}
+        //                                     value={row[dataKey]}
+        //                                     row={row}
+        //                                     rowIndex={this.rowIndex}
+        //                                     columnIndex={columnIndex}
+        //                                     dataKey={dataKey}
+        //                                     {...this.props}
+        //                                 />
+        //                             </TdsContext.Provider>
+        //                             : <td key={metaKey} style={{ visibility: 'hidden', pointerEvents: 'none' }}>&nbsp;</td>
+        //                     })
+        //             )
+        //         }
+        //     </React.Fragment>
+        // )
         return (
             <TdsContext.Provider value={{
                 ...this.context,

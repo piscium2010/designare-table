@@ -46,6 +46,7 @@ export function createColumnMeta(
     return [columnsWithMeta, warnings]
 }
 
+
 export function forEachLeafColumn(columns, visitor, n = { count: 0 }, isLast = true) {
     for (let i = 0, len = columns.length; i < len; i++) {
         const column = columns[i]

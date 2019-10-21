@@ -17,7 +17,7 @@ export default class HTMLTbody extends React.Component {
                 ...this.context,
                 contextName: 'tbody',
                 fixed,
-                getColumn: () => myColumns
+                getColumns: () => myColumns
             }}
             >
                 <tbody {...restProps}>
@@ -25,14 +25,15 @@ export default class HTMLTbody extends React.Component {
                         isEmpty
                             ? null
                             : data.map((row, rowIndex) => (
-                                <Tr
-                                    key={rowIndex}
-                                    row={row}
-                                    rowIndex={rowIndex}
-                                    fixed={fixed}
-                                    getColumns={() => flatten(columns)}
-                                    cells={<Tds rowIndex={rowIndex} />}
-                                />
+                                // <Tr
+                                //     key={rowIndex}
+                                //     row={row}
+                                //     rowIndex={rowIndex}
+                                //     fixed={fixed}
+                                //     getColumns={() => flatten(columns)}
+                                //     cells={<Tds rowIndex={rowIndex} />}
+                                // />
+                                Tr({key:rowIndex,row,rowIndex,fixed,getColumns: ()=>flatten(columns),cells:<Tds rowIndex={rowIndex} />})
                             ))
                     }
                 </tbody>

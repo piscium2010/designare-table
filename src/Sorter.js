@@ -1,6 +1,6 @@
 import React from 'react'
 import { ThsContext } from './context'
-import Icons from './icons'
+import Icons from './Icons'
 import { ERR3 } from './errorMessage'
 
 const defaultStyle = { position: 'relative', cursor: 'pointer', userSelect: 'none', padding: '0 4px' }

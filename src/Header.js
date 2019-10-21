@@ -1,5 +1,6 @@
 import React, { useRef, useEffect } from 'react'
 import Thead from './HTMLThead'
+import Animate from './Animate'
 import { Context } from './context'
 
 export default class Header extends React.Component {
@@ -72,17 +73,5 @@ function Right(props) {
                 {props.children}
             </table>
         </div>
-    )
-}
-
-function Animate(props) {
-    const ref = useRef(null)
-    useEffect(() => {
-        window.requestAnimationFrame(() => {
-            ref.current.classList.add('animate')
-        })
-    }, [])
-    return (
-        <div ref={ref} {...props}>{props.children}</div>
     )
 }

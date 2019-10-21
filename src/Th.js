@@ -38,7 +38,7 @@ export default class Th extends React.Component {
         this.colWidth = this.colgroups[0][this.colIndex].style.width.replace('px', '') / 1
         this.minWidthArray = minWidthArray
         this.wrappers = wrappers
-        this.wrapperWidthArray = this.wrappers.map(w => w.style.minWidth.replace('px', '') / 1)
+        this.wrapperWidthArray = this.wrappers.map(w => w.offsetWidth)
         if (this.colgroups.length !== this.wrappers.length) throw 'length of colgroup and table are not match'
         window.addEventListener('mousemove', this.onMouseMove)
         window.addEventListener('mouseup', this.onMouseUp)

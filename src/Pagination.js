@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react'
-import Icons from './icons'
+import Icons from './Icons'
 
 export default function Pagination(props) {
     const [isEditing, setEditing] = useState(false)

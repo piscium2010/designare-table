@@ -1,7 +1,7 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import { ThsContext } from './context'
-import Icons from './icons'
+import Icons from './Icons'
 import Layer from '@piscium2010/lime/Layer'
 import '@piscium2010/lime/Layer/layer.css'
 

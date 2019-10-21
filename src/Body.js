@@ -1,5 +1,6 @@
 import React, { useRef, useEffect } from 'react'
 import HTMLTbody from './HTMLTbody'
+import Animate from './Animate'
 import Tds from './Tds'
 import { Context } from './context'
 
@@ -19,6 +20,7 @@ export default class Body extends React.Component {
                 style={{ flex: '0 1 100%', position: 'relative', overflow: 'hidden', opacity: isInit() ? 1 : 0, ...style }}
                 {...restProps}
             >
+                <Animate>
                 <Normal
                     syncScrolling={syncScrolling}
                     removeSyncScrolling={removeSyncScrolling}
@@ -37,6 +39,7 @@ export default class Body extends React.Component {
                 >
                     <HTMLTbody fixed='right' tr={tr} />
                 </Right>
+                </Animate>
             </div>
         )
     }
@@ -47,6 +50,7 @@ function Normal(props) {
     useEffect(() => {
         props.syncScrolling(ref.current, 'both')
         return () => {
+            console.log(`unmount body normal`,)
             props.removeSyncScrolling(ref.current)
         }
     }, [])
