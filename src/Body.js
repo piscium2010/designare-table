@@ -1,5 +1,5 @@
 import React, { useRef, useEffect } from 'react'
-import Tbody from './HTMLTbody'
+import HTMLTbody from './HTMLTbody'
 import Tds from './Tds'
 import { Context } from './context'
 
@@ -23,19 +23,19 @@ export default class Body extends React.Component {
                     syncScrolling={syncScrolling}
                     removeSyncScrolling={removeSyncScrolling}
                 >
-                    <Tbody tr={tr} />
+                    <HTMLTbody tr={tr} />
                 </Normal>
                 <Left
                     syncScrolling={syncScrolling}
                     removeSyncScrolling={removeSyncScrolling}
                 >
-                    <Tbody fixed='left' tr={tr} />
+                    <HTMLTbody fixed='left' tr={tr} />
                 </Left>
                 <Right
                     syncScrolling={syncScrolling}
                     removeSyncScrolling={removeSyncScrolling}
                 >
-                    <Tbody fixed='right' tr={tr} />
+                    <HTMLTbody fixed='right' tr={tr} />
                 </Right>
             </div>
         )

@@ -11,7 +11,7 @@ export default class HTMLTbody extends React.Component {
         const { columns, data } = this.context
         const myColumns = fixed ? columns.filter(c => c.fixed === fixed) : columns
         const isEmpty = myColumns.length < 1
-        
+
         return (
             <TBodyContext.Provider value={{
                 ...this.context,
@@ -22,18 +22,18 @@ export default class HTMLTbody extends React.Component {
             >
                 <tbody {...restProps}>
                     {
-                        data.map((row, rowIndex) => {
-                            return isEmpty
-                                ? <tr key={rowIndex}></tr>
-                                : <Tr
+                        isEmpty
+                            ? null
+                            : data.map((row, rowIndex) => (
+                                <Tr
                                     key={rowIndex}
                                     row={row}
                                     rowIndex={rowIndex}
                                     fixed={fixed}
                                     getColumns={() => flatten(columns)}
-                                    cells={<Tds rowIndex={rowIndex}/>}
+                                    cells={<Tds rowIndex={rowIndex} />}
                                 />
-                        })
+                            ))
                     }
                 </tbody>
             </TBodyContext.Provider>
