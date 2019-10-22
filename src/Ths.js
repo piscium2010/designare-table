@@ -1,41 +1,38 @@
-import React from 'react'
+import React, { useContext, Fragment } from 'react'
 import { TheadContext, ThsContext } from './context'
 import Th from './Th'
 
-export default class Ths extends React.Component {
-    static contextType = TheadContext
+export default function Ths(props) {
+    const context = useContext(TheadContext)
+    const { columnsOfRow } = props
 
-    render() {
-        const { columnsOfRow } = this.props
-
-        return (
-            <React.Fragment>
-                {
-                    columnsOfRow.map(column => {
-                        const { Header, metaKey } = column
-                        const type = typeof Header
-
-                        return (
-                            <ThsContext.Provider
-                                key={metaKey}
-                                value={{
-                                    ...this.context,
-                                    getColumn: () => column,
-                                    contextName: 'thead'
-                                }}
-                            >
-                                {
-                                    type === 'function'
-                                        ? <Header key={metaKey} />
-                                        : type === 'string'
-                                            ? <Th key={metaKey}>{Header}</Th>
-                                            : <React.Fragment key={metaKey}>{Header}</React.Fragment>
-                                }
-                            </ThsContext.Provider>
-                        )
-                    })
-                }
-            </React.Fragment>
-        )
-    }
+    return (
+        <Fragment>
+            {
+                columnsOfRow.map(column => {
+                    const { Header, metaKey, ...restColumnProps } = column
+                    const type = typeof Header
+                    const headerProps = { metaKey, ...restColumnProps }
+                    return (
+                        <ThsContext.Provider
+                            key={metaKey}
+                            value={{
+                                ...context,
+                                getColumn: () => column,
+                                contextName: 'thead'
+                            }}
+                        >
+                            {
+                                type === 'function'
+                                    ? Header(headerProps)
+                                    : type === 'string'
+                                        ? <Th>{Header}</Th>
+                                        : Header
+                            }
+                        </ThsContext.Provider>
+                    )
+                })
+            }
+        </Fragment>
+    )
 }

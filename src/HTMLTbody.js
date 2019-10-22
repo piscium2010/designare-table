@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { Fragment } from 'react'
 import { Context, TBodyContext } from './context'
 import { flatten } from './util'
 import Tds from './Tds'
@@ -25,15 +25,16 @@ export default class HTMLTbody extends React.Component {
                         isEmpty
                             ? null
                             : data.map((row, rowIndex) => (
-                                // <Tr
-                                //     key={rowIndex}
-                                //     row={row}
-                                //     rowIndex={rowIndex}
-                                //     fixed={fixed}
-                                //     getColumns={() => flatten(columns)}
-                                //     cells={<Tds rowIndex={rowIndex} />}
-                                // />
-                                Tr({key:rowIndex,row,rowIndex,fixed,getColumns: ()=>flatten(columns),cells:<Tds rowIndex={rowIndex} />})
+                                <Fragment key={rowIndex}>
+                                    {Tr({
+                                        key: rowIndex,
+                                        row,
+                                        rowIndex,
+                                        fixed,
+                                        getColumns: () => flatten(columns),
+                                        cells: <Tds rowIndex={rowIndex} />
+                                    })}
+                                </Fragment>
                             ))
                     }
                 </tbody>

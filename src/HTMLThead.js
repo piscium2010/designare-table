@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { Fragment } from 'react'
 import { Context, TheadContext } from './context'
 import { groupByDepth } from './util'
 import Ths from './Ths'
@@ -16,7 +16,9 @@ export default class HTMLThead extends React.Component {
                     {
                         groupByDepth(columns).map((columnsOfRow, i) => {
                             return (
-                                <Tr key={i} cells={<Ths columnsOfRow={columnsOfRow} />} />
+                                <Fragment key={i}>
+                                    {Tr({ cells: <Ths columnsOfRow={columnsOfRow} /> })}
+                                </Fragment>
                             )
                         })
                     }
