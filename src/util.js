@@ -1,3 +1,5 @@
+import React from 'react'
+
 export function flatten(columns, result = []) {
     columns.forEach(col => col.children ? flatten(col.children, result) : result.push(col))
     return result
@@ -15,29 +17,42 @@ export function createColumnMeta(
     const columnsWithMeta = []
     columns.forEach((column, i) => {
         const key = `${parentKey ? parentKey + '-' : ''}` + getColumnKey(column)
+
+        // errors
+        if (column.Cell && typeof column.Cell !== 'function') throw 'designare-table: Cell must be react function component'
+        if (column.Cell && column.Cell.prototype && column.Cell.prototype.render) throw 'designare-table: Cell must be react function component'
+        if (column.width && column.width !== '*' && isNaN(column.width)) throw 'designare-table: width must be either "*" or number'
+        if (column.colSpan && isNaN(column.colSpan)) throw 'designare-table: column.colSpan must be number'
+
+        // warnings
+        if (column.rowSpan) {
+            warnings.push(`do not suppport rowSpan for now. Warning from ${clone.Header}`)
+        }
+        if (column.width && column.width === '*') {
+            if (column.fixed) {
+                warnings.push(`width '*' can only be assigned to non-fixed column. Warning from ${column.Header}`)
+            }
+            if (store.wildcard === true) {
+                warnings.push(`width '*' can only be assigned to one column. Warning from ${column.Header}`)
+            }
+            store.wildcard = true
+        }
+        if (column.children) {
+            if (column.width !== undefined) {
+                warnings.push(`width can only be assigned to column without children. Warning from ${column.Header}`)
+            }
+        }
+
         const clone = {
             ...column,
             metaKey: key + '#' + i,
             depth,
             fixed: parentFix || column.fixed,
-            colSpan: column.children ? childrenLength(column.children) : column.colSpan || 1,
+            colSpan: column.children ? childrenLength(column.children) : column.colSpan ? column.colSpan / 1 : 1,
             rowSpan: column.children ? 1 : 1 + maxDepth - depth,
             columnIndex: i
         }
-        if (clone.Cell && typeof clone.Cell !== 'function') throw 'designare-table: Cell must be react function or class component'
-        if (clone.width && clone.width === '*') {
-            if (clone.fixed) {
-                warnings.push(`width '*' can only be assigned to non-fixed column. Warning from ${clone.Header}`)
-            }
-            if (store.wildcard === true) {
-                warnings.push(`width '*' can only be assigned to one column. Warning from ${clone.Header}`)
-            }
-            store.wildcard = true
-        }
         if (clone.children) {
-            if (clone.width !== undefined) {
-                warnings.push(`width can only be assigned to column without children. Warning from ${clone.Header}`)
-            }
             const [children] = createColumnMeta(column.children, maxDepth, key, column.fixed, depth + 1, warnings, store)
             clone.children = children
         }
@@ -185,11 +200,12 @@ export function widthArray(element, requiredLen, startOrend = 'end', msg, debug)
     return pad(result, requiredLen, startOrend, -1 /* pad With */)
 }
 
-export function pad(array = [], requiredLen, startOrend = 'end', padWith) {
+export function pad(array = [], expectedLen, startOrend = 'end', padWith) {
     const length = array.length
-    if (length > requiredLen) throw `fail to pad array:${array}, its length exceeds the requiredLen: ${requiredLen}`
-    if (length < requiredLen) {
-        const pad = new Array(requiredLen - length)
+    // if (length > expectedLen) throw `fail to pad array:${array}, its length exceeds the expectedLen: ${expectedLen}`
+    if (length > expectedLen) throw new CustomError('pad', array, `fail to pad array:${array}, its length exceeds the expectedLen: ${expectedLen}`)
+    if (length < expectedLen) {
+        const pad = new Array(expectedLen - length)
         pad.fill(padWith, 0, pad.length)
         return startOrend === 'start' ? pad.concat(array) : [].concat(array).concat(pad)
     }
@@ -221,4 +237,12 @@ export function max(...args) {
         r.push(col.reduce(maxReducer))
     }
     return r
+}
+
+class CustomError extends Error {
+    constructor(name, value, ...params) {
+        super(...params)
+        this.name = name
+        this.value = value
+    }
 }

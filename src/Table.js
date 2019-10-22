@@ -323,7 +323,6 @@ export default class Table extends React.Component {
     }
 
     reSyncWidthAndHeight = (force = false) => {
-        return
         const { rowHeight } = this.props
         const { dimensionInfo, flattenSortedColumns, root, resizedWidthInfo, depthOfColumns } = this
         const columns = flattenSortedColumns
@@ -339,7 +338,8 @@ export default class Table extends React.Component {
                 rowHeight,
                 dimensionInfo,
                 resizedWidthInfo,
-                depthOfColumns
+                depthOfColumns,
+                force
             )
         }
     }
@@ -461,7 +461,7 @@ function createLeafColumnIndex(columns) {
     })
 }
 
-function syncWidthAndHeight(table, columns, rowHeight = -1, dimensionInfo, resizedWidthInfo, depthOfColumns) {
+function syncWidthAndHeight(table, columns, rowHeight = -1, dimensionInfo, resizedWidthInfo, depthOfColumns, force) {
     // console.log(`columns`, columns)
     const findDOM = find.bind(null, table), dimensionId = code(columns)
     const columnSize = getColumnSize(columns)
@@ -476,7 +476,7 @@ function syncWidthAndHeight(table, columns, rowHeight = -1, dimensionInfo, resiz
     const [leftBodyWrapper, leftBodyRoot, leftBody] = findDOM('body', 'left')
     const [rightBodyWrapper, rightBodyRoot, rightBody] = findDOM('body', 'right')
 
-    if (dimensionInfo.dimensionId !== dimensionId) {
+    if (dimensionInfo.dimensionId !== dimensionId || force) {
         // remove column width
         setStyle(headerRoot, 'minWidth', '0')
         setStyle(leftHeaderRoot, 'minWidth', '0')
@@ -508,36 +508,40 @@ function syncWidthAndHeight(table, columns, rowHeight = -1, dimensionInfo, resiz
     const headerWidthArray = widthArray(header, columnSize, 'end', 'headerWidthArray')
     const leftHeaderWidthArray = widthArray(leftHeader, columnSize, 'end', 'leftHeaderWidthArray')
     const rightHeaderWidthArray = widthArray(rightHeader, columnSize, 'start', 'rightHeaderWidthArray')
-    const bodyWidthArray = widthArray(body, columnSize, 'end', 'bodyWidthArray')
-    const leftBodyWidthArray = widthArray(leftBody, columnSize, 'end', 'leftBodyWidthArray')
-    const rightBodyWidthArray = widthArray(rightBody, columnSize, 'start', 'rightBodyWidthArray')
-    // const columnWidthArray = columns.map(c => isNaN(c.width) ? 0 : c.width)
+
+    let bodyWidthArray
+    let leftBodyWidthArray
+    let rightBodyWidthArray
+
+    try {
+        bodyWidthArray = widthArray(body, columnSize, 'end', 'bodyWidthArray')
+        leftBodyWidthArray = widthArray(leftBody, columnSize, 'end', 'leftBodyWidthArray')
+        rightBodyWidthArray = widthArray(rightBody, columnSize, 'start', 'rightBodyWidthArray')
+    } catch (error) {
+        if (error.name === 'pad') {
+            const len = error.value.length
+            throw `sum of column.colSpan: ${columnSize} does not match length of td: ${len}`
+        }
+    }
+
+
     const columnWidthArray = columns.reduce((prev, curr) => {
         let { width = -1, colSpan = 1 } = curr, r
-        colSpan = curr.colSpan / 1
-        if (colSpan > 1) {
-            r = new Array(colSpan)
-            r.fill(width / colSpan, 0, r.length)
-        } else {
-            r = [width]
-        }
+        colSpan = colSpan / 1
+        width = width === '*' ? -1 : width / colSpan
+        r = new Array(colSpan)
+        r.fill(width, 0, r.length)
         return prev.concat(r)
     }, [])
-    // const resizedWidthArray = columns.map(c => resizedWidthInfo.get(c.metaKey) || -1)
     const resizedWidthArray = columns.reduce((prev, curr) => {
         let { metaKey, colSpan = 1 } = curr, r
         let width = resizedWidthInfo.get(metaKey) || -1
-        colSpan = curr.colSpan / 1
-        if (colSpan > 1) {
-            r = new Array(colSpan)
-            r.fill(width / colSpan, 0, r.length)
-        } else {
-            r = [width]
-        }
+        colSpan = colSpan / 1
+        r = new Array(colSpan)
+        r.fill(width / colSpan, 0, r.length)
         return prev.concat(r)
     }, [])
 
-    // console.log(`resizedWidthArray`,resizedWidthArray)
     let originalMaxWidthArray = max(
         headerWidthArray,
         leftHeaderWidthArray,
@@ -548,15 +552,16 @@ function syncWidthAndHeight(table, columns, rowHeight = -1, dimensionInfo, resiz
         columnWidthArray
     )
 
-    
+
     let maxWidthArray = max(
         originalMaxWidthArray,
         resizedWidthArray
     )
-    
+
     let sum = maxWidthArray.reduce((prev, curr) => prev + curr, 0)
     const leftOver = rootWidth - sum
     if (leftOver > 0) {
+        console.log(`columns`,columns)
         for (let i = 0, len = columns.length; i < len; i++) {
             if (columns[i].width === '*') {
                 maxWidthArray[i] += leftOver
@@ -566,7 +571,7 @@ function syncWidthAndHeight(table, columns, rowHeight = -1, dimensionInfo, resiz
         }
         sum += leftOver
     }
-    console.log(`originalMaxWidthArray`,maxWidthArray)
+
     const mergeMax = (w, i) => w > -1 ? maxWidthArray[i] : w
     const positive = w => w > -1
 
@@ -579,13 +584,13 @@ function syncWidthAndHeight(table, columns, rowHeight = -1, dimensionInfo, resiz
     const rightBodyColgroup = createColgroup(rightBodyWidthArray.map(mergeMax).filter(positive))
 
     // sync width
-    if (dimensionInfo.dimensionId !== dimensionId) {
+    if (dimensionInfo.dimensionId !== dimensionId || force) {
         // const tableWidth = leftOver ? '100%' : sum + 'px'
         const tableWidth = sum + 'px'
-        setStyle(headerRoot, 'minWidth', `${tableWidth}`)
+        // setStyle(headerRoot, 'minWidth', `${tableWidth}`)
         setStyle(leftHeaderRoot, 'minWidth', `${tableWidth}`)
         setStyle(rightHeaderRoot, 'minWidth', `${tableWidth}`)
-        setStyle(bodyRoot, 'minWidth', `${tableWidth}`)
+        // setStyle(bodyRoot, 'minWidth', `${tableWidth}`)
     }
 
     removeColgroup(headerRoot)
@@ -769,7 +774,7 @@ function createColgroup(widthArray) {
     const colgroup = document.createElement('colgroup')
     for (let i = 0, len = widthArray.length; i < len; i++) {
         // const width = i === len - 1 ? Math.ceil(widthArray[i] / sum * 100) + '%' : widthArray[i] + 'px'
-        const width =  widthArray[i] + 'px'
+        const width = widthArray[i] + 'px'
         const col = document.createElement('col')
         col.style.width = width
         colgroup.appendChild(col)
