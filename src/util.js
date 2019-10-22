@@ -20,7 +20,7 @@ export function createColumnMeta(
             metaKey: key + '#' + i,
             depth,
             fixed: parentFix || column.fixed,
-            colSpan: column.children ? childrenLength(column.children) : 1,
+            colSpan: column.children ? childrenLength(column.children) : column.colSpan || 1,
             rowSpan: column.children ? 1 : 1 + maxDepth - depth,
             columnIndex: i
         }
@@ -90,7 +90,6 @@ export function depthOf(columns, depth = 1) {
 }
 
 export function groupByDepth(columns) {
-    // console.log(`columns`,columns)
     const result = []
     const walkOne = (column, depth = 1/* start from 1 */) => {
         const index = depth - 1
@@ -118,4 +117,106 @@ export class Queue {
     get length() {
         return this.q.length - this.i
     }
+}
+
+export function widthArray(element, requiredLen, startOrend = 'end', debug) {
+    let child = element && element.firstElementChild
+    let rowIndex = 0, placeholder = -1, matrix = [], result = [], n = 0
+    const rowOf = index => matrix[index] || (matrix[index] = [])
+    const getColIndex = (array, i = 0) => {
+        while (array[i] !== undefined) { i++ }
+        return i
+    }
+    let next = true
+    while (next) {
+        const temp = []
+        const array = child ? child.children : []
+        const row = rowOf(rowIndex)
+        for (let i = 0, len = array.length; i < len; i++) {
+            const cell = array[i]
+            let colSpan = cell.getAttribute('colspan') || 1
+            let rowSpan = cell.getAttribute('rowspan') || 1
+            colSpan = colSpan / 1
+            rowSpan = rowSpan / 1
+            const colIndex = getColIndex(row)
+
+            if (colSpan > 1) {
+                const width = cell.offsetWidth / colSpan
+                n = 0
+                while (n < colSpan) { 
+                    row[colIndex + n++] = placeholder 
+                    temp.push(width)
+                }
+                continue
+            }
+
+            if (rowSpan >= 1) {
+                const width = cell.offsetWidth
+                n = 0
+                while (n < rowSpan) { rowOf(rowIndex + n++)[colIndex] = width }
+                continue
+            }
+        }
+
+        matrix = padMatrix(matrix)
+        result = matrix.length > 0 ? max.apply(null, matrix) : []
+        const hasPlaceHolder = result.filter(i => i === placeholder).length > 0
+        const hasNaN = result.filter(isNaN).length > 0
+        
+        if (result.length > 0 && (hasPlaceHolder || hasNaN)) {
+            if(child.nextSibling){
+                child = child.nextSibling
+                rowIndex++
+            } else {
+                temp.forEach(width => {
+                    const colIndex = row.indexOf(placeholder)
+                    row[colIndex] = width
+                })
+                result = matrix.length > 0 ? max.apply(null, matrix) : []
+                next = false
+            }
+        } else {
+            next = false
+        }
+    }
+    // console.log(`requiredLen of `, debug, ' ', requiredLen)
+    return pad(result, requiredLen, startOrend, -1 /* pad With */)
+}
+
+export function pad(array = [], requiredLen, startOrend = 'end', padWith) {
+    const length = array.length
+    if (length > requiredLen) throw `fail to pad array:${array}, its length exceeds the requiredLen: ${requiredLen}`
+    if (length < requiredLen) {
+        const pad = new Array(requiredLen - length)
+        pad.fill(padWith, 0, pad.length)
+        return startOrend === 'start' ? pad.concat(array) : [].concat(array).concat(pad)
+    }
+    return array
+}
+
+export function padMatrix(matrix) {
+    const maxLen = matrix.reduce((prev, curr) => Math.max(prev, curr.length), 0)
+    return matrix.map(a => pad(a, maxLen, 'end'))
+}
+
+/**
+ * input:
+ * [1, 4]
+ * [3, 2]
+ * output:
+ * [3, 4]
+ * 
+ * @param  {...any} args 
+ */
+export function max(...args) {
+    const r = [],
+        len = args[0].length,
+        lenMatch = args.every(a => a.length === len),
+        maxReducer = (prev, curr) => Math.max(prev, curr)
+    if (!lenMatch) throw 'lenght not match'
+    for (let i = 0; i < len; i++) {
+        const col = args.map(a => a[i])
+        r.push(col.reduce(maxReducer))
+    }
+    return r
 }

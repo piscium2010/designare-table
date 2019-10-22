@@ -4,7 +4,15 @@ import debounce from 'lodash/debounce'
 import Header from './Header'
 import Body from './Body'
 import Pagination from './Pagination'
-import { flatten, createColumnMeta, forEachLeafColumn, depthOf, groupByDepth } from './util'
+import {
+    flatten,
+    createColumnMeta,
+    forEachLeafColumn,
+    depthOf,
+    groupByDepth,
+    widthArray,
+    max
+} from './util'
 import SyncScrolling from './SyncScrolling'
 import './app.less'
 
@@ -320,7 +328,7 @@ export default class Table extends React.Component {
         const columns = flattenSortedColumns
         const isReSized = force || isDimensionChanged(
             root.current,
-            columns.length,
+            getColumnSize(columns),
             dimensionInfo
         )
         if (isReSized) {
@@ -453,8 +461,10 @@ function createLeafColumnIndex(columns) {
 }
 
 function syncWidthAndHeight(table, columns, rowHeight = -1, dimensionInfo, resizedWidthInfo, depthOfColumns) {
-    const findDOM = find.bind(null, table), columnSize = columns.length, dimensionId = code(columns)
-
+    // console.log(`columns`, columns)
+    const findDOM = find.bind(null, table), dimensionId = code(columns)
+    const columnSize = getColumnSize(columns)
+    // console.log(`columnSize`,columnSize)
     // header
     const [headerWrapper, headerRoot, header] = findDOM('header')
     const [leftHeaderWrapper, leftHeaderRoot, leftHeader] = findDOM('header', 'left')
@@ -494,14 +504,39 @@ function syncWidthAndHeight(table, columns, rowHeight = -1, dimensionInfo, resiz
 
 
     // for sync width
-    const headerWidthArray = widthArray(header, columnSize, 'end')
-    const leftHeaderWidthArray = widthArray(leftHeader, columnSize, 'end')
-    const rightHeaderWidthArray = widthArray(rightHeader, columnSize, 'start')
-    const bodyWidthArray = widthArray(body, columnSize)
-    const leftBodyWidthArray = widthArray(leftBody, columnSize, 'end')
-    const rightBodyWidthArray = widthArray(rightBody, columnSize, 'start')
-    const columnWidthArray = columns.map(c => isNaN(c.width) ? 0 : c.width)
-    const resizedWidthArray = columns.map(c => resizedWidthInfo.get(c.metaKey) || -1)
+    const headerWidthArray = widthArray(header, columnSize, 'end', 'headerWidthArray')
+    const leftHeaderWidthArray = widthArray(leftHeader, columnSize, 'end', 'leftHeaderWidthArray')
+    const rightHeaderWidthArray = widthArray(rightHeader, columnSize, 'start', 'rightHeaderWidthArray')
+    const bodyWidthArray = widthArray(body, columnSize, 'end', 'bodyWidthArray')
+    const leftBodyWidthArray = widthArray(leftBody, columnSize, 'end', 'leftBodyWidthArray')
+    const rightBodyWidthArray = widthArray(rightBody, columnSize, 'start', 'rightBodyWidthArray')
+    // const columnWidthArray = columns.map(c => isNaN(c.width) ? 0 : c.width)
+    const columnWidthArray = columns.reduce((prev, curr) => {
+        let { width = -1, colSpan = 1 } = curr, r
+        colSpan = curr.colSpan / 1
+        if (colSpan > 1) {
+            r = new Array(colSpan)
+            r.fill(width / colSpan, 0, r.length)
+        } else {
+            r = [width]
+        }
+        return prev.concat(r)
+    }, [])
+    // const resizedWidthArray = columns.map(c => resizedWidthInfo.get(c.metaKey) || -1)
+    const resizedWidthArray = columns.reduce((prev, curr) => {
+        let { metaKey, colSpan = 1 } = curr, r
+        let width = resizedWidthInfo.get(metaKey) || -1
+        colSpan = curr.colSpan / 1
+        if (colSpan > 1) {
+            r = new Array(colSpan)
+            r.fill(width / colSpan, 0, r.length)
+        } else {
+            r = [width]
+        }
+        return prev.concat(r)
+    }, [])
+
+    // console.log(`resizedWidthArray`,resizedWidthArray)
     let originalMaxWidthArray = max(
         headerWidthArray,
         leftHeaderWidthArray,
@@ -644,13 +679,13 @@ function getDimensionInfo(table, columnSize) {
     const [leftBodyWrapper, leftBodyRoot, leftBody] = findDOM('body', 'left')
     const [rightBodyWrapper, rightBodyRoot, rightBody] = findDOM('body', 'right')
 
-    const headerWidthArray = widthArray(header, columnSize, 'end')
+    const headerWidthArray = widthArray(header, columnSize, 'end', 'headerWidthArray')
     // console.log(`headerWidthArray`,headerWidthArray)
-    const leftHeaderWidthArray = widthArray(leftHeader, columnSize, 'end')
-    const rightHeaderWidthArray = widthArray(rightHeader, columnSize, 'start')
-    const bodyWidthArray = widthArray(body, columnSize)
-    const leftBodyWidthArray = widthArray(leftBody, columnSize, 'end')
-    const rightBodyWidthArray = widthArray(rightBody, columnSize, 'start')
+    const leftHeaderWidthArray = widthArray(leftHeader, columnSize, 'end', 'leftHeaderWidthArray')
+    const rightHeaderWidthArray = widthArray(rightHeader, columnSize, 'start', 'rightHeaderWidthArray')
+    const bodyWidthArray = widthArray(body, columnSize, 'end', 'bodyWidthArray')
+    const leftBodyWidthArray = widthArray(leftBody, columnSize, 'end', 'leftBodyWidthArray')
+    const rightBodyWidthArray = widthArray(rightBody, columnSize, 'start', 'rightBodyWidthArray')
 
     const maxWidthArray = max(
         headerWidthArray,
@@ -707,54 +742,70 @@ function isDimensionChanged(table, columnSize, dimensionInfo) {
     return result
 }
 
-function widthArray(element, requiredLen, startOrend = 'end', debug) {
-    let child = element && element.firstElementChild
-    let rowIndex = 0, placeholder = -1, matrix = [], result = [], n = 0
-    const rowOf = index => matrix[index] || (matrix[index] = [])
-    const getColIndex = (array, i = 0) => {
-        while (array[i] !== undefined) { i++ }
-        return i
-    }
-    let next = true
-    while (next) {
-        const array = child ? child.children : []
-        for (let i = 0, len = array.length; i < len; i++) {
-            const cell = array[i]
-            let colSpan = cell.getAttribute('colspan') || 1
-            let rowSpan = cell.getAttribute('rowspan') || 1
-            colSpan = colSpan / 1
-            rowSpan = rowSpan / 1
-            const colIndex = getColIndex(rowOf(rowIndex))
+// function widthArray(element, requiredLen, startOrend = 'end', debug) {
+//     let child = element && element.firstElementChild
+//     let rowIndex = 0, placeholder = -1, matrix = [], result = [], n = 0
+//     const rowOf = index => matrix[index] || (matrix[index] = [])
+//     const getColIndex = (array, i = 0) => {
+//         while (array[i] !== undefined) { i++ }
+//         return i
+//     }
+//     let next = true
+//     while (next) {
+//         const array = child ? child.children : []
+//         for (let i = 0, len = array.length; i < len; i++) {
+//             const cell = array[i]
+//             let colSpan = cell.getAttribute('colspan') || 1
+//             let rowSpan = cell.getAttribute('rowspan') || 1
+//             colSpan = colSpan / 1
+//             rowSpan = rowSpan / 1
+//             const colIndex = getColIndex(rowOf(rowIndex))
 
-            if (colSpan > 1) {
-                n = 0
-                while (n < colSpan) { rowOf(rowIndex)[colIndex + n++] = placeholder }
-                continue
-            }
+//             if (colSpan > 1) {
+//                 n = 0
+//                 while (n < colSpan) { rowOf(rowIndex)[colIndex + n++] = placeholder }
+//                 continue
+//             }
 
-            const width = cell.offsetWidth
-            rowOf(rowIndex)[colIndex] = width
+//             const width = cell.offsetWidth
+//             rowOf(rowIndex)[colIndex] = width
 
-            if (rowSpan > 1) {
-                n = 0
-                while (n < rowSpan) { rowOf(rowIndex + n++)[colIndex] = width }
-                continue
-            }
-        }
-        matrix = padMatrix(matrix)
-        result = matrix.length > 0 ? max.apply(null, matrix) : []
-        const hasPlaceHolder = result.filter(i => i === placeholder).length > 0
-        const hasNaN = result.filter(isNaN).length > 0
-        if (result.length > 0 && (hasPlaceHolder || hasNaN)) {
-            child = child.nextSibling
-            rowIndex++
-        } else {
-            next = false
-        }
-    }
+//             if (rowSpan > 1) {
+//                 n = 0
+//                 while (n < rowSpan) { rowOf(rowIndex + n++)[colIndex] = width }
+//                 continue
+//             }
+//         }
+//         matrix = padMatrix(matrix)
+//         result = matrix.length > 0 ? max.apply(null, matrix) : []
+//         const hasPlaceHolder = result.filter(i => i === placeholder).length > 0
+//         const hasNaN = result.filter(isNaN).length > 0
+//         if (result.length > 0 && (hasPlaceHolder || hasNaN)) {
+//             child = child.nextSibling
+//             rowIndex++
+//         } else {
+//             next = false
+//         }
+//     }
 
-    return pad(result, requiredLen, startOrend, -1 /* pad With */)
-}
+//     return pad(result, requiredLen, startOrend, -1 /* pad With */)
+// }
+
+// function pad(array = [], requiredLen, startOrend = 'end', padWith) {
+//     const length = array.length
+//     if (length > requiredLen) throw `fail to pad array:${array}, its length exceeds the requiredLen: ${requiredLen}`
+//     if (length < requiredLen) {
+//         const pad = new Array(requiredLen - length)
+//         pad.fill(padWith, 0, pad.length)
+//         return startOrend === 'start' ? pad.concat(array) : [].concat(array).concat(pad)
+//     }
+//     return array
+// }
+
+// function padMatrix(matrix) {
+//     const maxLen = matrix.reduce((prev, curr) => Math.max(prev, curr.length), 0)
+//     return matrix.map(a => pad(a, maxLen, 'end'))
+// }
 
 function heightArray(element) {
     const r = [], array = (element && element.children) || []
@@ -763,22 +814,6 @@ function heightArray(element) {
         r.push(height)
     }
     return r
-}
-
-function pad(array = [], requiredLen, startOrend = 'end', padWith) {
-    const length = array.length
-    if (length > requiredLen) throw `fail to pad array:${array}, its length exceeds the requiredLen: ${requiredLen}`
-    if (length < requiredLen) {
-        const pad = new Array(requiredLen - length)
-        pad.fill(padWith, 0, pad.length)
-        return startOrend === 'start' ? pad.concat(array) : [].concat(array).concat(pad)
-    }
-    return array
-}
-
-function padMatrix(matrix) {
-    const maxLen = matrix.reduce((prev, curr) => Math.max(prev, curr.length), 0)
-    return matrix.map(a => pad(a, maxLen, 'end'))
 }
 
 function removeColgroup(element) {
@@ -814,28 +849,6 @@ function find(table, a, b) {
     const container = wrapper && wrapper.getElementsByTagName('table')[0]
     const content = container && container.getElementsByTagName(a === 'header' ? 'thead' : 'tbody')[0]
     return [wrapper, container, content]
-}
-
-/**
- * input:
- * [1, 4]
- * [3, 2]
- * output:
- * [3, 4]
- * 
- * @param  {...any} args 
- */
-function max(...args) {
-    const r = [],
-        len = args[0].length,
-        lenMatch = args.every(a => a.length === len),
-        maxReducer = (prev, curr) => Math.max(prev, curr)
-    if (!lenMatch) throw 'lenght not match'
-    for (let i = 0; i < len; i++) {
-        const col = args.map(a => a[i])
-        r.push(col.reduce(maxReducer))
-    }
-    return r
 }
 
 function getChildren(element) {
@@ -904,4 +917,8 @@ function code(columnsWithMeta, result = [], root = true) {
         col.children ? code(col.children, result, false) : undefined
     }
     return root ? result.join('') : undefined
+}
+
+function getColumnSize(columns) {
+    return columns.reduce((prev, curr) => prev + curr.colSpan, 0)
 }
