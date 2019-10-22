@@ -38,8 +38,8 @@ export function createColumnMeta(
             if (clone.width !== undefined) {
                 warnings.push(`width can only be assigned to column without children. Warning from ${clone.Header}`)
             }
-            const [ children ] = createColumnMeta(column.children, maxDepth, key, column.fixed, depth + 1, warnings, store)
-            clone.children = children 
+            const [children] = createColumnMeta(column.children, maxDepth, key, column.fixed, depth + 1, warnings, store)
+            clone.children = children
         }
         columnsWithMeta.push(clone)
     })
@@ -119,7 +119,7 @@ export class Queue {
     }
 }
 
-export function widthArray(element, requiredLen, startOrend = 'end', debug) {
+export function widthArray(element, requiredLen, startOrend = 'end', msg, debug) {
     let child = element && element.firstElementChild
     let rowIndex = 0, placeholder = -1, matrix = [], result = [], n = 0
     const rowOf = index => matrix[index] || (matrix[index] = [])
@@ -143,8 +143,8 @@ export function widthArray(element, requiredLen, startOrend = 'end', debug) {
             if (colSpan > 1) {
                 const width = cell.offsetWidth / colSpan
                 n = 0
-                while (n < colSpan) { 
-                    row[colIndex + n++] = placeholder 
+                while (n < colSpan) {
+                    row[colIndex + n++] = placeholder
                     temp.push(width)
                 }
                 continue
@@ -162,9 +162,9 @@ export function widthArray(element, requiredLen, startOrend = 'end', debug) {
         result = matrix.length > 0 ? max.apply(null, matrix) : []
         const hasPlaceHolder = result.filter(i => i === placeholder).length > 0
         const hasNaN = result.filter(isNaN).length > 0
-        
+
         if (result.length > 0 && (hasPlaceHolder || hasNaN)) {
-            if(child.nextSibling){
+            if (child.nextSibling) {
                 child = child.nextSibling
                 rowIndex++
             } else {
@@ -179,7 +179,9 @@ export function widthArray(element, requiredLen, startOrend = 'end', debug) {
             next = false
         }
     }
-    // console.log(`requiredLen of `, debug, ' ', requiredLen)
+    if (debug) {
+        console.log(msg, result)
+    }
     return pad(result, requiredLen, startOrend, -1 /* pad With */)
 }
 

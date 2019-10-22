@@ -323,6 +323,7 @@ export default class Table extends React.Component {
     }
 
     reSyncWidthAndHeight = (force = false) => {
+        return
         const { rowHeight } = this.props
         const { dimensionInfo, flattenSortedColumns, root, resizedWidthInfo, depthOfColumns } = this
         const columns = flattenSortedColumns
@@ -546,10 +547,13 @@ function syncWidthAndHeight(table, columns, rowHeight = -1, dimensionInfo, resiz
         rightBodyWidthArray,
         columnWidthArray
     )
+
+    
     let maxWidthArray = max(
         originalMaxWidthArray,
         resizedWidthArray
     )
+    
     let sum = maxWidthArray.reduce((prev, curr) => prev + curr, 0)
     const leftOver = rootWidth - sum
     if (leftOver > 0) {
@@ -562,7 +566,7 @@ function syncWidthAndHeight(table, columns, rowHeight = -1, dimensionInfo, resiz
         }
         sum += leftOver
     }
-
+    console.log(`originalMaxWidthArray`,maxWidthArray)
     const mergeMax = (w, i) => w > -1 ? maxWidthArray[i] : w
     const positive = w => w > -1
 
@@ -576,7 +580,8 @@ function syncWidthAndHeight(table, columns, rowHeight = -1, dimensionInfo, resiz
 
     // sync width
     if (dimensionInfo.dimensionId !== dimensionId) {
-        const tableWidth = leftOver ? '100%' : sum + 'px'
+        // const tableWidth = leftOver ? '100%' : sum + 'px'
+        const tableWidth = sum + 'px'
         setStyle(headerRoot, 'minWidth', `${tableWidth}`)
         setStyle(leftHeaderRoot, 'minWidth', `${tableWidth}`)
         setStyle(rightHeaderRoot, 'minWidth', `${tableWidth}`)
