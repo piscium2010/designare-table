@@ -131,11 +131,11 @@ export default class Table extends React.Component {
     }
 
     getDefaultFilters = () => {
-        return this.defaultFilters
+        return this.defaultFilters ? Array.from(this.defaultFilters) : undefined
     }
 
     getFilters = () => {
-        return this.props.filters
+        return this.props.filters ? Array.from(this.props.filters) : undefined
     }
 
     getActiveFilters = () => {
@@ -145,7 +145,28 @@ export default class Table extends React.Component {
     setActiveFilter = ({ columnMetaKey, dataKey, filterValue, name, by }) => {
         const previous = this.activeFilters.get(columnMetaKey) || {}
         if (previous.dataKey !== dataKey || previous.filterValue !== filterValue) {
+            // console.log(`set`,dataKey, filterValue)
             this.activeFilters.set(columnMetaKey, { filterValue, name, dataKey, by })
+
+            // validate
+            const keyMap = new Map(), nameMap = new Map()
+            this.activeFilters.forEach(f => {
+                const { dataKey, name } = f
+                keyMap.has(dataKey) ? keyMap.set(dataKey, keyMap.get(dataKey) + 1) : keyMap.set(dataKey, 1)
+                if (name !== undefined) { // optional prop
+                    nameMap.has(name) ? nameMap.set(name, nameMap.get(name) + 1) : nameMap.set(name, 1)
+                }
+            })
+            keyMap.forEach((v, dataKey) => {
+                if (v > 1)
+                    throw new Error(`More than one Filter is found for dataKey ${dataKey}.\n Please specify 'name' to distinguish each filter \n e.g.\nfilter: <Filter name='address'/> \ntable: <Table filters={[{name:'address', filterValue:'west lake'}]}/>`)
+            })
+            nameMap.forEach((v, name) => {
+                if (v > 1)
+                    throw new Error(`More than one Filter is found for name ${name}.\n name should be unique for each filter`)
+            })
+            keyMap.clear()
+            nameMap.clear()
             this._update()
         }
     }
@@ -266,13 +287,11 @@ export default class Table extends React.Component {
     }
 
     filter = data => {
-        console.log(`filter`)
         let result = data
         this.activeFilters.forEach(f => {
             const { dataKey, by, filterValue } = f
-            if(typeof by !== 'function') throw new Error('designare-table: by of Filter should be function')
-            console.log(`dataKey`,dataKey)
-            result = result.filter(row => by({dataKey, filterValue, row}))
+            if (typeof by !== 'function') throw new Error('designare-table: by of Filter should be function')
+            result = result.filter(row => by({ dataKey, filterValue, row }))
         })
         return result
     }
@@ -557,16 +576,25 @@ function syncWidthAndHeight(table, columns, rowHeight = -1, dimensionInfo, resiz
         originalMaxWidthArray,
         resizedWidthArray
     )
-        // console.log(`maxWidthArray`,maxWidthArray)
-        // return
+    // console.log(`maxWidthArray`,maxWidthArray)
+    // return
     let sum = maxWidthArray.reduce((prev, curr) => prev + curr, 0)
     const leftOver = rootWidth - sum
     if (leftOver > 0) {
+        let balance = leftOver
         for (let i = 0, len = columns.length; i < len; i++) {
             if (columns[i].width === '*') {
-                maxWidthArray[i] += leftOver
-                originalMaxWidthArray[i] += leftOver
+                maxWidthArray[i] += balance
+                originalMaxWidthArray[i] += balance
+                balance = 0
                 break
+            }
+        }
+        if (balance > 0) {
+            const avg = balance / columns.length
+            for (let i = 0, len = columns.length; i < len; i++) {
+                maxWidthArray[i] += avg
+                originalMaxWidthArray[i] += avg
             }
         }
         sum += leftOver

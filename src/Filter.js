@@ -19,7 +19,7 @@ export default class Filter extends React.Component {
     ref = React.createRef()
     state = { show: false, top: 0, right: 0 }
 
-    get columnKey() {
+    get dataKey() {
         return this.context.getColumn().dataKey
     }
 
@@ -45,32 +45,24 @@ export default class Filter extends React.Component {
 
     get isActive() {
         let result = false
-        this.activeFilters.forEach((f,columnMetaKey) => {
-            if(columnMetaKey === this.columnMetaKey && f.filterValue) {
+        this.activeFilters.forEach((f, columnMetaKey) => {
+            if (columnMetaKey === this.columnMetaKey && f.filterValue !== undefined) {
                 result = true
             }
         })
         return result
     }
 
-    getFilter(filters) {
-        if (!filters) return {}
-        const columnKey = this.columnKey, name = this.props.name
-        const activeFilters = [...this.activeFilters.values()]
-        const filterHasSameColumnKeyButHasNoName = activeFilters.find(f => f.key === columnKey && !f.name)
-        if (filterHasSameColumnKeyButHasNoName)
-            throw `More than one Filter component is found for ${print(filterHasSameColumnKeyButHasNoName)}.\n Please distinguish Filter component by specify unique prop 'name' \n e.g.\nfilter: <Filter name='address'/> \ntable: <Table filters={[{name:'address', value:'address'}]}/>`
-        const one = filters.find(f =>
-            f.name ? f.name === name : f.key === columnKey
-        )
-        return one || {}
+    my(filters = []) {
+        const dataKey = this.dataKey, name = this.props.name
+        return filters.find(f => f.name ? f.name === name : f.dataKey === dataKey)
     }
 
     on = () => {
         const { top, right, height } = this.ref.current.getBoundingClientRect()
         this.container.classList.add('show')
         window.requestAnimationFrame(() => {
-            this.setState({ show: true, top: top + height, right }, () => console.log(`state`, this.state))
+            this.setState({ show: true, top: top + height, right })
         })
     }
 
@@ -97,7 +89,6 @@ export default class Filter extends React.Component {
     }
 
     setActiveFilter = filterValue => {
-        // console.log(`value`, value)
         const { by, name } = this.props
         const { getColumn, removeActiveFilter } = this.context
         const { metaKey: columnMetaKey, dataKey } = getColumn()
@@ -109,34 +100,28 @@ export default class Filter extends React.Component {
     }
 
     updateLayer = () => {
-        const self = this
+
+        const filter = this.my(this.filters)
         const {
             children: content = () => 'please implement your filter content'
         } = this.props
         const { show, top, right } = this.state
         const filterAPI = {
             trigger: filterValue => {
-                // console.log(`triiger`,)
-                self.filterValue = filterValue
                 const { name, by } = this.props
-                const nextFilters = [], columnMetaKey = this.columnMetaKey, dataKey = this.columnKey
+                const nextFilters = [], columnMetaKey = this.columnMetaKey, dataKey = this.dataKey
                 const isFilterInControlledMode = this.filters ? true : false
-
+                this.filterValue = filterValue
                 this.activeFilters.forEach((filter, metaKey) => {
                     if (metaKey !== columnMetaKey) {
                         nextFilters.push(filter)
                     }
                 })
-                // console.log(`dataKey`,dataKey)
                 nextFilters.push({ filterValue, name, dataKey, by })
-                if (!isFilterInControlledMode) {
-                    // console.log(`set`,)
-                    this.setActiveFilter(filterValue)
-                }
-                // console.log(`nextFilters`,nextFilters)
+                isFilterInControlledMode ? undefined : this.setActiveFilter(filterValue)
                 this.context.onChangeFilters(nextFilters)
             },
-            filterValue: self.filterValue
+            filterValue: filter ? filter.filterValue : this.filterValue
         }
         // console.log(`update layer`,)
         ReactDOM.render(
@@ -158,12 +143,14 @@ export default class Filter extends React.Component {
     tableDidMount = () => {
         const filters = this.filters || this.defaultFilters
         if (filters) {
-            const filter = this.getFilter(filters)
-            this.setActiveFilter(filter.filterValue)
+            const filter = this.my(filters)
+            this.setActiveFilter(filter ? filter.filterValue : undefined)
+            this.filterValue = filter ? filter.filterValue : undefined
         }
     }
 
     componentDidMount() {
+        // console.log(`filter did mount`,)
         this.context.addEventListener('tableDidMount', this.tableDidMount)
         this.container.className.includes('show') ? this.on() : undefined
     }
@@ -171,8 +158,8 @@ export default class Filter extends React.Component {
     componentDidUpdate() {
         const filters = this.filters
         if (filters) {
-            const filter = this.getFilter(filters)
-            this.setActiveFilter(filter.filterValue)
+            const filter = this.my(filters)
+            this.setActiveFilter(filter ? filter.filterValue : undefined)
         }
         this.updateLayer()
     }
@@ -212,7 +199,7 @@ export default class Filter extends React.Component {
 
 function print(filter) {
     const name = filter.name ? `name: ${filter.name}, ` : ''
-    const key = filter.key ? `key: ${filter.key}, ` : ''
+    const dataKey = filter.dataKey ? `dataKey: ${filter.dataKey}, ` : ''
     const value = Array.isArray(filter.value) ? `value: [${filter.value}]` : `value: ${filter.value}`
-    return `{${name}${key}${value}}`
+    return `{${name}${dataKey}${value}}`
 }
