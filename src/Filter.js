@@ -5,11 +5,16 @@ import Icons from './Icons'
 import Layer from '@piscium2010/lime/Layer'
 import '@piscium2010/lime/Layer/layer.css'
 
-const defaultStyle = { display: 'table-cell', position: 'absolute', top: 0, right: 3, bottom: 0, display: 'flex', justifyContent: 'center', cursor: 'pointer', userSelect: 'none' }
+const FilterLayer = ({ content, filterAPI, ...restProps }) => <Layer {...restProps}>{content(filterAPI)}</Layer>
+const defaultStyle = { position: 'absolute', top: 0, right: 3, bottom: 0, display: 'flex', justifyContent: 'center', cursor: 'pointer', userSelect: 'none' }
 
 export default class Filter extends React.Component {
     static contextType = ThsContext
-    static defaultProps = { onClick: () => { } }
+    static defaultProps = {
+        activeColor: '#1890ff',
+        defaultColor: '#bfbfbf',
+        onClick: () => { }
+    }
 
     ref = React.createRef()
     state = { show: false, top: 0, right: 0 }
@@ -38,6 +43,16 @@ export default class Filter extends React.Component {
         return this.context.getActiveFilters()
     }
 
+    get isActive() {
+        let result = false
+        this.activeFilters.forEach((f,columnMetaKey) => {
+            if(columnMetaKey === this.columnMetaKey && f.filterValue) {
+                result = true
+            }
+        })
+        return result
+    }
+
     getFilter(filters) {
         if (!filters) return {}
         const columnKey = this.columnKey, name = this.props.name
@@ -55,7 +70,7 @@ export default class Filter extends React.Component {
         const { top, right, height } = this.ref.current.getBoundingClientRect()
         this.container.classList.add('show')
         window.requestAnimationFrame(() => {
-            this.setState({ show: true, top: top + height, right }, () => console.log(`state`,this.state))
+            this.setState({ show: true, top: top + height, right }, () => console.log(`state`, this.state))
         })
     }
 
@@ -66,14 +81,12 @@ export default class Filter extends React.Component {
 
     onToggleFilter = evt => {
         const show = !this.state.show
-        console.log(`toggle`,this.state.show)
         show ? this.on() : this.off()
         this.props.onClick(evt)
     }
 
     onBlur = evt => {
         const className = evt.target.className
-        console.log(`blur`, className)
         if (className.includes
             && className.includes(this.columnMetaKey)
             && className.includes('designare-table-filter')) {
@@ -83,52 +96,61 @@ export default class Filter extends React.Component {
         this.off()
     }
 
-    setActiveFilter = value => {
+    setActiveFilter = filterValue => {
         // console.log(`value`, value)
         const { by, name } = this.props
         const { getColumn, removeActiveFilter } = this.context
         const { metaKey: columnMetaKey, dataKey } = getColumn()
-        if (value === undefined) {
+        if (filterValue === undefined) {
             removeActiveFilter(columnMetaKey)
             return
         }
-        this.context.setActiveFilter({ columnMetaKey, value, name, dataKey, by })
+        this.context.setActiveFilter({ columnMetaKey, filterValue, name, dataKey, by })
     }
 
     updateLayer = () => {
+        const self = this
         const {
-            children: content = () => 'implement your filter here'
+            children: content = () => 'please implement your filter content'
         } = this.props
         const { show, top, right } = this.state
         const filterAPI = {
-            trigger: value => {
+            trigger: filterValue => {
+                // console.log(`triiger`,)
+                self.filterValue = filterValue
                 const { name, by } = this.props
-                const nextFilters = [], columnMetaKey = this.columnMetaKey, key = this.columnKey
+                const nextFilters = [], columnMetaKey = this.columnMetaKey, dataKey = this.columnKey
                 const isFilterInControlledMode = this.filters ? true : false
 
-                this.activeFilters.forEach((value, metaKey) => {
+                this.activeFilters.forEach((filter, metaKey) => {
                     if (metaKey !== columnMetaKey) {
-                        nextFilters.push(value)
+                        nextFilters.push(filter)
                     }
                 })
-                nextFilters.push({ value, name, key, by })
+                // console.log(`dataKey`,dataKey)
+                nextFilters.push({ filterValue, name, dataKey, by })
                 if (!isFilterInControlledMode) {
-                    this.setActiveFilter(value)
+                    // console.log(`set`,)
+                    this.setActiveFilter(filterValue)
                 }
+                // console.log(`nextFilters`,nextFilters)
                 this.context.onChangeFilters(nextFilters)
-            }
+            },
+            filterValue: self.filterValue
         }
+        // console.log(`update layer`,)
         ReactDOM.render(
-            <Layer
+            <FilterLayer
                 animation={'slide-down'}
-                className='designare-table-layer'
+                className='designare-table-layer designare'
                 onBlur={this.onBlur}
                 top={top}
                 right={window.innerWidth - right}
                 show={show}
-            >
-                {content(filterAPI)}
-            </Layer>,
+                content={content}
+                filterAPI={filterAPI}
+            />
+            ,
             this.container
         )
     }
@@ -137,7 +159,7 @@ export default class Filter extends React.Component {
         const filters = this.filters || this.defaultFilters
         if (filters) {
             const filter = this.getFilter(filters)
-            this.setActiveFilter(filter.value)
+            this.setActiveFilter(filter.filterValue)
         }
     }
 
@@ -150,7 +172,7 @@ export default class Filter extends React.Component {
         const filters = this.filters
         if (filters) {
             const filter = this.getFilter(filters)
-            this.setActiveFilter(filter.value)
+            this.setActiveFilter(filter.filterValue)
         }
         this.updateLayer()
     }
@@ -160,22 +182,30 @@ export default class Filter extends React.Component {
     }
 
     render() {
-        if (this.context.contextName !== 'thead') throw 'Filter component should be within Header component'
-        const { by, className = '', children: C, style = {}, onClick, ...restProps } = this.props
+        if (this.context.contextName !== 'thead') throw 'designare-table: Filter component should be within Header component'
+        const { show } = this.state
+        const { by,
+            className = '',
+            children: C,
+            style = {},
+            onClick,
+            activeColor,
+            defaultColor,
+            ...restProps } = this.props
         const width = style.width || 15
-        const minWidth = style.minWidth || width
-
+        const isActive = this.isActive || show
         return (
-            <div style={{ minWidth: minWidth, width: width, display: 'table-cell' }}>
+            <span>
+                &nbsp;&nbsp;&nbsp;
                 <div
                     ref={this.ref}
-                    className={`designare-table-filter ${className} ${this.columnMetaKey}`}
+                    className={`designare-table-filter designare-transition ${className} ${this.columnMetaKey} ${isActive ? 'active' : ''}`}
                     onClick={this.onToggleFilter}
-                    style={{ width: width, ...defaultStyle, ...style }}
+                    style={{ width: width, ...defaultStyle, ...style, color: isActive ? activeColor : defaultColor }}
                     {...restProps}>
                     <Icons.Filter />
                 </div>
-            </div>
+            </span>
         )
     }
 }

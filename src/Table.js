@@ -142,10 +142,10 @@ export default class Table extends React.Component {
         return this.activeFilters
     }
 
-    setActiveFilter = ({ columnMetaKey, dataKey, value, name, by }) => {
+    setActiveFilter = ({ columnMetaKey, dataKey, filterValue, name, by }) => {
         const previous = this.activeFilters.get(columnMetaKey) || {}
-        if (previous.dataKey !== dataKey || previous.value !== value) {
-            this.activeFilters.set(columnMetaKey, { value, name, dataKey, by })
+        if (previous.dataKey !== dataKey || previous.filterValue !== filterValue) {
+            this.activeFilters.set(columnMetaKey, { filterValue, name, dataKey, by })
             this._update()
         }
     }
@@ -266,14 +266,14 @@ export default class Table extends React.Component {
     }
 
     filter = data => {
+        console.log(`filter`)
         let result = data
         this.activeFilters.forEach(f => {
-
-            const { dataKey, by, value } = f
-            // console.log(`by`, by)
-            result = result.filter(row => by(row[dataKey], value, row))
+            const { dataKey, by, filterValue } = f
+            if(typeof by !== 'function') throw new Error('designare-table: by of Filter should be function')
+            console.log(`dataKey`,dataKey)
+            result = result.filter(row => by({dataKey, filterValue, row}))
         })
-        // console.log(`result`, result)
         return result
     }
 
@@ -557,11 +557,11 @@ function syncWidthAndHeight(table, columns, rowHeight = -1, dimensionInfo, resiz
         originalMaxWidthArray,
         resizedWidthArray
     )
-
+        // console.log(`maxWidthArray`,maxWidthArray)
+        // return
     let sum = maxWidthArray.reduce((prev, curr) => prev + curr, 0)
     const leftOver = rootWidth - sum
     if (leftOver > 0) {
-        console.log(`columns`,columns)
         for (let i = 0, len = columns.length; i < len; i++) {
             if (columns[i].width === '*') {
                 maxWidthArray[i] += leftOver

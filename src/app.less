@@ -2,11 +2,13 @@ body {
     font-family: sans-serif;
 }
 
+@boxShadow: 0px 2px 1px -1px rgba(0, 0, 0, 0.2), 0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 1px 3px 0px rgba(0, 0, 0, 0.12) !important;
+
 .designare-table {
     box-sizing: border-box;
     display: flex !important;
     flex-direction: column !important;
-    box-shadow: 0px 2px 1px -1px rgba(0, 0, 0, 0.2), 0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 1px 3px 0px rgba(0, 0, 0, 0.12) !important;
+    box-shadow: @boxShadow;
 
     table {
         width: auto;
@@ -30,13 +32,24 @@ body {
         width: auto;
     }
 
+    &-filter {
+        &.active, &:hover {
+            background-color: rgba(0,0,0,0.03);
+        }
+    }
+
     &-fixed {
         &-header {
             border-bottom: 1px solid rgba(0, 0, 0, 0.12);
-
             >div {
                 margin: -9px 0 -9px 0 !important; // hide header scroll bar
             }
+        }
+    }
+
+    &-layer {
+        &.designare {
+            box-shadow: @boxShadow;
         }
     }
 
@@ -124,7 +137,7 @@ body {
 
     .animate {
         .designare-transition {
-            transition: color .3s;
+            transition: color .3s, background-color .3s;
         }
     }
 }

@@ -20,7 +20,7 @@ export function createColumnMeta(
 
         // errors
         if (column.Cell && typeof column.Cell !== 'function') throw 'designare-table: Cell must be react function component'
-        if (column.Cell && column.Cell.prototype && column.Cell.prototype.render) throw 'designare-table: Cell must be react function component'
+        if (column.Cell && column.Cell.prototype && column.Cell.prototype.render) throw 'designare-table: Cell must be () => JSX.Element'
         if (column.width && column.width !== '*' && isNaN(column.width)) throw 'designare-table: width must be either "*" or number'
         if (column.colSpan && isNaN(column.colSpan)) throw 'designare-table: column.colSpan must be number'
 
