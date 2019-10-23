@@ -61,6 +61,7 @@ export default class Table extends React.Component {
         this.dimensionInfo = {}
         this.resizedWidthInfo = new Map()
         this.debouncedUpdate = debounce(this._update, 60)
+        this.debouncedSyncWidthAndHeight = debounce(this.syncWidthAndHeight, 100, { leading: true })
         this.debouncedReSyncWidthAndHeight = debounce(this.reSyncWidthAndHeight, 100, { leading: true })
         this.warnings = new Map()
         this.cells = new Map()
@@ -341,25 +342,29 @@ export default class Table extends React.Component {
         })
     }
 
-    reSyncWidthAndHeight = (force = false) => {
+    syncWidthAndHeight = force => {
         const { rowHeight } = this.props
         const { dimensionInfo, flattenSortedColumns, root, resizedWidthInfo, depthOfColumns } = this
-        const columns = flattenSortedColumns
+        syncWidthAndHeight(
+            root.current,
+            flattenSortedColumns,
+            rowHeight,
+            dimensionInfo,
+            resizedWidthInfo,
+            depthOfColumns,
+            force
+        )
+    }
+
+    reSyncWidthAndHeight = (force = false) => {
+        const { dimensionInfo, flattenSortedColumns, root } = this
         const isReSized = force || isDimensionChanged(
             root.current,
-            getColumnSize(columns),
+            getColumnSize(flattenSortedColumns),
             dimensionInfo
         )
         if (isReSized) {
-            syncWidthAndHeight(
-                root.current,
-                columns,
-                rowHeight,
-                dimensionInfo,
-                resizedWidthInfo,
-                depthOfColumns,
-                force
-            )
+            this.debouncedSyncWidthAndHeight(force)
         }
     }
 
@@ -367,23 +372,22 @@ export default class Table extends React.Component {
 
     componentDidUpdate() {
         if (this.state.hasError) return
-        this.debouncedReSyncWidthAndHeight()
+        this.reSyncWidthAndHeight()
     }
 
     componentDidMount() {
         // console.log(`table did mount`,)
         if (this.state.hasError) return
-        const { dimensionInfo, flattenSortedColumns, root, resizedWidthInfo, depthOfColumns } = this
-        const { rowHeight } = this.props
-        const columnSize = flattenSortedColumns.length
+        const { flattenSortedColumns } = this
+        const columnSize = getColumnSize(flattenSortedColumns)
         if (columnSize > 0) {
             if (this.cells.size % columnSize !== 0)
                 throw ERR0
-            if (this.headerCells.size % columnSize !== 0)
+            if (this.headerCells.size % flattenSortedColumns.length !== 0)
                 throw ERR1
         }
 
-        syncWidthAndHeight(root.current, flattenSortedColumns, rowHeight, dimensionInfo, resizedWidthInfo, depthOfColumns)
+        this.syncWidthAndHeight()
         window.addEventListener('resize', this.resize)
         this.isInit = true
         window.requestAnimationFrame(() => {
@@ -397,7 +401,7 @@ export default class Table extends React.Component {
     }
 
     render() {
-        console.log(`render table`,)
+        console.log(`render table`)
         if (this.state.hasError) return <div style={{ color: '#b51a28' }}>{this.state.error}</div>
 
         const {
