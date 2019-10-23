@@ -12,6 +12,7 @@ export default class Filter extends React.Component {
     static contextType = ThsContext
     static defaultProps = {
         activeColor: '#1890ff',
+        children: () => 'please implement your filter content',
         defaultColor: '#bfbfbf',
         onClick: () => { }
     }
@@ -100,17 +101,16 @@ export default class Filter extends React.Component {
     }
 
     updateLayer = () => {
-
-        const filter = this.my(this.filters)
-        const {
-            children: content = () => 'please implement your filter content'
-        } = this.props
+        const filters = this.filters
+        const filter = this.my(filters)
+        const isFilterInControlledMode = filters ? true : false
+        const { children: content } = this.props
         const { show, top, right } = this.state
+
         const filterAPI = {
             trigger: filterValue => {
                 const { name, by } = this.props
                 const nextFilters = [], columnMetaKey = this.columnMetaKey, dataKey = this.dataKey
-                const isFilterInControlledMode = this.filters ? true : false
                 this.filterValue = filterValue
                 this.activeFilters.forEach((filter, metaKey) => {
                     if (metaKey !== columnMetaKey) {
@@ -118,10 +118,13 @@ export default class Filter extends React.Component {
                     }
                 })
                 nextFilters.push({ filterValue, name, dataKey, by })
+                console.log(`isFilterInControlledMode`,isFilterInControlledMode)
                 isFilterInControlledMode ? undefined : this.setActiveFilter(filterValue)
                 this.context.onChangeFilters(nextFilters)
             },
-            filterValue: filter ? filter.filterValue : this.filterValue
+            filterValue: isFilterInControlledMode
+                ? filter ? filter.filterValue : undefined
+                : this.filterValue
         }
         // console.log(`update layer`,)
         ReactDOM.render(

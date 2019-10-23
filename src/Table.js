@@ -397,6 +397,7 @@ export default class Table extends React.Component {
     }
 
     render() {
+        console.log(`render table`,)
         if (this.state.hasError) return <div style={{ color: '#b51a28' }}>{this.state.error}</div>
 
         const {
