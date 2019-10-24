@@ -13,7 +13,6 @@ import {
     widthArray,
     max
 } from './util'
-import Icons from './Icons'
 import SyncScrolling from './SyncScrolling'
 import Spinner from './Loading'
 import './app.less'
@@ -90,7 +89,8 @@ export default class Table extends React.Component {
             headerCells: this.headerCells,
 
             activeColor: props.activeColor,
-            defaultColor: props.defaultColor
+            defaultColor: props.defaultColor,
+            rowHeight: props.rowHeight,
         }
         this.state = {
             hasError: false,
@@ -571,8 +571,6 @@ function syncWidthAndHeight(table, columns, rowHeight = -1, dimensionInfo, resiz
         originalMaxWidthArray,
         resizedWidthArray
     )
-    // console.log(`maxWidthArray`,maxWidthArray)
-    // return
     let sum = maxWidthArray.reduce((prev, curr) => prev + curr, 0)
     const leftOver = rootWidth - sum
     if (leftOver > 0) {
@@ -586,10 +584,12 @@ function syncWidthAndHeight(table, columns, rowHeight = -1, dimensionInfo, resiz
             }
         }
         if (balance > 0) {
-            const avg = balance / columns.length
             for (let i = 0, len = columns.length; i < len; i++) {
+                let avg = balance / (len - i)
+                avg = avg - avg % 1
                 maxWidthArray[i] += avg
                 originalMaxWidthArray[i] += avg
+                balance -= avg
             }
         }
         sum += leftOver

@@ -2,21 +2,19 @@ import React from 'react'
 import { ThsContext } from './context'
 import ReSizing from './ReSizing'
 
+const dragableWidth = 2
 const dragableStyle = {
     position: 'absolute',
     top: 0,
     bottom: 0,
-    width: 3,
+    width: dragableWidth,
     cursor: 'col-resize',
+    zIndex: 1
     // backgroundColor: 'aliceblue'
 }
 
 export default class Th extends React.Component {
     static contextType = ThsContext
-
-    prepare = () => {
-        this.column = this.context.getColumn()
-    }
 
     onMouseDown = (evt, leftOrRight) => {
         const { leafIndex, metaKey } = this.column
@@ -60,7 +58,7 @@ export default class Th extends React.Component {
     onMouseUp = evt => {
         this.parent.style.zIndex = this.parentOriginalZIndex
         this.leftOrRight === 'left' ? this.dragable.style.left = '0' : this.dragable.style.right = '0'
-        this.dragable.style.width = '3px'
+        this.dragable.style.width = `${dragableWidth}px`
         window.removeEventListener('mousemove', this.onMouseMove)
         window.removeEventListener('mouseup', this.onMouseUp)
     }
@@ -76,8 +74,8 @@ export default class Th extends React.Component {
     render() {
         if (this.context.contextName !== 'thead')
             throw 'Th should be within Header component'
+        this.column = this.context.getColumn()
 
-        this.prepare()
         const {
             index,
             style,

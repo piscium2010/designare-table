@@ -2,17 +2,16 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import { ThsContext } from './context'
 import Icons from './Icons'
-import Layer from '@piscium2010/lime/Layer'
-import '@piscium2010/lime/Layer/layer.css'
+import FilterLayer from './FilterLayer'
 
-const FilterLayer = ({ content, filterAPI, ...restProps }) => <Layer {...restProps}>{content(filterAPI)}</Layer>
-const defaultStyle = { position: 'absolute', top: 0, right: 3, bottom: 0, display: 'flex', justifyContent: 'center', cursor: 'pointer', userSelect: 'none' }
+const defaultStyle = { position: 'absolute', top: 0, right: 0, bottom: 0, display: 'flex', justifyContent: 'center', cursor: 'pointer', userSelect: 'none' }
 
 export default class Filter extends React.Component {
     static contextType = ThsContext
     static defaultProps = {
         children: () => 'please implement your filter content',
-        onClick: () => { }
+        onClick: () => { },
+        render: () => <Icons.Filter />
     }
 
     ref = React.createRef()
@@ -35,7 +34,7 @@ export default class Filter extends React.Component {
     }
 
     get container() {
-        return this.context.getFilterLayerContainer(this.columnMetaKey)
+        return this._container || (this._container = this.context.getFilterLayerContainer(this.columnMetaKey))
     }
 
     get defaultFilters() {
@@ -101,9 +100,9 @@ export default class Filter extends React.Component {
         const { metaKey: columnMetaKey, dataKey } = getColumn()
         if (filterValue === undefined) {
             removeActiveFilter(columnMetaKey)
-            return
+        } else {
+            this.context.setActiveFilter({ columnMetaKey, filterValue, name, dataKey, by })
         }
-        this.context.setActiveFilter({ columnMetaKey, filterValue, name, dataKey, by })
     }
 
     updateLayer = () => {
@@ -112,7 +111,6 @@ export default class Filter extends React.Component {
         const isFilterInControlledMode = filters ? true : false
         const { children: content } = this.props
         const { show, top, right } = this.state
-
         const filterAPI = {
             trigger: filterValue => {
                 const { name, by, ...restProps } = this.props
@@ -133,7 +131,7 @@ export default class Filter extends React.Component {
                 ? filter ? filter.filterValue : undefined
                 : this.filterValue
         }
-        // console.log(`update layer`,)
+
         ReactDOM.render(
             <FilterLayer
                 animation={'slide-down'}
@@ -162,7 +160,6 @@ export default class Filter extends React.Component {
     componentDidMount() {
         // console.log(`filter did mount`,)
         this.context.addEventListener('tableDidMount', this.tableDidMount)
-        this.container.className.includes('show') ? this.on() : undefined
     }
 
     componentDidUpdate() {
@@ -175,22 +172,26 @@ export default class Filter extends React.Component {
     }
 
     componentWillUnmount() {
+        ReactDOM.unmountComponentAtNode(this.container)
         this.context.removeEventListener('tableDidMount', this.tableDidMount)
     }
 
     render() {
         if (this.context.contextName !== 'thead') throw 'designare-table: Filter component should be within Header component'
         const { show } = this.state
-        const { by,
+        const {
+            by,
             className = '',
             children: C,
             style = {},
             onClick,
             activeColor,
             defaultColor,
+            render: Render,
             ...restProps } = this.props
-        const width = style.width || 15
+        const width = style.width || 18
         const isActive = this.isActive || show
+
         return (
             <span>
                 &nbsp;&nbsp;&nbsp;
@@ -200,7 +201,7 @@ export default class Filter extends React.Component {
                     onClick={this.onToggleFilter}
                     style={{ width: width, ...defaultStyle, ...style, color: isActive ? this.activeColor : this.defaultColor }}
                     {...restProps}>
-                    <Icons.Filter />
+                    <Render/>
                 </div>
             </span>
         )
