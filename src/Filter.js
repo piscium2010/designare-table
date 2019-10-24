@@ -11,14 +11,20 @@ const defaultStyle = { position: 'absolute', top: 0, right: 3, bottom: 0, displa
 export default class Filter extends React.Component {
     static contextType = ThsContext
     static defaultProps = {
-        activeColor: '#1890ff',
         children: () => 'please implement your filter content',
-        defaultColor: '#bfbfbf',
         onClick: () => { }
     }
 
     ref = React.createRef()
     state = { show: false, top: 0, right: 0 }
+
+    get activeColor() {
+        return this.props.activeColor || this.context.activeColor
+    }
+
+    get defaultColor() {
+        return this.props.defaultColor || this.context.defaultColor
+    }
 
     get dataKey() {
         return this.context.getColumn().dataKey
@@ -109,7 +115,7 @@ export default class Filter extends React.Component {
 
         const filterAPI = {
             trigger: filterValue => {
-                const { name, by } = this.props
+                const { name, by, ...restProps } = this.props
                 const nextFilters = [], columnMetaKey = this.columnMetaKey, dataKey = this.dataKey
                 this.filterValue = filterValue
                 this.activeFilters.forEach((filter, metaKey) => {
@@ -117,9 +123,10 @@ export default class Filter extends React.Component {
                         nextFilters.push(filter)
                     }
                 })
-                nextFilters.push({ filterValue, name, dataKey, by })
-                console.log(`isFilterInControlledMode`,isFilterInControlledMode)
+                const me = { filterValue, name, dataKey, by }
+                isFilterInControlledMode ? Object.assign(me, restProps) : undefined
                 isFilterInControlledMode ? undefined : this.setActiveFilter(filterValue)
+                nextFilters.push(me)
                 this.context.onChangeFilters(nextFilters)
             },
             filterValue: isFilterInControlledMode
@@ -191,7 +198,7 @@ export default class Filter extends React.Component {
                     ref={this.ref}
                     className={`designare-table-filter designare-transition ${className} ${this.columnMetaKey} ${isActive ? 'active' : ''}`}
                     onClick={this.onToggleFilter}
-                    style={{ width: width, ...defaultStyle, ...style, color: isActive ? activeColor : defaultColor }}
+                    style={{ width: width, ...defaultStyle, ...style, color: isActive ? this.activeColor : this.defaultColor }}
                     {...restProps}>
                     <Icons.Filter />
                 </div>
@@ -200,9 +207,3 @@ export default class Filter extends React.Component {
     }
 }
 
-function print(filter) {
-    const name = filter.name ? `name: ${filter.name}, ` : ''
-    const dataKey = filter.dataKey ? `dataKey: ${filter.dataKey}, ` : ''
-    const value = Array.isArray(filter.value) ? `value: [${filter.value}]` : `value: ${filter.value}`
-    return `{${name}${dataKey}${value}}`
-}

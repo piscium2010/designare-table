@@ -13,7 +13,7 @@ export default class Body extends React.Component {
 
     render() {
         const { isInit, syncScrolling, removeSyncScrolling } = this.context
-        const { className, tr, style, ...restProps } = this.props
+        const { className, tr, style, onScroll, ...restProps } = this.props
         return (
             <div
                 className={`designare-table-fixed-body ${className}`}
@@ -24,6 +24,7 @@ export default class Body extends React.Component {
                 <Normal
                     syncScrolling={syncScrolling}
                     removeSyncScrolling={removeSyncScrolling}
+                    onScroll={onScroll}
                 >
                     <HTMLTbody tr={tr} />
                 </Normal>
@@ -50,13 +51,12 @@ function Normal(props) {
     useEffect(() => {
         props.syncScrolling(ref.current, 'both')
         return () => {
-            console.log(`unmount body normal`,)
             props.removeSyncScrolling(ref.current)
         }
     }, [])
 
     return (
-        <div ref={ref} className='designare-table-body' style={{ width: '100%', height: '100%', overflow: 'auto' }}>
+        <div ref={ref} className='designare-table-body' style={{ width: '100%', height: '100%', overflow: 'auto' }} onScroll={props.onScroll}>
             <table>
                 {props.children}
             </table>

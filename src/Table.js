@@ -13,27 +13,15 @@ import {
     widthArray,
     max
 } from './util'
+import Icons from './Icons'
 import SyncScrolling from './SyncScrolling'
+import Spinner from './Loading'
 import './app.less'
 
 export const ERR0 = 'designare-table: Cell component should render one and only one Td component of designare-table'
 export const ERR1 = 'designare-table: if Header is not string, it should render one and only one Th component of designare-table'
 
 const doNothing = () => { }
-const loadingLayout = {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-    backgroundColor: 'white',
-    opacity: .5,
-    transition: 'opacity .3s',
-    zIndex: 1,
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center'
-}
 
 export default class Table extends React.Component {
     static defaultProps = {
@@ -42,6 +30,8 @@ export default class Table extends React.Component {
         onChangeSorter: doNothing,
         onChangeFilters: doNothing,
         onChangePaging: doNothing,
+        activeColor: '#1890ff',
+        defaultColor: '#bfbfbf',
         rowHeight: 38
     }
 
@@ -97,7 +87,10 @@ export default class Table extends React.Component {
             isInit: () => this.isInit,
 
             cells: this.cells,
-            headerCells: this.headerCells
+            headerCells: this.headerCells,
+
+            activeColor: props.activeColor,
+            defaultColor: props.defaultColor
         }
         this.state = {
             hasError: false,
@@ -291,8 +284,9 @@ export default class Table extends React.Component {
         let result = data
         this.activeFilters.forEach(f => {
             const { dataKey, by, filterValue } = f
-            if (typeof by !== 'function') throw new Error('designare-table: by of Filter should be function')
-            result = result.filter(row => by({ dataKey, filterValue, row }))
+            if (typeof by === 'function') {
+                result = result.filter(row => by({ dataKey, filterValue, row }))
+            }
         })
         return result
     }
@@ -405,11 +399,13 @@ export default class Table extends React.Component {
         if (this.state.hasError) return <div style={{ color: '#b51a28' }}>{this.state.error}</div>
 
         const {
+            activeColor,
+            defaultColor,
             className = '',
             columns = [],
             data = [],
             style,
-            loading: Loading,
+            loading,
             pageSizeOptions,
         } = this.props
         this.depthOfColumns = depthOf(columns)
@@ -454,13 +450,7 @@ export default class Table extends React.Component {
                         pageSizeOptions={pageSizeOptions}
                     />
                 }
-                {
-                    Loading ?
-                        typeof Loading === 'function'
-                            ? <Loading />
-                            : <div style={loadingLayout}>{Loading === true ? <span>loading...</span> : Loading}</div>
-                        : null
-                }
+                {loading && <Spinner loading={loading} style={{ color: activeColor }} />}
             </div>
         )
     }

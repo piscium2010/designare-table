@@ -8,11 +8,8 @@ const commonStyle = { position: 'absolute', left: 4, top: '50%', width: 9, trans
 
 export default class Sorter extends React.Component {
     static contextType = ThsContext
-
     static defaultProps = {
-        activeColor: '#1890ff',
         by: 'string',
-        defaultColor: '#bfbfbf',
         directions: ['asc', 'des'],
         onClickCapture: () => { },
         render: ({ direction, directions, defaultColor, activeColor }) => {
@@ -43,6 +40,14 @@ export default class Sorter extends React.Component {
                 </React.Fragment>
             )
         }
+    }
+
+    get activeColor() {
+        return this.props.activeColor || this.context.activeColor
+    }
+
+    get defaultColor() {
+        return this.props.defaultColor || this.context.defaultColor
     }
 
     get dataKey() {
@@ -115,7 +120,7 @@ export default class Sorter extends React.Component {
             <span className={`designare-table-sorter ${className}`} style={{ ...defaultStyle, ...style }} onClickCapture={onClick} {...restProps}>
                 &nbsp;&nbsp;
                 {/* Render(isActive ? status[i] : 'default', directions, defaultColor, activeColor) */}
-                <Render direction={isActive ? status[i] : 'default'} directions={directions} defaultColor={defaultColor} activeColor={activeColor} />
+                <Render direction={isActive ? status[i] : 'default'} directions={directions} defaultColor={this.defaultColor} activeColor={this.activeColor} />
             </span>
         )
     }
@@ -125,9 +130,7 @@ function sortByNumeric(a, b) {
     let left = a / 1, right = b / 1 // convert to number
     left = isNaN(left) ? 0 : left
     right = isNaN(right) ? 0 : right
-    if (left > right) { return 1 }
-    if (left === right) { return 0 }
-    if (left < right) { return -1 }
+    return left - right
 }
 
 function sortByString(a, b) {
