@@ -7,13 +7,16 @@ const loadingLayout = {
     left: 0,
     right: 0,
     bottom: 0,
-    backgroundColor: 'white',
-    opacity: .5,
-    transition: 'opacity .3s',
     zIndex: 1,
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center'
+}
+
+const maskStyle = {
+    backgroundColor: 'white',
+    opacity: .5,
+    transition: 'opacity .3s',
 }
 
 export default function (props) {
@@ -31,13 +34,16 @@ export default function (props) {
                 isActive
                     ? typeof Loading === 'function'
                         ? <Loading />
-                        : <div style={loadingLayout}>
-                            {
-                                Loading === true
-                                    ? <Icons.Loading className={`designare-table-loading`} {...restProps} />
-                                    : Loading
-                            }
-                        </div>
+                        : [
+                            <div key={0} style={{...loadingLayout, ...maskStyle}}></div>,
+                            <div key={1} style={loadingLayout}>
+                                {
+                                    Loading === true
+                                        ? <Icons.Loading className={`designare-spin`} {...restProps} />
+                                        : Loading
+                                }
+                            </div>
+                        ]
                     : null
             }
         </Fragment>
