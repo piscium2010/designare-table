@@ -1,7 +1,5 @@
 import React, { useRef, useEffect } from 'react'
 import HTMLTbody from './HTMLTbody'
-import Animate from './Animate'
-import Tds from './Tds'
 import { Context } from './context'
 
 export default class Body extends React.Component {
@@ -16,11 +14,10 @@ export default class Body extends React.Component {
         const { className, tr, style, onScroll, ...restProps } = this.props
         return (
             <div
-                className={`designare-table-fixed-body ${className}`}
+                className={`designare-table-fixed-body animate ${className}`}
                 style={{ flex: '0 1 100%', position: 'relative', overflow: 'hidden', opacity: isInit() ? 1 : 0, ...style }}
                 {...restProps}
             >
-                <Animate>
                 <Normal
                     syncScrolling={syncScrolling}
                     removeSyncScrolling={removeSyncScrolling}
@@ -40,7 +37,6 @@ export default class Body extends React.Component {
                 >
                     <HTMLTbody fixed='right' tr={tr} />
                 </Right>
-                </Animate>
             </div>
         )
     }
