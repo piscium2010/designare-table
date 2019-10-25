@@ -351,6 +351,7 @@ export default class Table extends React.Component {
     }
 
     reSyncWidthAndHeight = (force = false) => {
+        // return
         const { dimensionInfo, flattenSortedColumns, root } = this
         const isReSized = force || isDimensionChanged(
             root.current,
@@ -610,10 +611,13 @@ function syncWidthAndHeight(table, columns, rowHeight = -1, dimensionInfo, resiz
     if (dimensionInfo.dimensionId !== dimensionId || force) {
         // const tableWidth = leftOver ? '100%' : sum + 'px'
         const tableWidth = sum + 'px'
-        // setStyle(headerRoot, 'minWidth', `${tableWidth}`)
+        // console.log(`leftOver`, leftOver)
         setStyle(leftHeaderRoot, 'minWidth', `${tableWidth}`)
         setStyle(rightHeaderRoot, 'minWidth', `${tableWidth}`)
-        // setStyle(bodyRoot, 'minWidth', `${tableWidth}`)
+        if (leftOver < 0) {
+            setStyle(headerRoot, 'minWidth', `${tableWidth}`)
+            setStyle(bodyRoot, 'minWidth', `${tableWidth}`)
+        }
     }
 
     removeColgroup(headerRoot)
