@@ -135,7 +135,7 @@ export default class Filter extends React.Component {
         ReactDOM.render(
             <FilterLayer
                 animation={'slide-down'}
-                className='designare-table-layer designare'
+                className='designare-table-layer designare-shadow'
                 onBlur={this.onBlur}
                 top={top}
                 right={window.innerWidth - right}

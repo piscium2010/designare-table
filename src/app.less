@@ -14,9 +14,10 @@ body {
         width: auto;
         min-width: initial;
         border-collapse: collapse !important;
+        background-color: white;
     }
 
-    table, tr, tbody, thead, th, td {
+    tr, tbody, thead, th, td {
         background-color: inherit;
     }
 
@@ -51,7 +52,7 @@ body {
     }
 
     &-layer {
-        &.designare {
+        &.designare-shadow {
             box-shadow: @boxShadow;
         }
     }
@@ -69,6 +70,26 @@ body {
 
         &::-webkit-scrollbar:horizontal {
             height: 18px;
+        }
+    }
+
+    &-header-right {
+        // margin-right: -18px !important;
+        // padding-right: 18px !important;
+    }
+
+
+    &-body {
+        &-left {
+            &.designare-shadow {
+                box-shadow: 3px 0 5px rgba(9,9,9,.08);
+            }
+        }
+
+        &-right {
+            &.designare-shadow {
+                box-shadow: -3px 0 5px rgba(9,9,9,.08);
+            }
         }
     }
 
