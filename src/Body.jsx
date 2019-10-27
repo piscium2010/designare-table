@@ -37,7 +37,6 @@ export default class Body extends React.Component {
         this.shadowRight = false
         this.debouncedReset = debounce(this.reset, 100)
     }
-    
 
     onScroll = evt => {
         this.shadow(evt.target.scrollLeft)
@@ -56,7 +55,7 @@ export default class Body extends React.Component {
             this.shadowLeft = true
         }
         if (scrollRight <= 0) {
-            // this.shadowRight ? this.rightRef.current.classList.remove('designare-shadow') : undefined
+            this.shadowRight ? this.rightRef.current.classList.remove('designare-shadow') : undefined
             this.shadowRight = false
         } else {
             this.shadowRight ? undefined : this.rightRef.current.classList.add('designare-shadow')
@@ -147,7 +146,7 @@ function Left(props) {
             className='designare-table-body-left'
             style={{ position: 'absolute', left: 0, top: 0, bottom: 15, overflow: 'hidden', height: '100%' }}
         >
-            <div ref={ref} style={{ height: '100%', overflowY: 'auto' }}>
+            <div ref={ref} style={{ height: '100%', overflowY: 'auto', backgroundColor:'inherit' }}>
                 <table>
                     {props.children}
                 </table>
@@ -169,7 +168,7 @@ function Right(props) {
             className='designare-table-body-right'
             style={{ position: 'absolute', right: 0, top: 0, bottom: 15, overflow: 'hidden', height: '100%' }}
         >
-            <div ref={ref} style={{ height: '100%', overflowY: 'auto' }}>
+            <div ref={ref} style={{ height: '100%', overflowY: 'auto', backgroundColor:'inherit' }}>
                 <table>
                     {props.children}
                 </table>

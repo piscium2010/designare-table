@@ -2,12 +2,74 @@ import React, { useRef, useEffect } from 'react'
 import Thead from './HTMLThead'
 import Animate from './Animate'
 import { Context } from './context'
+import debounce from 'lodash/debounce'
 
 export default class Header extends React.Component {
     static contextType = Context
     static defaultProps = {
         className: '',
         tr: ({ cells }) => <tr>{cells}</tr>
+    }
+
+    get headerWidth() {
+        return this._headerWidth || (this._headerWidth = this.headerRef.current.offsetWidth)
+    }
+
+    get tableWidth() {
+        return this._tableWidth || (this._tableWidth = this.tableRef.current.offsetWidth)
+    }
+
+    set headerWidth(value) {
+        this._headerWidth = value
+    }
+
+    set tableWidth(value) {
+        this._tableWidth = value
+    }
+
+    constructor(props) {
+        super(props)
+        this.headerRef
+        this.tableRef = React.createRef()
+        this.leftRef = React.createRef()
+        this.rightRef = React.createRef()
+        this.shadowLeft = false
+        this.shadowRight = false
+        this.debouncedReset = debounce(this.reset, 100)
+    }
+
+    onScroll = evt => {
+        this.shadow(evt.target.scrollLeft)
+        this.props.onScroll(evt)
+        this.debouncedReset()
+    }
+
+    shadow = scrollLeft => {
+        const scrollRight = this.tableWidth - scrollLeft - this.headerWidth
+
+        if (scrollLeft == 0) {
+            this.shadowLeft ? this.leftRef.current.classList.remove('designare-shadow') : undefined
+            this.shadowLeft = false
+        } else {
+            this.shadowLeft ? undefined : this.leftRef.current.classList.add('designare-shadow')
+            this.shadowLeft = true
+        }
+        if (scrollRight <= 0) {
+            this.shadowRight ? this.rightRef.current.classList.remove('designare-shadow') : undefined
+            this.shadowRight = false
+        } else {
+            this.shadowRight ? undefined : this.rightRef.current.classList.add('designare-shadow')
+            this.shadowRight = true
+        }
+    }
+
+    reset = () => {
+        this.tableWidth = undefined
+        this.headerWidth = undefined
+    }
+
+    componentDidUpdate() {
+        this.shadow(this.headerRef.current.scrollLeft)
     }
 
     render() {
@@ -19,17 +81,19 @@ export default class Header extends React.Component {
                 style={{ flex: '0 0 auto', overflow: 'hidden', opacity: isInit() ? 1 : 0, ...style }}
                 {...restProps}
             >
-                <Animate style={{ marginBottom: 0, position: 'relative', overflowX: 'hidden' }}>
+                <Animate style={{ marginBottom: 0, position: 'relative', overflowX: 'hidden', backgroundColor: 'inherit' }}>
                     <Normal
+                        deliverHeaderRef={ref => this.headerRef = ref}
+                        tableRef={this.tableRef}
                         syncScrolling={syncScrolling}
                         removeSyncScrolling={removeSyncScrolling}
                     >
                         <Thead tr={tr} />
                     </Normal>
-                    <Left>
+                    <Left leftRef={this.leftRef}>
                         <Thead fixed='left' tr={tr} />
                     </Left>
-                    <Right>
+                    <Right rightRef={this.rightRef}>
                         <Thead fixed='right' tr={tr} />
                     </Right>
                 </Animate>
@@ -40,16 +104,22 @@ export default class Header extends React.Component {
 
 function Normal(props) {
     const ref = useRef(null)
+    const { syncScrolling, tableRef, deliverHeaderRef } = props
     useEffect(() => {
-        props.syncScrolling(ref.current, 'scrollLeft')
+        deliverHeaderRef(ref)
+        syncScrolling(ref.current, 'scrollLeft')
         return () => {
-            props.removeSyncScrolling(ref.current)
+            removeSyncScrolling(ref.current)
         }
     }, [])
 
     return (
-        <div ref={ref} className='designare-table-header' style={{ overflowX: 'scroll', overflowY: 'hidden' }}>
-            <table>
+        <div
+            ref={ref}
+            className='designare-table-header'
+            style={{ overflowX: 'scroll', overflowY: 'hidden' }}
+        >
+            <table ref={tableRef}>
                 {props.children}
             </table>
         </div>
@@ -57,8 +127,11 @@ function Normal(props) {
 }
 
 function Left(props) {
+    const { leftRef } = props
     return (
-        <div className='designare-table-header-left' style={{ position: 'absolute', overflow: 'hidden', top: 0, left: 0, }}>
+        <div
+            ref={leftRef}
+            className='designare-table-header-left'>
             <table>
                 {props.children}
             </table>
@@ -67,8 +140,11 @@ function Left(props) {
 }
 
 function Right(props) {
+    const { rightRef } = props
     return (
-        <div className='designare-table-header-right' style={{ overflow: 'hidden', top: 0, right: 0, position: 'absolute' }}>
+        <div
+            ref={rightRef}
+            className='designare-table-header-right'>
             <table>
                 {props.children}
             </table>

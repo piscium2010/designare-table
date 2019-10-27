@@ -77,9 +77,10 @@ export default class Th extends React.Component {
         this.column = this.context.getColumn()
 
         const {
+            children,
+            className = '',
             index,
             style,
-            children,
             ...restProps
         } = this.props
         const column = this.column
@@ -90,6 +91,7 @@ export default class Th extends React.Component {
 
         return (
             <th
+                className={`${isMyColumn && fixed ? 'designare-fixed':''} ${className}`}
                 {...restProps}
                 colSpan={colSpan}
                 rowSpan={rowSpan}

@@ -483,6 +483,7 @@ function syncWidthAndHeight(table, columns, rowHeight = -1, dimensionInfo, resiz
     // console.log(`columnSize`,columnSize)
     // header
     const [headerWrapper, headerRoot, header] = findDOM('header')
+    // console.log(`heaerRoot`,headerRoot)
     const [leftHeaderWrapper, leftHeaderRoot, leftHeader] = findDOM('header', 'left')
     const [rightHeaderWrapper, rightHeaderRoot, rightHeader] = findDOM('header', 'right')
 
@@ -672,28 +673,29 @@ function syncWidthAndHeight(table, columns, rowHeight = -1, dimensionInfo, resiz
     }
 
     if (bodyRoot && bodyRoot.offsetHeight > bodyRoot.parentElement.offsetHeight) {
-        syncHeaderBodyVerticalScrollStatus(headerRoot, true /* scroll */)
-        hideVerticalScrollBarOfFixBody(leftBodyRoot, true /* scroll */)
-        hideVerticalScrollBarOfFixBody(rightBodyRoot, true /* scroll */)
+        //body scroll vertically
+        syncHeaderBodyVerticalScrollStatus(headerRoot, true)
+        hideVerticalScrollBarOfTableFixedHeader(table, true)
+        hideVerticalScrollBarOfBody(leftBodyRoot, true)
+        hideVerticalScrollBarOfBody(rightBodyRoot, true)
     } else {
-        syncHeaderBodyVerticalScrollStatus(headerRoot, false /* scroll */)
-        hideVerticalScrollBarOfFixBody(leftBodyRoot, false /* scroll */)
-        hideVerticalScrollBarOfFixBody(rightBodyRoot, false /* scroll */)
+        syncHeaderBodyVerticalScrollStatus(headerRoot, false)
+        hideVerticalScrollBarOfTableFixedHeader(table, false)
+        hideVerticalScrollBarOfBody(leftBodyRoot, false)
+        hideVerticalScrollBarOfBody(rightBodyRoot, false)
     }
 
-    // if body scroll horizontally
     if (bodyRoot && bodyRoot.offsetWidth > bodyRoot.parentElement.offsetWidth) {
-        hideHorizontalScrollBarOfFixBody(leftBodyRoot, true /* scroll */)
-        hideHorizontalScrollBarOfFixBody(rightBodyRoot, true /* scroll */)
-
-        syncBodyHorizontalScrollStatus(leftBodyRoot, true /* scroll */)
-        syncBodyHorizontalScrollStatus(rightBodyRoot, true /* scroll */)
+        //body scroll horizontally
+        hideHorizontalScrollBarOfFixBody(leftBodyRoot, true)
+        hideHorizontalScrollBarOfFixBody(rightBodyRoot, true)
+        syncBodyHorizontalScrollStatus(leftBodyRoot, true)
+        syncBodyHorizontalScrollStatus(rightBodyRoot, true)
     } else {
-        hideHorizontalScrollBarOfFixBody(leftBodyRoot, false /* scroll */)
-        hideHorizontalScrollBarOfFixBody(rightBodyRoot, false /* scroll */)
-
-        syncBodyHorizontalScrollStatus(leftBodyRoot, false /* scroll */)
-        syncBodyHorizontalScrollStatus(rightBodyRoot, false /* scroll */)
+        hideHorizontalScrollBarOfFixBody(leftBodyRoot, false)
+        hideHorizontalScrollBarOfFixBody(rightBodyRoot, false)
+        syncBodyHorizontalScrollStatus(leftBodyRoot, false)
+        syncBodyHorizontalScrollStatus(rightBodyRoot, false)
     }
 
     window.requestAnimationFrame(() => {
@@ -840,7 +842,7 @@ function hideHorizontalScrollBarOfFixBody(bodyRoot, scroll = false) {
 
 }
 
-function hideVerticalScrollBarOfFixBody(bodyRoot, scroll = false) {
+function hideVerticalScrollBarOfBody(bodyRoot, scroll = false) {
     if (scroll) {
         bodyRoot ? bodyRoot.parentElement.parentElement.style.marginRight = '15px' : undefined
         bodyRoot ? bodyRoot.parentElement.style.marginRight = '-15px' : undefined
@@ -863,6 +865,15 @@ function syncBodyHorizontalScrollStatus(bodyRoot, scroll = false) {
         bodyRoot ? bodyRoot.parentElement.style.overflowX = 'scroll' : undefined
     } else {
         bodyRoot ? bodyRoot.parentElement.style.overflowX = 'hidden' : undefined
+    }
+}
+
+function hideVerticalScrollBarOfTableFixedHeader(table, scroll = false) {
+    const el = table.getElementsByClassName('designare-table-fixed-header')[0]
+    if(scroll) {
+        el.classList.add('designare-mask')
+    } else {
+        el.classList.remove('designare-mask')
     }
 }
 

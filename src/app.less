@@ -9,15 +9,15 @@ body {
     display: flex !important;
     flex-direction: column !important;
     box-shadow: @boxShadow;
+    background-color: white;
 
     table {
         width: auto;
         min-width: initial;
         border-collapse: collapse !important;
-        background-color: white;
     }
 
-    tr, tbody, thead, th, td {
+    table, tr, tbody, thead, th, td {
         background-color: inherit;
     }
 
@@ -43,11 +43,29 @@ body {
 
     &-fixed {
         &-header {
-            border-bottom: 1px solid rgba(0, 0, 0, 0.12);
-            >div {
-                margin: -9px -18px -9px 0 !important; // hide header h scroll bar
-                padding-right: 18px !important; // hide header v scroll bar
+            position: relative;
+            background-color: inherit;
+
+            &.designare-mask {
+                &::after{
+                    content:"";
+                    position: absolute;
+                    height: 100%;
+                    width: 18px;
+                    background-color: inherit;
+                    right: 0px;
+                    top:0;
+                }
             }
+
+            border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+            > div {
+                margin: -9px 0 -9px 0 !important; // hide header h scroll bar
+            }
+        }
+
+        &-body {
+            background-color: inherit;
         }
     }
 
@@ -73,20 +91,53 @@ body {
         }
     }
 
-    &-header-right {
-        // margin-right: -18px !important;
-        // padding-right: 18px !important;
+    &-header {
+        background-color: inherit;
+        &-left {
+            overflow: hidden;
+            top:0;
+            left:0;
+            position: absolute;
+            background-color: inherit;
+            &.designare-shadow {
+                box-shadow: 3px 0 5px rgba(9,9,9,.08);
+            }
+        }
+        &-right {
+            overflow: hidden;
+            top: 0;
+            right: 0;
+            // padding-right: 18px !important; 
+            position: absolute;
+            background-color: inherit;
+            &.designare-shadow {
+                // color: red;
+                
+
+                .designare-fixed:last-of-type {
+                    // color: blue;
+                    text-decoration: underline;
+                }
+
+                .designare-fixed:first-of-type {
+                    color: pink;
+                }
+            }
+        }
     }
 
 
     &-body {
+        background-color: inherit;
         &-left {
+            background-color: inherit;
             &.designare-shadow {
                 box-shadow: 3px 0 5px rgba(9,9,9,.08);
             }
         }
 
         &-right {
+            background-color: inherit;
             &.designare-shadow {
                 box-shadow: -3px 0 5px rgba(9,9,9,.08);
             }
