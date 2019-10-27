@@ -11,28 +11,35 @@ body {
     box-shadow: @boxShadow;
     background-color: white;
 
-    table {
-        width: auto;
-        min-width: initial;
-        border-collapse: collapse !important;
-    }
-
     table, tr, tbody, thead, th, td {
         background-color: inherit;
     }
 
-    thead {
-        td,
-        th {
-            border-bottom: none;
-        }
-    }
-
-    th,
-    td {
-        padding: 0 6px;
-        border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+    table {
         width: auto;
+        min-width: initial;
+        border-collapse: collapse !important;
+
+        tr {
+            border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+            &:last-of-type {
+                border-bottom: none;
+            }
+
+            th,
+            td {
+                padding: 0 16px;
+                width: auto;
+                border-bottom: none;
+            }
+        }
+
+        thead {
+            td,
+            th {
+                border-bottom: none;
+            }
+        }
     }
 
     &-filter {
@@ -55,6 +62,7 @@ body {
                     background-color: inherit;
                     right: 0px;
                     top:0;
+                    z-index: 1;
                 }
             }
 
@@ -100,7 +108,9 @@ body {
             position: absolute;
             background-color: inherit;
             &.designare-shadow {
-                box-shadow: 3px 0 5px rgba(9,9,9,.08);
+                .designare-fixed {
+                    box-shadow: 3px 0 5px rgba(9,9,9,.08);
+                }
             }
         }
         &-right {
@@ -111,16 +121,8 @@ body {
             position: absolute;
             background-color: inherit;
             &.designare-shadow {
-                // color: red;
-                
-
-                .designare-fixed:last-of-type {
-                    // color: blue;
-                    text-decoration: underline;
-                }
-
-                .designare-fixed:first-of-type {
-                    color: pink;
+                .designare-fixed {
+                    box-shadow: -3px 0 5px rgba(9,9,9,.08);
                 }
             }
         }

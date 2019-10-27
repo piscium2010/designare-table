@@ -112,7 +112,7 @@ export default class Body extends React.Component {
 
 function Normal(props) {
     const ref = useRef(null)
-    const { syncScrolling, onScroll, tableRef, deliverBodyRef } = props
+    const { syncScrolling, removeSyncScrolling, onScroll, tableRef, deliverBodyRef } = props
     useEffect(() => {
         deliverBodyRef(ref)
         syncScrolling(ref.current, 'both')
@@ -135,7 +135,7 @@ function Normal(props) {
 
 function Left(props) {
     const ref = useRef(null)
-    const { syncScrolling, leftRef } = props
+    const { syncScrolling, removeSyncScrolling, leftRef } = props
     useEffect(() => {
         syncScrolling(ref.current, 'scrollTop')
         return () => { removeSyncScrolling(ref.current) }
@@ -157,7 +157,7 @@ function Left(props) {
 
 function Right(props) {
     const ref = useRef(null)
-    const { syncScrolling, rightRef } = props
+    const { syncScrolling, removeSyncScrolling, rightRef } = props
     useEffect(() => {
         syncScrolling(ref.current, 'scrollTop')
         return () => { removeSyncScrolling(ref.current) }

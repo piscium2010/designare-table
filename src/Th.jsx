@@ -84,14 +84,15 @@ export default class Th extends React.Component {
             ...restProps
         } = this.props
         const column = this.column
-        const { colSpan, rowSpan, fixed, isFirst, isLast, isLeaf } = column
+        const { colSpan, rowSpan, fixed, isFirst, isLast, isLeaf, isFirstFixedColumn, isLastFixedColumn } = column
         const fixHeader = this.context.fixed
         const isMyColumn = fixHeader ? fixed === fixHeader : !fixed
         const thStyle = isMyColumn ? { zIndex: 1 } : { visibility: 'hidden', pointerEvents: 'none', zIndex: 0 }
+        const fixedColumnShadowClass = isMyColumn && (isFirstFixedColumn || isLastFixedColumn) ? 'designare-fixed' : ''
 
         return (
             <th
-                className={`${isMyColumn && fixed ? 'designare-fixed':''} ${className}`}
+                className={`${fixedColumnShadowClass} ${className}`}
                 {...restProps}
                 colSpan={colSpan}
                 rowSpan={rowSpan}

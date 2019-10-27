@@ -8,6 +8,7 @@ export default class Header extends React.Component {
     static contextType = Context
     static defaultProps = {
         className: '',
+        onScroll: () => { },
         tr: ({ cells }) => <tr>{cells}</tr>
     }
 
@@ -46,7 +47,6 @@ export default class Header extends React.Component {
 
     shadow = scrollLeft => {
         const scrollRight = this.tableWidth - scrollLeft - this.headerWidth
-
         if (scrollLeft == 0) {
             this.shadowLeft ? this.leftRef.current.classList.remove('designare-shadow') : undefined
             this.shadowLeft = false
@@ -87,6 +87,7 @@ export default class Header extends React.Component {
                         tableRef={this.tableRef}
                         syncScrolling={syncScrolling}
                         removeSyncScrolling={removeSyncScrolling}
+                        onScroll={this.onScroll}
                     >
                         <Thead tr={tr} />
                     </Normal>
@@ -104,13 +105,11 @@ export default class Header extends React.Component {
 
 function Normal(props) {
     const ref = useRef(null)
-    const { syncScrolling, tableRef, deliverHeaderRef } = props
+    const { syncScrolling, removeSyncScrolling, tableRef, deliverHeaderRef, onScroll } = props
     useEffect(() => {
         deliverHeaderRef(ref)
         syncScrolling(ref.current, 'scrollLeft')
-        return () => {
-            removeSyncScrolling(ref.current)
-        }
+        return () => removeSyncScrolling(ref.current)
     }, [])
 
     return (
@@ -118,6 +117,7 @@ function Normal(props) {
             ref={ref}
             className='designare-table-header'
             style={{ overflowX: 'scroll', overflowY: 'hidden' }}
+            onScroll={onScroll}
         >
             <table ref={tableRef}>
                 {props.children}

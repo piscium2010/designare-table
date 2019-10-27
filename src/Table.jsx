@@ -461,8 +461,9 @@ function sortColumns(columns) {
     const leftColumns = columns.filter(c => c.fixed === 'left')
     const normalColumns = columns.filter(c => !c.fixed)
     const rightColumns = columns.filter(c => c.fixed === 'right').reverse()
+    leftColumns.length > 0 ? leftColumns[leftColumns.length - 1].isLastFixedColumn = true : undefined
+    rightColumns[0] ? rightColumns[0].isFirstFixedColumn = true : undefined
     const r = [].concat(leftColumns).concat(normalColumns).concat(rightColumns)
-
     createLeafColumnIndex(r)
     return r
 }
