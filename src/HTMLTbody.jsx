@@ -2,9 +2,24 @@ import React, { Fragment } from 'react'
 import { Context, TBodyContext } from './context'
 import { flatten } from './util'
 import Tds from './Tds'
+import Observe from './DOMObserver'
 
 export default class HTMLTbody extends React.Component {
     static contextType = Context
+
+    constructor(props) {
+        super(props)
+        this.observer = Observe(this)
+        this.ref = React.createRef()
+    }
+
+    componentDidMount() {
+        this.observer.observe(this.ref.current)
+    }
+
+    componentWillUnmount() {
+        this.observer.disconnect()
+    }
 
     render() {
         const { tr: Tr, fixed, ...restProps } = this.props
@@ -20,7 +35,7 @@ export default class HTMLTbody extends React.Component {
                 getColumns: () => myColumns
             }}
             >
-                <tbody {...restProps}>
+                <tbody {...restProps} ref={this.ref}>
                     {
                         isEmpty
                             ? null

@@ -13,7 +13,7 @@ export default function Tds(props) {
     const row = data[rowIndex]
     const myColumns = getColumns()
     const isMyCell = fixed => fixed === context.fixed
-
+    
     return (
         <TdsContext.Provider value={{
             ...context,

@@ -50,8 +50,8 @@ export default class Table extends React.Component {
         this.dimensionInfo = {}
         this.resizedWidthInfo = new Map()
         this.debouncedUpdate = debounce(this._update, 60)
-        this.debouncedSyncWidthAndHeight = debounce(this.syncWidthAndHeight, 100, { leading: true })
-        this.debouncedReSyncWidthAndHeight = debounce(this.reSyncWidthAndHeight, 100, { leading: true })
+        this.debouncedSyncWidthAndHeight = debounce(this.syncWidthAndHeight, 100, { leading: true, trailing: true })
+        this.debouncedReSyncWidthAndHeight = debounce(this.reSyncWidthAndHeight, 100, { leading: true, trailing: true })
         this.warnings = new Map()
         this.cells = new Map()
         this.headerCells = new Map()
@@ -78,6 +78,7 @@ export default class Table extends React.Component {
             removeSyncScrolling: this.removeSyncScrolling,
 
             reSyncWidthAndHeight: this.debouncedReSyncWidthAndHeight,
+            // reSyncWidthAndHeight: () => {},
 
             getColGroups: this.getColGroups,
 
@@ -352,6 +353,7 @@ export default class Table extends React.Component {
 
     reSyncWidthAndHeight = (force = false) => {
         // return
+        console.log(`rsync`,)
         const { dimensionInfo, flattenSortedColumns, root } = this
         const isReSized = force || isDimensionChanged(
             root.current,
@@ -359,6 +361,8 @@ export default class Table extends React.Component {
             dimensionInfo
         )
         if (isReSized) {
+            console.log(`resized`,)
+            // return
             this.debouncedSyncWidthAndHeight(force)
         }
     }
@@ -367,7 +371,12 @@ export default class Table extends React.Component {
 
     componentDidUpdate() {
         if (this.state.hasError) return
-        this.reSyncWidthAndHeight()
+        // this.reSyncWidthAndHeight()
+        // this.debouncedReSyncWidthAndHeight()
+        // console.log(`dimensionId`,this.dimensionInfo.dimensionId, code(this.flattenSortedColumns))
+        // if(code(this.flattenSortedColumns) !== this.dimensionInfo.dimensionId) {
+        //     this.debouncedReSyncWidthAndHeight()
+        // }
     }
 
     componentDidMount() {
@@ -598,6 +607,9 @@ function syncWidthAndHeight(table, columns, rowHeight = -1, dimensionInfo, resiz
         sum += leftOver
     }
 
+    // console.log(`originalMaxWidthArray`,originalMaxWidthArray)
+    // console.log(`leftOver`,leftOver)
+
     const mergeMax = (w, i) => w > -1 ? maxWidthArray[i] : w
     const positive = w => w > -1
 
@@ -610,16 +622,16 @@ function syncWidthAndHeight(table, columns, rowHeight = -1, dimensionInfo, resiz
     const rightBodyColgroup = createColgroup(rightBodyWidthArray.map(mergeMax).filter(positive))
 
     // sync width
-    if (dimensionInfo.dimensionId !== dimensionId || force) {
-        // const tableWidth = leftOver ? '100%' : sum + 'px'
-        const tableWidth = sum + 'px'
-        // console.log(`leftOver`, leftOver)
-        setStyle(leftHeaderRoot, 'minWidth', `${tableWidth}`)
-        setStyle(rightHeaderRoot, 'minWidth', `${tableWidth}`)
-        if (leftOver < 0) {
-            setStyle(headerRoot, 'minWidth', `${tableWidth}`)
-            setStyle(bodyRoot, 'minWidth', `${tableWidth}`)
-        }
+    // if (dimensionInfo.dimensionId !== dimensionId || force) {
+        
+    // }
+
+    const tableWidth = sum + 'px'
+    setStyle(leftHeaderRoot, 'minWidth', `${tableWidth}`)
+    setStyle(rightHeaderRoot, 'minWidth', `${tableWidth}`)
+    if (leftOver < 0) {
+        setStyle(headerRoot, 'minWidth', `${tableWidth}`)
+        setStyle(bodyRoot, 'minWidth', `${tableWidth}`)
     }
 
     removeColgroup(headerRoot)
@@ -723,7 +735,7 @@ function getDimensionInfo(table, columnSize) {
     // console.log(`headerWidthArray`,headerWidthArray)
     const leftHeaderWidthArray = widthArray(leftHeader, columnSize, 'end', 'leftHeaderWidthArray')
     const rightHeaderWidthArray = widthArray(rightHeader, columnSize, 'start', 'rightHeaderWidthArray')
-    const bodyWidthArray = widthArray(body, columnSize, 'end', 'bodyWidthArray')
+    const bodyWidthArray = widthArray(body, columnSize, 'end', 'bodyWidthArray', true)
     const leftBodyWidthArray = widthArray(leftBody, columnSize, 'end', 'leftBodyWidthArray')
     const rightBodyWidthArray = widthArray(rightBody, columnSize, 'start', 'rightBodyWidthArray')
 
@@ -768,6 +780,8 @@ function isDimensionChanged(table, columnSize, dimensionInfo) {
     for (let i = 0, len = keys.length; i < len; i++) {
         const k = keys[i]
         if (isArrayChange(dimensionInfo[k], info[k])) {
+            console.log(k,' is resized')
+            console.log(dimensionInfo[k],info[k])
             result = true
             break
         }

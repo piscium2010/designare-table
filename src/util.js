@@ -197,6 +197,7 @@ export function widthArray(element, requiredLen, startOrend = 'end', msg, debug)
         }
     }
     if (debug) {
+        // console.log(`element`,element)
         console.log(msg, result)
     }
     return pad(result, requiredLen, startOrend, -1 /* pad With */)

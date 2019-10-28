@@ -8,10 +8,6 @@ export default class Td extends React.Component {
         return this.context.rowHeight
     }
 
-    componentDidUpdate() {
-        this.context.reSyncWidthAndHeight()
-    }
-
     componentDidMount() {
         this.context.cells.set(this)
     }
