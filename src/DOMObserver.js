@@ -2,7 +2,7 @@ const config = { attributes: true, childList: true, subtree: true }
 
 export default function (instance) {
     const observer = new MutationObserver(mutationsList => {
-        console.log(`mutate`, mutationsList)
+        // console.log(`mutate`, mutationsList)
         window.requestAnimationFrame(() => {
             instance.context.reSyncWidthAndHeight()
         })

@@ -735,7 +735,7 @@ function getDimensionInfo(table, columnSize) {
     // console.log(`headerWidthArray`,headerWidthArray)
     const leftHeaderWidthArray = widthArray(leftHeader, columnSize, 'end', 'leftHeaderWidthArray')
     const rightHeaderWidthArray = widthArray(rightHeader, columnSize, 'start', 'rightHeaderWidthArray')
-    const bodyWidthArray = widthArray(body, columnSize, 'end', 'bodyWidthArray', true)
+    const bodyWidthArray = widthArray(body, columnSize, 'end', 'bodyWidthArray')
     const leftBodyWidthArray = widthArray(leftBody, columnSize, 'end', 'leftBodyWidthArray')
     const rightBodyWidthArray = widthArray(rightBody, columnSize, 'start', 'rightBodyWidthArray')
 
