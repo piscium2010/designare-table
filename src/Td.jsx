@@ -19,6 +19,6 @@ export default class Td extends React.Component {
     render() {
         if (this.context.contextName !== 'tds') throw 'Td should be within Cell component'
         const { style, children, ...restProps } = this.props
-        return <td style={{height: this.rowHeight, ...style}}  {...restProps}>{children}</td>
+        return <td style={{ position:'relative', height: this.rowHeight, ...style}}  {...restProps}>{children}</td>
     }
 }

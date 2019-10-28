@@ -143,7 +143,9 @@ export default function (props) {
                     })
                     return (
                         <VForm validation={validationForRow}>
-                            <tr><Body.Row v={validationForRow} rowIndex={rowIndex} /></tr>
+                            <tr>
+                                {/* <Body.Row v={validationForRow} rowIndex={rowIndex} /> */}
+                                </tr>
                         </VForm>
                     )
                 }}

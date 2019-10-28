@@ -24,7 +24,6 @@ import Loading from './examples/Loading'
 import Pagination from './examples/Pagination'
 import PaginationServerSide from './examples/PaginationServerSide'
 import './app.less'
-import './a.css'
 
 
 class App extends React.Component {
@@ -56,7 +55,7 @@ class App extends React.Component {
                     {/* <Eight filter control/> */}
                 </div>
                 <div>
-                    <Nine defaulFilter/>
+                    {/* <Nine defaulFilter/> */}
                 </div>
                 <div>
                     {/* <Ten header footer/> */}
@@ -83,7 +82,7 @@ class App extends React.Component {
                     {/* <EditRow /> */}
                 </div>
                 <div>
-                    {/* <EditRowWithValidation /> */}
+                    <EditRowWithValidation />
                 </div>
                 <div>
                     {/* <Loading /> */}
@@ -92,7 +91,7 @@ class App extends React.Component {
                     {/* <Pagination /> */}
                 </div>
                 <div>
-                    <PaginationServerSide />
+                    {/* <PaginationServerSide /> */}
                 </div>
             </div>
         )
