@@ -318,8 +318,8 @@ export default class Table extends React.Component {
     }
 
     setPageSize = pageSize => {
-        this.setState({ pageSize }, () => {
-            this.props.onChangePaging({ pageNo: this.pageNo, pageSize })
+        this.setState({ pageSize, pageNo: 1 }, () => {
+            this.props.onChangePaging({ pageSize, pageNo: 1 })
         })
     }
 
@@ -353,7 +353,7 @@ export default class Table extends React.Component {
 
     reSyncWidthAndHeight = (force = false) => {
         // return
-        console.log(`rsync`,)
+        console.log(`rsync`)
         const { dimensionInfo, flattenSortedColumns, root } = this
         const isReSized = force || isDimensionChanged(
             root.current,
@@ -361,7 +361,7 @@ export default class Table extends React.Component {
             dimensionInfo
         )
         if (isReSized) {
-            console.log(`resized`,)
+            console.log(`resized`)
             // return
             this.debouncedSyncWidthAndHeight(force)
         }
@@ -623,7 +623,7 @@ function syncWidthAndHeight(table, columns, rowHeight = -1, dimensionInfo, resiz
 
     // sync width
     // if (dimensionInfo.dimensionId !== dimensionId || force) {
-        
+
     // }
 
     const tableWidth = sum + 'px'
@@ -780,8 +780,8 @@ function isDimensionChanged(table, columnSize, dimensionInfo) {
     for (let i = 0, len = keys.length; i < len; i++) {
         const k = keys[i]
         if (isArrayChange(dimensionInfo[k], info[k])) {
-            console.log(k,' is resized')
-            console.log(dimensionInfo[k],info[k])
+            console.log(k, ' is resized')
+            console.log(dimensionInfo[k], info[k])
             result = true
             break
         }
@@ -885,7 +885,7 @@ function syncBodyHorizontalScrollStatus(bodyRoot, scroll = false) {
 
 function hideVerticalScrollBarOfTableFixedHeader(table, scroll = false) {
     const el = table.getElementsByClassName('designare-table-fixed-header')[0]
-    if(scroll) {
+    if (scroll) {
         el.classList.add('designare-mask')
     } else {
         el.classList.remove('designare-mask')
