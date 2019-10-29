@@ -15,7 +15,7 @@ import {
 } from './util'
 import SyncScrolling from './SyncScrolling'
 import Spinner from './Loading'
-import './app.less'
+// import './app.less'
 
 export const ERR0 = 'designare-table: Cell component should render one and only one Td component of designare-table'
 export const ERR1 = 'designare-table: if Header is not string, it should render one and only one Th component of designare-table'

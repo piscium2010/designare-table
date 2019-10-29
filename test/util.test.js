@@ -147,3 +147,30 @@ test('widthArray: 3', () => {
     const result = widthArray(element, 7)
     expect(result).toEqual([30, 30, 15, 15, 30, 15, 15])
 })
+
+test('drag and drop', () => {
+    const data = [0, 1, 2, 3, 4, 5, 6]
+    expect(shift(data, 2, 6)).toEqual([0, 1, 3, 4, 5, 6, 2])
+    expect(shift(data, 5, 1)).toEqual([0, 5, 1, 2, 3, 4, 6])
+})
+
+function shift(array, indexOfDragged, indexOfDropped) {
+    const result = Array.from(array)
+    if (indexOfDragged < indexOfDropped) {
+        // shift left
+        const temp = result[indexOfDragged]
+        for (let i = indexOfDragged; i < indexOfDropped; i++) {
+            result[i] = result[i + 1]
+        }
+        result[indexOfDropped] = temp
+    } else if (indexOfDragged > indexOfDropped) {
+        // shift right
+        const temp = result[indexOfDragged]
+        for (let i = indexOfDragged; i > indexOfDropped; i--) {
+            result[i] = result[i - 1]
+        }
+        result[indexOfDropped] = temp
+    }
+
+    return result
+}
