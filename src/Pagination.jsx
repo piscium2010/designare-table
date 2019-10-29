@@ -12,11 +12,8 @@ export default function Pagination(props) {
     return (
         <div style={{ display: 'flex', padding: '6px 0', userSelect: 'none' }}>
             <div style={{ flex: '1 1 40%', display: 'flex', justifyContent: 'space-between' }}>
-                <div className={`designare-table-pagination-desc`}>
-                    {/* <span className={`designare-table-pagination-desc`}><span style={{ marginTop: 4 }}><Icons.Page /></span></span> */}
-                    <div className={`designare-table-pagination-desc`}>
-                        {total}
-                    </div>
+                <div className={`designare-table-pagination-desc designare-table-pagination-total`} >
+                    {total}
                 </div>
                 {
                     pageSizeOptions.length > 0
@@ -38,13 +35,13 @@ export default function Pagination(props) {
                 }
             </div>
             <div style={{ display: 'flex', lineHeight: '24px', marginLeft: 'auto' }}>
-                <div role='button' className={`designare-table-pagination-btn ${isFirstPage ? 'disabled' : ''}`} onClick={onFirst}><Icons.First /></div>
-                <div role='button' className={`designare-table-pagination-btn ${isFirstPage ? 'disabled' : ''}`} onClick={onPrev} ><Icons.Prev /></div>
-                <div role='button' className={`designare-table-pagination-btn`} onClick={evt => setEditing(true)}>
+                <div className={`designare-table-pagination-btn ${isFirstPage ? 'disabled' : ''}`} onClick={onFirst}><Icons.First /></div>
+                <div className={`designare-table-pagination-btn ${isFirstPage ? 'disabled' : ''}`} onClick={onPrev} ><Icons.Prev /></div>
+                <div className={`designare-table-pagination-btn`} onClick={evt => setEditing(true)}>
                     <GoTo pageNo={pageNo} onGoToPage={onGoToPage} isEditing={isEditing} setEditing={setEditing} />
                 </div>
-                <div role='button' className={`designare-table-pagination-btn ${isLastPage ? 'disabled' : ''}`} onClick={onNext}><Icons.Next /></div>
-                <div role='button' className={`designare-table-pagination-btn ${isLastPage ? 'disabled' : ''}`} onClick={onLast}><Icons.Last /></div>
+                <div className={`designare-table-pagination-btn ${isLastPage ? 'disabled' : ''}`} onClick={onNext}><Icons.Next /></div>
+                <div className={`designare-table-pagination-btn ${isLastPage ? 'disabled' : ''}`} onClick={onLast}><Icons.Last /></div>
             </div>
         </div>
     )
@@ -54,7 +51,9 @@ function GoTo(props) {
     const ref = useRef(null)
     const { pageNo, isEditing, setEditing, onGoToPage } = props
     const [text, setText] = useState(pageNo)
-    const [value, setValue] = useState('')
+    const [value, setValue] = useState(pageNo)
+    const str = value + ''
+
     const onBlur = evt => setEditing(false)
     const onChange = evt => setValue(evt.target.value)
     const onEnter = evt => {
@@ -64,7 +63,7 @@ function GoTo(props) {
             onGoToPage(value / 1)
         }
     }
-    
+
     useEffect(() => {
         isEditing ? ref.current.focus() : undefined
         isEditing ? setValue(pageNo) : undefined
@@ -76,7 +75,15 @@ function GoTo(props) {
 
     return (
         isEditing
-            ? <input ref={ref} value={value} onBlur={onBlur} onKeyDown={onEnter} onChange={onChange} />
+            ? <input
+                ref={ref}
+                value={value}
+                size={Math.max(3, str.length)}
+                onBlur={onBlur}
+                onKeyDown={onEnter}
+                onChange={onChange}
+                style={{fontSize:'inherit'}}
+            />
             : <div style={{ userSelect: 'none' }} onClick={evt => setEditing(true)}>{text}</div>
     )
 }
