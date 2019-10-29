@@ -38,3 +38,5 @@ ie - scrollbar width
 
 designare-table以朴素的样式为底，留有再设计的空间；以企业功能为诉求，也留有再定制的余地。
 它轻，没有繁重的依赖，巧，没有过度的API设计。试图在简洁与灵活的两端的中反复，以求平衡。
+
+app.less to app.css

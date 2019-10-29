@@ -1,7 +1,7 @@
 import React from 'react'
 import { ThsContext } from './context'
 import Icons from './Icons'
-import { ERR3 } from './errorMessage'
+import { ERR3 } from './messages'
 
 const defaultStyle = { position: 'relative', cursor: 'pointer', userSelect: 'none', padding: '0 4px' }
 const commonStyle = { position: 'absolute', left: 4, top: '50%', width: 9, transform: 'translate(0,-8px)' }

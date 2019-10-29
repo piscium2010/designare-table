@@ -37,7 +37,16 @@ body {
         thead {
             td,
             th {
+                border: 1px solid orange;
                 border-bottom: none;
+            }
+
+            th {
+                &.designare-target-right {
+                    .designare-resize-element-right {
+                        background-color: red;
+                    }
+                }
             }
         }
     }

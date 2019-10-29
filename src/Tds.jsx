@@ -1,7 +1,7 @@
 import React, { Fragment, useContext } from 'react'
 import { TBodyContext, TdsContext } from './context'
 import Td from './Td'
-import { ERR2 } from './errorMessage'
+import { ERR2 } from './messages'
 
 const defaultCell = ({ value }) => <Td>{value}</Td>
 

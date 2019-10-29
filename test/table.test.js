@@ -1,7 +1,7 @@
 import React from 'react'
 import { render, fireEvent } from '@testing-library/react'
 import Table, { Td, ERR0, ERR1, Tbody, Thead, Sorter, Th } from '../src'
-import { ERR2, ERR3 } from '../src/errorMessage'
+import { ERR2, ERR3 } from '../src/messages'
 
 const data = [
     { name: 'Chevron Corp.', last: 115.35, chg: 0.24, chgp: 0.21 },

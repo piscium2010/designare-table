@@ -2,12 +2,12 @@ import React from 'react'
 import { ThsContext } from './context'
 import ReSizing from './ReSizing'
 
-const dragableWidth = 2
-const dragableStyle = {
+const resizableElementWidth = 2
+const resizableElementStyle = {
     position: 'absolute',
     top: 0,
     bottom: 0,
-    width: dragableWidth,
+    width: resizableElementWidth,
     cursor: 'col-resize',
     zIndex: 1
     // backgroundColor: 'aliceblue'
@@ -58,7 +58,7 @@ export default class Th extends React.Component {
     onMouseUp = evt => {
         this.parent.style.zIndex = this.parentOriginalZIndex
         this.leftOrRight === 'left' ? this.dragable.style.left = '0' : this.dragable.style.right = '0'
-        this.dragable.style.width = `${dragableWidth}px`
+        this.dragable.style.width = `${resizableElementWidth}px`
         window.removeEventListener('mousemove', this.onMouseMove)
         window.removeEventListener('mouseup', this.onMouseUp)
     }
@@ -81,6 +81,8 @@ export default class Th extends React.Component {
             className = '',
             index,
             style,
+            ref,
+            deliverRef,
             ...restProps
         } = this.props
         const column = this.column
@@ -92,15 +94,16 @@ export default class Th extends React.Component {
 
         return (
             <th
+                ref={ref || deliverRef}
                 className={`${fixedColumnShadowClass} ${className}`}
                 {...restProps}
                 colSpan={colSpan}
                 rowSpan={rowSpan}
                 style={{ position: 'relative', ...thStyle, ...style }}
             >
-                {isLeaf && !isFirst && <div style={{ ...dragableStyle, left: 0 }} onMouseDown={evt => this.onMouseDown(evt, 'left')}></div>}
+                {isLeaf && !isFirst && <div className={`designare-resize-element-left`} style={{ ...resizableElementStyle, left: 0 }} onMouseDown={evt => this.onMouseDown(evt, 'left')}></div>}
                 {isMyColumn ? children : <span>&nbsp;</span>}
-                {isLeaf && !isLast && <div style={{ ...dragableStyle, right: 0 }} onMouseDown={evt => this.onMouseDown(evt, 'right')}></div>}
+                {isLeaf && !isLast && <div className={`designare-resize-element-right`} style={{ ...resizableElementStyle, right: 0 }} onMouseDown={evt => this.onMouseDown(evt, 'right')}></div>}
             </th>
         )
     }
