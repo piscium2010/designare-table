@@ -18,7 +18,23 @@ export default class Td extends React.Component {
 
     render() {
         if (this.context.contextName !== 'tds') throw 'Td should be within Cell component'
-        const { style, children, ...restProps } = this.props
-        return <td style={{ position: 'relative', zIndex: 1, height: this.rowHeight, ...style }}  {...restProps}>{children}</td>
+        const { isFirstFixedCell, isLastFixedCell, fixed } = this.context
+        const leftLastFixedCellClassName = fixed === 'left' && isLastFixedCell ? 'designare-fixed' : ''
+        const rightFirstFixedCellClassName = fixed === 'right' && isFirstFixedCell ? 'designare-fixed' : ''
+        const { className = '', style, children, ...restProps } = this.props
+        return (
+            <td
+                className={`${leftLastFixedCellClassName} ${rightFirstFixedCellClassName} ${className}`}
+                style={{
+                    position: 'relative',
+                    zIndex: 1,
+                    height: this.rowHeight,
+                    ...style
+                }}
+                {...restProps}
+            >
+                {children}
+            </td>
+        )
     }
 }

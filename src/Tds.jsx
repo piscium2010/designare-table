@@ -11,41 +11,51 @@ export default function Tds(props) {
     const { rowIndex } = props
     const { data, getColumns } = context
     const row = data[rowIndex]
-    const myColumns = getColumns()
+    const columns = getColumns()
     const isMyCell = fixed => fixed === context.fixed
-    
+
     return (
-        <TdsContext.Provider value={{
-            ...context,
-            contextName: 'tds'
-        }}
-        >
-            {
-                myColumns.map(i =>
-                    flattenOne(i).map(
-                        column => {
-                            const {
-                                dataKey,
-                                Cell = defaultCell,
-                                metaKey,
-                                fixed,
-                                ...restColumnProps
-                            } = column
-                            const params = {
-                                value: row[dataKey],
-                                row,
-                                rowIndex,
-                                dataKey,
-                                ...restColumnProps,
-                                ...props
+        columns.map((col, i) =>
+            flattenOne(col).map(
+                (column, childrenIndex, children) => {
+                    const {
+                        dataKey,
+                        Cell = defaultCell,
+                        metaKey,
+                        fixed,
+                        isFirstFixedColumn,
+                        isLastFixedColumn,
+                        ...restColumnProps
+                    } = column
+                    const params = {
+                        value: row[dataKey],
+                        row,
+                        rowIndex,
+                        dataKey,
+                        isFirstFixedColumn,
+                        isLastFixedColumn,
+                        ...restColumnProps,
+                        ...props
+                    }
+                    return (
+                        <TdsContext.Provider
+                            key={metaKey}
+                            value={{
+                                ...context,
+                                contextName: 'tds',
+                                isFirstFixedCell: isFirstFixedColumn ? childrenIndex === 0 : false,
+                                isLastFixedCell: isLastFixedColumn ? childrenIndex === (children.length - 1) : false
+                            }}
+                        >
+                            {
+                                isMyCell(fixed)
+                                    ? Cell(params)
+                                    : <td key={metaKey} style={{ visibility: 'hidden', pointerEvents: 'none', zIndex: 0 }}>&nbsp;</td>
                             }
-                            return isMyCell(fixed)
-                                ? <Fragment key={metaKey}>{Cell(params)}</Fragment>
-                                : <td key={metaKey} style={{ visibility: 'hidden', pointerEvents: 'none', zIndex: 0 }}>&nbsp;</td>
-                        })
-                )
-            }
-        </TdsContext.Provider>
+                        </TdsContext.Provider>
+                    )
+                })
+        )
     )
 }
 

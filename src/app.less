@@ -127,26 +127,77 @@ body {
         &-left {
             overflow: hidden;
             top:0;
-            left:-1px;
+            left:0;
             position: absolute;
             background-color: inherit;
             &.designare-shadow {
                 .designare-fixed {
-                    box-shadow: 3px 0 5px rgba(9,9,9,.08);
+                    &::after {
+                        content:'';
+                        display: block;
+                        width: 5px;
+                        position: absolute;
+                        right: -5px;
+                        top:-1px;
+                        bottom: -1px;
+                        background-image: linear-gradient(
+                            to right,
+                            rgba(9,9,9,.2) 0,
+                            rgba(9,9,9,.1) 1%,
+                            rgba(0,0,0,0)
+                        );
+                        pointer-events: none;
+                    }
                 }
+            }
+            &::after { // mask
+                content:'';
+                display: block;
+                width: 1px;
+                position: absolute;
+                left: 0;
+                top: 0;
+                bottom: 0;
+                background-color: inherit;
+                z-index: 1;
             }
         }
         &-right {
             overflow: hidden;
             top: 0;
-            right: -1px;
-            // padding-right: 18px !important; 
+            right: 0px;
             position: absolute;
             background-color: inherit;
             &.designare-shadow {
                 .designare-fixed {
-                    box-shadow: -3px 0 5px rgba(9,9,9,.08);
+                    &::after {
+                        content:'';
+                        display: block;
+                        width: 5px;
+                        position: absolute;
+                        left: -5px;
+                        top:-1px;
+                        bottom: -1px;
+                        background-image: linear-gradient(
+                            to left,
+                            rgba(9,9,9,.2) 0,
+                            rgba(9,9,9,.1) 1%,
+                            rgba(0,0,0,0)
+                        );
+                        pointer-events: none;
+                    }
                 }
+            }
+            &::after { // mask
+                content:'';
+                display: block;
+                width: 1px;
+                position: absolute;
+                right: 0;
+                top: 0;
+                bottom: 0;
+                background-color: inherit;
+                z-index: 1;
             }
         }
     }
@@ -158,12 +209,12 @@ body {
             position: absolute;
             background-color: inherit;
             top: 0;
-            left: -1px;
+            left: 0px;
             bottom: 15px;
             overflow: hidden;
             height: 100%;
             &.designare-shadow {
-                td {
+                .designare-fixed {
                     &::after {
                         content:'';
                         display: block;
@@ -183,24 +234,58 @@ body {
 
                     }
                 }
-                // td {
-                //     box-shadow: 3px 0 5px rgba(9,9,9,.08);
-                // }
+            }
+            &::after { // mask
+                content:'';
+                display: block;
+                width: 1px;
+                position: absolute;
+                left: 0;
+                top: 0;
+                bottom: 0;
+                background-color: inherit;
+                z-index: 1;
             }
         }
 
         &-right {
             position: absolute;
-            right: -1px;
+            right: 0px;
             top: 0;
             bottom: 15px;
             overflow: hidden;
             height: 100%;
             background-color: inherit;
             &.designare-shadow {
-                td {
-                    box-shadow: -3px 0 5px rgba(9,9,9,.08);
+                .designare-fixed {
+                    &::after {
+                        content:'';
+                        display: block;
+                        width: 5px;
+                        position: absolute;
+                        left: -5px;
+                        top:-1px;
+                        bottom: -1px;
+                        background-image: linear-gradient(
+                            to left,
+                            rgba(9,9,9,.2) 0,
+                            rgba(9,9,9,.1) 1%,
+                            rgba(0,0,0,0)
+                        );
+                        pointer-events: none;
+                    }
                 }
+            }
+            &::after { // mask
+                content:'';
+                display: block;
+                width: 1px;
+                position: absolute;
+                right: 0;
+                top: 0;
+                bottom: 0;
+                background-color: inherit;
+                z-index: 1;
             }
         }
     }
