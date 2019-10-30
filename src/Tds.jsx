@@ -41,7 +41,7 @@ export default function Tds(props) {
                             }
                             return isMyCell(fixed)
                                 ? <Fragment key={metaKey}>{Cell(params)}</Fragment>
-                                : <td key={metaKey} style={{ visibility: 'hidden', pointerEvents: 'none' }}>&nbsp;</td>
+                                : <td key={metaKey} style={{ visibility: 'hidden', pointerEvents: 'none', zIndex: 0 }}>&nbsp;</td>
                         })
                 )
             }

@@ -32,7 +32,7 @@ export default class HTMLTbody extends React.Component {
                 ...this.context,
                 contextName: 'tbody',
                 fixed,
-                getColumns: () => myColumns
+                getColumns: () => columns
             }}
             >
                 <tbody {...restProps} ref={this.ref}>

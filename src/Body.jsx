@@ -144,7 +144,6 @@ function Left(props) {
         <div
             ref={leftRef}
             className='designare-table-body-left'
-            style={{ position: 'absolute', left: 0, top: 0, bottom: 15, overflow: 'hidden', height: '100%' }}
         >
             <div ref={ref} style={{ height: '100%', overflowY: 'auto', backgroundColor: 'inherit' }}>
                 <table>
@@ -166,7 +165,6 @@ function Right(props) {
         <div
             ref={rightRef}
             className='designare-table-body-right'
-            style={{ position: 'absolute', right: 0, top: 0, bottom: 15, overflow: 'hidden', height: '100%' }}
         >
             <div ref={ref} style={{ height: '100%', overflowY: 'auto', backgroundColor: 'inherit' }}>
                 <table>

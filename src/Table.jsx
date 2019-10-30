@@ -624,9 +624,11 @@ function syncWidthAndHeight(table, columns, rowHeight = -1, dimensionInfo, resiz
 
     // }
 
-    const tableWidth = sum + 'px'
+    const tableWidth = sum + 2 + 'px'
     setStyle(leftHeaderRoot, 'minWidth', `${tableWidth}`)
     setStyle(rightHeaderRoot, 'minWidth', `${tableWidth}`)
+    setStyle(leftBodyRoot, 'minWidth', `${tableWidth}`)
+    setStyle(rightBodyRoot, 'minWidth', `${tableWidth}`)
     if (leftOver < 0) {
         setStyle(headerRoot, 'minWidth', `${tableWidth}`)
         setStyle(bodyRoot, 'minWidth', `${tableWidth}`)

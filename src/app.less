@@ -18,29 +18,35 @@ body {
     table {
         width: auto;
         min-width: initial;
-        border-collapse: collapse !important;
+        // border-collapse: collapse !important;
+        border-collapse: separate !important;
+        border-spacing: 0px 0px !important;
+        border-color: transparent;
+        border-style: solid;
+        border-width: 1px;
 
         tr {
+            border-color: inherit;
             border-bottom: 1px solid rgba(0, 0, 0, 0.12);
             &:last-of-type {
-                border-bottom: none;
+                // border-bottom: none;
+                border-bottom-color: transparent;
             }
 
             th,
             td {
                 padding: 0 16px;
                 width: auto;
-                border-bottom: none;
             }
         }
 
         thead {
+            border-color:inherit;
             th {
-                // border: 1px solid orange;
-                border-bottom: none;
-            }
+                border-width: 1px;
+                border-style: solid;
+                border-color:inherit;
 
-            th {
                 &.designare-target-right {
                     .designare-resize-element-right {
                         background-color: red;
@@ -50,9 +56,11 @@ body {
         }
 
         tbody {
+            border-color:inherit;
             td {
-                // border: 1px solid orange;
-                border-bottom: none;
+                border-width: 1px;
+                border-style: solid;
+                border-color:inherit;
             }
         }
     }
@@ -119,7 +127,7 @@ body {
         &-left {
             overflow: hidden;
             top:0;
-            left:0;
+            left:-1px;
             position: absolute;
             background-color: inherit;
             &.designare-shadow {
@@ -131,7 +139,7 @@ body {
         &-right {
             overflow: hidden;
             top: 0;
-            right: 0;
+            right: -1px;
             // padding-right: 18px !important; 
             position: absolute;
             background-color: inherit;
@@ -147,16 +155,52 @@ body {
     &-body {
         background-color: inherit;
         &-left {
+            position: absolute;
             background-color: inherit;
+            top: 0;
+            left: -1px;
+            bottom: 15px;
+            overflow: hidden;
+            height: 100%;
             &.designare-shadow {
-                box-shadow: 3px 0 5px rgba(9,9,9,.08);
+                td {
+                    &::after {
+                        content:'';
+                        display: block;
+                        width: 5px;
+                        position: absolute;
+                        right: -5px;
+                        top:-1px;
+                        bottom: -1px;
+                        // background-color: yellowgreen;
+                        background-image: linear-gradient(
+                            to right,
+                            rgba(9,9,9,.2) 0,
+                            rgba(9,9,9,.1) 1%,
+                            rgba(0,0,0,0)
+                        );
+                        pointer-events: none;
+
+                    }
+                }
+                // td {
+                //     box-shadow: 3px 0 5px rgba(9,9,9,.08);
+                // }
             }
         }
 
         &-right {
+            position: absolute;
+            right: -1px;
+            top: 0;
+            bottom: 15px;
+            overflow: hidden;
+            height: 100%;
             background-color: inherit;
             &.designare-shadow {
-                box-shadow: -3px 0 5px rgba(9,9,9,.08);
+                td {
+                    box-shadow: -3px 0 5px rgba(9,9,9,.08);
+                }
             }
         }
     }
