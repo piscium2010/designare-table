@@ -2,6 +2,7 @@ import React from 'react'
 import Th from './Th'
 import { ThsContext } from './context'
 import { WARNING1 } from './messages'
+import { shift } from './util'
 
 export default class DraggableTh extends React.Component {
     static contextType = ThsContext
@@ -20,6 +21,7 @@ export default class DraggableTh extends React.Component {
     onDragOver = evt => {
         // console.log(`d over`)
         // console.log(`this.ref`,this.ref.current)
+        evt.preventDefault()
         const sourceIndex = evt.dataTransfer.getData("designare-column-index")
         const targetIndex = this.column.columnIndex
         if (sourceIndex < targetIndex) {
@@ -27,10 +29,6 @@ export default class DraggableTh extends React.Component {
             // console.log(`classList`, classList)
             classList.contains('designare-target-right') ? undefined : classList.add('designare-target-right')
         }
-    }
-
-    onDragExit = evt => {
-        console.log(`exit`)
     }
 
     onDragLeave = evt => {
@@ -44,7 +42,14 @@ export default class DraggableTh extends React.Component {
     }
 
     onDrop = evt => {
-
+        evt.preventDefault();
+        const { columns } = this.context
+        const sourceIndex = evt.dataTransfer.getData("designare-column-index")
+        const targetIndex = this.column.columnIndex
+        if(sourceIndex) {
+            const shiftedColumns = shift(columns, sourceIndex, targetIndex)
+            console.log(`r`,shiftedColumns)
+        }
     }
 
     render() {
@@ -57,7 +62,6 @@ export default class DraggableTh extends React.Component {
                     draggable='true'
                     onDragStart={this.onDragStart}
                     onDragOver={this.onDragOver}
-                    onDragExit={this.onDragExit}
                     onDragLeave={this.onDragLeave}
                     onDrop={this.onDrop}
                 >

@@ -242,6 +242,31 @@ export function max(...args) {
     return r
 }
 
+export function shift(array, indexOfDragged, indexOfDropped) {
+    indexOfDragged = indexOfDragged / 1
+    indexOfDropped = indexOfDropped / 1
+    if(isNaN(indexOfDragged)) throw 'indexOfDragged should be number'
+    if(isNaN(indexOfDropped)) throw 'indexOfDropped should be number'
+    const result = Array.from(array)
+    if (indexOfDragged < indexOfDropped) {
+        // shift left
+        const temp = result[indexOfDragged]
+        for (let i = indexOfDragged; i < indexOfDropped; i++) {
+            result[i] = result[i + 1]
+        }
+        result[indexOfDropped] = temp
+    } else if (indexOfDragged > indexOfDropped) {
+        // shift right
+        const temp = result[indexOfDragged]
+        for (let i = indexOfDragged; i > indexOfDropped; i--) {
+            result[i] = result[i - 1]
+        }
+        result[indexOfDropped] = temp
+    }
+
+    return result
+}
+
 class CustomError extends Error {
     constructor(name, value, ...params) {
         super(...params)
