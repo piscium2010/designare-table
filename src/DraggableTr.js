@@ -106,7 +106,7 @@ export default class DraggableTr extends React.Component {
     }
 
     render() {
-        let { ref, children, ...restProps } = this.props
+        let { ref, children, row, getRowId, ...restProps } = this.props
         if (this.context.fixed) { console.warn(WARNING1) }
         ref = this.ref
 
