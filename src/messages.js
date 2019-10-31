@@ -4,4 +4,5 @@ export const ERR2 = 'designare-table: rowIndex is required for Tds'
 export const ERR3 = 'designare-table: Sorter must be rendered by column which has a dataKey'
 
 export const WARNING1 = 'designare-table: Fixed column can not be draggable'
+export const WARNING2 = 'designare-table: children column can not be draggable'
 

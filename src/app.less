@@ -25,22 +25,19 @@ body {
         border-style: solid;
         border-width: 1px;
 
-        tr {
-            border-color: inherit;
-            border-bottom: 1px solid rgba(0, 0, 0, 0.12);
-            &:last-of-type {
-                // border-bottom: none;
-                border-bottom-color: transparent;
-            }
-
-            th,
-            td {
-                padding: 0 16px;
-                width: auto;
+        th,
+        td {
+            padding: 0 16px;
+            width: auto;
+            &:first-of-type {
+                border-top-color: transparent;
             }
         }
 
         thead {
+            tr {
+                border-color: inherit;
+            }
             border-color:inherit;
             th {
                 border-width: 1px;
@@ -48,15 +45,21 @@ body {
                 border-color:inherit;
 
                 &.designare-target-right {
-                    .designare-resize-element-right {
-                        background-color: red;
-                    }
+                    border-right-color: red;
+                    border-right-style: dashed;
                 }
             }
         }
 
         tbody {
             border-color:inherit;
+            tr {
+                border-color: inherit;
+                border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+                &:last-of-type {
+                    border-bottom-color: transparent;
+                }   
+            }
             td {
                 border-width: 1px;
                 border-style: solid;
@@ -89,7 +92,7 @@ body {
                 }
             }
 
-            border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+            // border-bottom: 1px solid rgba(0, 0, 0, 0.12);
             > div {
                 margin: -9px 0 -9px 0 !important; // hide header h scroll bar
             }

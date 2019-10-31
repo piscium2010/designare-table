@@ -53,6 +53,7 @@ export default class Table extends React.Component {
         this.warnings = new Map()
         this.cells = new Map()
         this.headerCells = new Map()
+        this.global = {}
         this.contextAPI = {
             getFilterLayerContainer: this.getFilterLayerContainer,
 
@@ -90,6 +91,8 @@ export default class Table extends React.Component {
             activeColor: props.activeColor,
             defaultColor: props.defaultColor,
             rowHeight: props.rowHeight,
+
+            global: this.global
         }
         this.state = {
             hasError: false,

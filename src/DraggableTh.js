@@ -1,7 +1,7 @@
 import React from 'react'
 import Th from './Th'
 import { ThsContext } from './context'
-import { WARNING1 } from './messages'
+import { WARNING1, WARNING2 } from './messages'
 import { shift } from './util'
 
 export default class DraggableTh extends React.Component {
@@ -13,50 +13,97 @@ export default class DraggableTh extends React.Component {
         return this.context.getColumn()
     }
 
+    get activeColor() {
+        return this.context.activeColor
+    }
+
+    highlightRight = () => {
+        console.log(`right`)
+        const el = this.ref.current
+        if (this.originalBorderRightColor || this.originalBorderRightStyle) return
+        this.originalBorderRightColor = el.style.borderRightColor || 'none'
+        this.originalBorderRightStyle = el.style.borderRightStyle || 'inherit'
+        el.style.borderRightColor = this.activeColor
+        el.style.borderRightStyle = 'dashed'
+    }
+
+    deHighlightRight = () => {
+
+        const el = this.ref.current
+        el.style.borderRightColor = this.originalBorderRightColor
+        el.style.borderRightStyle = this.originalBorderRightStyle
+        this.originalBorderRightColor = undefined
+        this.originalBorderRightStyle = undefined
+    }
+
+    highlightLeft = () => {
+        console.log(`left`)
+        const el = this.ref.current
+        if (this.originalBorderLeftColor || this.originalBorderLeftStyle) return
+        this.originalBorderLeftColor = el.style.borderLeftColor || 'none'
+        this.originalBorderLeftStyle = el.style.borderLeftStyle || 'inherit'
+        el.style.borderLeftColor = this.activeColor
+        el.style.borderLeftStyle = 'dashed'
+    }
+
+    deHighlightLeft = () => {
+        const el = this.ref.current
+        el.style.borderLeftColor = this.originalBorderLeftColor
+        el.style.borderLeftStyle = this.originalBorderLeftStyle
+        this.originalBorderLeftColor = undefined
+        this.originalBorderLeftStyle = undefined
+    }
+
     onDragStart = evt => {
         const column = this.column
-        evt.dataTransfer.setData('designare-column-index', column.columnIndex)
+        this.context.global['designare-column-index'] = column.columnIndex
     }
 
     onDragOver = evt => {
-        // console.log(`d over`)
-        // console.log(`this.ref`,this.ref.current)
-        evt.preventDefault()
-        const sourceIndex = evt.dataTransfer.getData("designare-column-index")
+        evt.preventDefault() // allow drag
+        const sourceIndex = this.context.global['designare-column-index']
         const targetIndex = this.column.columnIndex
-        if (sourceIndex < targetIndex) {
-            const classList = this.ref.current.classList
-            // console.log(`classList`, classList)
-            classList.contains('designare-target-right') ? undefined : classList.add('designare-target-right')
-        }
+        // console.log('sourceIndex: ', sourceIndex, ' targetIndex: ', targetIndex)
+        sourceIndex < targetIndex ? this.highlightRight() : this.highlightLeft()
+    }
+
+    onDragEnter = evt => {
+        // console.log(`enter`,evt.target)
+        // evt.preventDefault()
+        // const sourceIndex = evt.dataTransfer.getData('designare-column-index')
+        // const targetIndex = evt.target.dataset['columnindex']
+        // console.log('enter sourceIndex: ', sourceIndex)
+        // sourceIndex < targetIndex ? this.highlightRight() : this.highlightLeft()
     }
 
     onDragLeave = evt => {
-        const sourceIndex = evt.dataTransfer.getData("designare-column-index")
+        const sourceIndex = this.context.global['designare-column-index']
         const targetIndex = this.column.columnIndex
-        if (sourceIndex < targetIndex) {
-            const classList = this.ref.current.classList
-            // console.log(`classList`, classList)
-            classList.contains('designare-target-right') ? classList.remove('designare-target-right') : undefined
-        }
+        sourceIndex < targetIndex ? this.deHighlightRight() : this.deHighlightLeft()
     }
 
     onDrop = evt => {
-        evt.preventDefault();
+        evt.preventDefault()
+        this.onDragLeave(evt)
         const { columns } = this.context
-        const sourceIndex = evt.dataTransfer.getData("designare-column-index")
+        const sourceIndex = this.context.global['designare-column-index']
         const targetIndex = this.column.columnIndex
-        if(sourceIndex) {
+        if (sourceIndex) {
             const shiftedColumns = shift(columns, sourceIndex, targetIndex)
-            console.log(`r`,shiftedColumns)
+            console.log(`r`, shiftedColumns)
         }
     }
 
     render() {
-        if (this.column.fixed) console.warn(WARNING1)
+        // console.log(`this.column`, this.column)
+        let { ref, ...restProps } = this.props, column = this.column
+        if (column.fixed) { console.warn(WARNING1) }
+        if (column.depth > 1) { console.warn(WARNING2) }
+        ref = this.ref
+
         return (
-            this.context.fixed
-                ? <Th>{this.props.children}</Th>
+            this.context.fixed || column.depth > 1
+                ? <Th deliverRef={this.ref} {...restProps}>{this.props.children}</Th>
                 : <Th
                     deliverRef={this.ref}
                     draggable='true'
@@ -64,6 +111,8 @@ export default class DraggableTh extends React.Component {
                     onDragOver={this.onDragOver}
                     onDragLeave={this.onDragLeave}
                     onDrop={this.onDrop}
+                    data-columnindex={column.columnIndex}
+                    {...restProps}
                 >
                     {this.props.children}
                 </Th>
