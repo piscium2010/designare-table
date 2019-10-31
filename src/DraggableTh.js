@@ -27,9 +27,9 @@ export default class DraggableTh extends React.Component {
 
     highlightRight = () => {
         const el = this.ref.current
-        if (this.originalBorderRightColor || this.originalBorderRightStyle) return
-        this.originalBorderRightColor = el.style.borderRightColor || 'none'
-        this.originalBorderRightStyle = el.style.borderRightStyle || 'inherit'
+        if (this.originalBorderRightColor !== undefined || this.originalBorderRightStyle !== undefined) return
+        this.originalBorderRightColor = el.style.borderRightColor
+        this.originalBorderRightStyle = el.style.borderRightStyle
         el.style.borderRightColor = this.activeColor
         el.style.borderRightStyle = 'dashed'
     }
@@ -44,9 +44,9 @@ export default class DraggableTh extends React.Component {
 
     highlightLeft = () => {
         const el = this.ref.current
-        if (this.originalBorderLeftColor || this.originalBorderLeftStyle) return
-        this.originalBorderLeftColor = el.style.borderLeftColor || 'none'
-        this.originalBorderLeftStyle = el.style.borderLeftStyle || 'inherit'
+        if (this.originalBorderLeftColor !== undefined || this.originalBorderLeftStyle !== undefined) return
+        this.originalBorderLeftColor = el.style.borderLeftColor
+        this.originalBorderLeftStyle = el.style.borderLeftStyle
         el.style.borderLeftColor = this.activeColor
         el.style.borderLeftStyle = 'dashed'
     }
@@ -107,7 +107,6 @@ export default class DraggableTh extends React.Component {
                     onDragLeave={this.onDragLeave}
                     onDrop={this.onDrop}
                     onDragEnd={this.onDragEnd}
-                    data-columnindex={column.columnIndex}
                     {...restProps}
                 >
                     {children}

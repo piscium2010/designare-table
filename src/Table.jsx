@@ -25,6 +25,7 @@ export default class Table extends React.Component {
         children: <React.Fragment><Header /><Body /></React.Fragment>,
         defaultSorter: {},
         onChangeColumns: doNothing,
+        onChangeRows: doNothing,
         onChangeSorter: doNothing,
         onChangeFilters: doNothing,
         onChangePaging: doNothing,
@@ -94,6 +95,7 @@ export default class Table extends React.Component {
 
             global: this.global,
             onChangeColumns: props.onChangeColumns,
+            onChangeRows: props.onChangeRows
         }
         this.state = {
             hasError: false,
@@ -444,6 +446,7 @@ export default class Table extends React.Component {
                     value={{
                         originalColumns: columns,
                         columns: this.sortedColumns,
+                        originalData: data,
                         data: this.data,
                         flattenSortedColumns: this.flattenSortedColumns,
                         ...this.contextAPI

@@ -29,9 +29,6 @@ body {
         td {
             padding: 0 16px;
             width: auto;
-            &:first-of-type {
-                border-top-color: transparent;
-            }
         }
 
         thead {
@@ -43,18 +40,13 @@ body {
                 border-width: 1px;
                 border-style: solid;
                 border-color:inherit;
-
-                &.designare-target-right {
-                    border-right-color: red;
-                    border-right-style: dashed;
-                }
             }
         }
 
         tbody {
             border-color:inherit;
             tr {
-                border-color: inherit;
+                border-top: 1px solid rgba(0, 0, 0, 0);
                 border-bottom: 1px solid rgba(0, 0, 0, 0.12);
                 &:last-of-type {
                     border-bottom-color: transparent;
