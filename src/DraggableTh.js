@@ -18,7 +18,6 @@ export default class DraggableTh extends React.Component {
     }
 
     highlightRight = () => {
-        console.log(`right`)
         const el = this.ref.current
         if (this.originalBorderRightColor || this.originalBorderRightStyle) return
         this.originalBorderRightColor = el.style.borderRightColor || 'none'
@@ -28,7 +27,6 @@ export default class DraggableTh extends React.Component {
     }
 
     deHighlightRight = () => {
-
         const el = this.ref.current
         el.style.borderRightColor = this.originalBorderRightColor
         el.style.borderRightStyle = this.originalBorderRightStyle
@@ -37,7 +35,6 @@ export default class DraggableTh extends React.Component {
     }
 
     highlightLeft = () => {
-        console.log(`left`)
         const el = this.ref.current
         if (this.originalBorderLeftColor || this.originalBorderLeftStyle) return
         this.originalBorderLeftColor = el.style.borderLeftColor || 'none'
@@ -64,22 +61,15 @@ export default class DraggableTh extends React.Component {
         const sourceIndex = this.context.global['designare-column-index']
         const targetIndex = this.column.columnIndex
         // console.log('sourceIndex: ', sourceIndex, ' targetIndex: ', targetIndex)
-        sourceIndex < targetIndex ? this.highlightRight() : this.highlightLeft()
-    }
-
-    onDragEnter = evt => {
-        // console.log(`enter`,evt.target)
-        // evt.preventDefault()
-        // const sourceIndex = evt.dataTransfer.getData('designare-column-index')
-        // const targetIndex = evt.target.dataset['columnindex']
-        // console.log('enter sourceIndex: ', sourceIndex)
-        // sourceIndex < targetIndex ? this.highlightRight() : this.highlightLeft()
+        sourceIndex < targetIndex ? this.highlightRight() : undefined
+        sourceIndex > targetIndex ? this.highlightLeft() : undefined
     }
 
     onDragLeave = evt => {
         const sourceIndex = this.context.global['designare-column-index']
         const targetIndex = this.column.columnIndex
-        sourceIndex < targetIndex ? this.deHighlightRight() : this.deHighlightLeft()
+        sourceIndex < targetIndex ? this.deHighlightRight() : undefined
+        sourceIndex > targetIndex ? this.deHighlightLeft() : undefined
     }
 
     onDrop = evt => {
