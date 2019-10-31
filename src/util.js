@@ -28,7 +28,7 @@ export function createColumnMeta(
 
         // warnings
         if (column.rowSpan) {
-            warnings.push(`do not suppport rowSpan for now. Warning from ${clone.Header}`)
+            warnings.push(`do not suppport rowSpan for now. Warning from ${column.Header}`)
         }
         if (column.width && column.width === '*') {
             if (column.fixed) {

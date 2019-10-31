@@ -15,7 +15,7 @@ import {
 } from './util'
 import SyncScrolling from './SyncScrolling'
 import Spinner from './Loading'
-import { ERR0, ERR1} from './messages'
+import { ERR0, ERR1 } from './messages'
 import './app.less'
 
 const doNothing = () => { }
@@ -24,6 +24,7 @@ export default class Table extends React.Component {
     static defaultProps = {
         children: <React.Fragment><Header /><Body /></React.Fragment>,
         defaultSorter: {},
+        onChangeColumns: doNothing,
         onChangeSorter: doNothing,
         onChangeFilters: doNothing,
         onChangePaging: doNothing,
@@ -77,7 +78,6 @@ export default class Table extends React.Component {
             removeSyncScrolling: this.removeSyncScrolling,
 
             reSyncWidthAndHeight: this.debouncedReSyncWidthAndHeight,
-            // reSyncWidthAndHeight: () => {},
 
             getColGroups: this.getColGroups,
 
@@ -92,7 +92,8 @@ export default class Table extends React.Component {
             defaultColor: props.defaultColor,
             rowHeight: props.rowHeight,
 
-            global: this.global
+            global: this.global,
+            onChangeColumns: props.onChangeColumns,
         }
         this.state = {
             hasError: false,
@@ -356,7 +357,8 @@ export default class Table extends React.Component {
         // return
         console.log(`rsync`)
         const { dimensionInfo, flattenSortedColumns, root } = this
-        const isReSized = force || isDimensionChanged(
+        const dimensionId = code(flattenSortedColumns)
+        const isReSized = force || dimensionId !== dimensionInfo.dimensionId || isDimensionChanged(
             root.current,
             getColumnSize(flattenSortedColumns),
             dimensionInfo
@@ -440,6 +442,7 @@ export default class Table extends React.Component {
                 </div>
                 <Context.Provider
                     value={{
+                        originalColumns: columns,
                         columns: this.sortedColumns,
                         data: this.data,
                         flattenSortedColumns: this.flattenSortedColumns,
@@ -503,6 +506,7 @@ function syncWidthAndHeight(table, columns, rowHeight = -1, dimensionInfo, resiz
     const [leftBodyWrapper, leftBodyRoot, leftBody] = findDOM('body', 'left')
     const [rightBodyWrapper, rightBodyRoot, rightBody] = findDOM('body', 'right')
 
+    // console.log(`remove`,dimensionInfo.dimensionId, dimensionId)
     if (dimensionInfo.dimensionId !== dimensionId || force) {
         // remove column width
         setStyle(headerRoot, 'minWidth', '0')
