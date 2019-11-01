@@ -5,7 +5,6 @@ body {
 @boxShadow: 0px 2px 1px -1px rgba(0, 0, 0, 0.2), 0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 1px 3px 0px rgba(0, 0, 0, 0.12) !important;
 
 .designare-table {
-    box-sizing: border-box;
     display: flex !important;
     flex-direction: column !important;
     box-shadow: @boxShadow;
@@ -16,24 +15,27 @@ body {
     }
 
     table {
-        width: auto;
-        min-width: initial;
         border-collapse: separate !important;
         border-spacing: 0px 0px !important;
-        border-color: transparent;
-        border-width: 0px;
+        border-color: transparent !important;
+        border-width: 0px !important;
 
         th,
         td {
-            padding: 0 16px;
-            width: auto;
+            padding-top: 0 !important;
+            padding-bottom: 0 !important;
+            padding-left: 16px;
+            padding-right: 16px;
         }
 
         thead {
+            border-color:inherit;
             tr {
+                border-width: 1px;
+                border-style: solid;
                 border-color: inherit;
             }
-            border-color:inherit;
+            
             th {
                 border-width: 1px;
                 border-style: solid;
@@ -51,9 +53,6 @@ body {
                 &:last-of-type {
                     border-bottom-color: transparent;
                 }
-                &:first-of-type {
-                    border-top-color: rgba(0, 0, 0, 0.12);
-                }   
             }
             td {
                 border-width: 1px;
@@ -86,14 +85,17 @@ body {
                     z-index: 1;
                 }
             }
-
-            // border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+            border-left: none !important;
+            border-right: none !important;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.12);
             > div {
                 margin: -9px 0 -9px 0 !important; // hide header h scroll bar
             }
         }
 
         &-body {
+            border-left: none !important;
+            border-right: none !important;
             background-color: inherit;
         }
     }

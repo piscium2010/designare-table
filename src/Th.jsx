@@ -10,17 +10,13 @@ const resizableElementStyle = {
     bottom: 0,
     width: resizableElementWidth,
     cursor: 'col-resize',
-    zIndex: 1
+    zIndex: 1,
+    userSelect: 'none'
     // backgroundColor: 'aliceblue'
 }
 
 export default class Th extends React.Component {
     static contextType = ThsContext
-
-    constructor(props) {
-        super(props)
-        
-    }
 
     get global() {
         return this.context.global
