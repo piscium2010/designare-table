@@ -16,7 +16,23 @@ const resizableElementStyle = {
 export default class Th extends React.Component {
     static contextType = ThsContext
 
+    disableDraggable = () => {
+        if (this.props.deliverRef && this.props.deliverRef.current) {
+            const el = this.props.deliverRef.current
+            this.originalDraggable = el.getAttribute('draggable') 
+            el.setAttribute('draggable', false)
+        }
+    }
+
+    restoreDraggable = () => {
+        if (this.props.deliverRef && this.props.deliverRef.current) {
+            const el = this.props.deliverRef.current
+            el.setAttribute('draggable', this.originalDraggable)
+        }
+    }
+
     onMouseDown = (evt, leftOrRight) => {
+        this.disableDraggable()
         const { leafIndex, metaKey } = this.column
         const { getColGroups, setResizedWidthInfo, flattenSortedColumns } = this.context
 
@@ -61,6 +77,7 @@ export default class Th extends React.Component {
         this.dragable.style.width = `${resizableElementWidth}px`
         window.removeEventListener('mousemove', this.onMouseMove)
         window.removeEventListener('mouseup', this.onMouseUp)
+        this.restoreDraggable()
     }
 
     componentDidMount() {
@@ -81,7 +98,6 @@ export default class Th extends React.Component {
             className = '',
             index,
             style,
-            ref,
             deliverRef,
             ...restProps
         } = this.props
@@ -94,7 +110,7 @@ export default class Th extends React.Component {
 
         return (
             <th
-                ref={ref || deliverRef}
+                ref={deliverRef}
                 className={`${fixedColumnShadowClass} ${className}`}
                 {...restProps}
                 colSpan={colSpan}

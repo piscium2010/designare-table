@@ -91,10 +91,10 @@ export default class DraggableTh extends React.Component {
     }
 
     render() {
-        let { ref, children, ...restProps } = this.props, column = this.column
+        let { deliverRef, children, ...restProps } = this.props, column = this.column
         if (column.fixed) { console.warn(WARNING1) }
         if (column.depth > 1) { console.warn(WARNING2) }
-        ref = this.ref
+        deliverRef = this.ref
 
         return (
             this.context.fixed || column.depth > 1
