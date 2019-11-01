@@ -75,19 +75,19 @@ export default class DraggableTr extends React.Component {
     }
 
     onDragStart = evt => {
-        this.global['designare-row-index'] = this.getRowIndex(this.props.row)
+        this.global['designare-draggable-row-index'] = this.getRowIndex(this.props.row)
     }
 
     onDragOver = evt => {
         evt.preventDefault() // allow drag
-        const sourceIndex = this.global['designare-row-index']
+        const sourceIndex = this.global['designare-draggable-row-index']
         const targetIndex = this.getRowIndex(this.props.row)
         sourceIndex > targetIndex ? this.highlightTop() : undefined
         sourceIndex < targetIndex ? this.highlightBottom() : undefined
     }
 
     onDragLeave = evt => {
-        const sourceIndex = this.global['designare-row-index']
+        const sourceIndex = this.global['designare-draggable-row-index']
         const targetIndex = this.getRowIndex(this.props.row)
         sourceIndex > targetIndex ? this.deHighlightTop() : undefined
         sourceIndex < targetIndex ? this.deHighlightBottom() : undefined
@@ -96,7 +96,7 @@ export default class DraggableTr extends React.Component {
     onDrop = evt => {
         evt.preventDefault()
         this.onDragLeave(evt)
-        const sourceIndex = this.global['designare-row-index']
+        const sourceIndex = this.global['designare-draggable-row-index']
         const targetIndex = this.getRowIndex(this.props.row)
         if (!isNaN(sourceIndex) && !isNaN(targetIndex) && sourceIndex != targetIndex) {
             const shifted = shift(this.data, sourceIndex, targetIndex)

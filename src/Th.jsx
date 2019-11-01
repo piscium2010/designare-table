@@ -1,6 +1,7 @@
 import React from 'react'
 import { ThsContext } from './context'
 import ReSizing from './ReSizing'
+import debounce from 'lodash/debounce'
 
 const resizableElementWidth = 2
 const resizableElementStyle = {
@@ -15,6 +16,15 @@ const resizableElementStyle = {
 
 export default class Th extends React.Component {
     static contextType = ThsContext
+
+    constructor(props) {
+        super(props)
+        
+    }
+
+    get global() {
+        return this.context.global
+    }
 
     disableDraggable = () => {
         if (this.props.deliverRef && this.props.deliverRef.current) {
@@ -31,8 +41,18 @@ export default class Th extends React.Component {
         }
     }
 
+    disableDOMObserver = () => {
+        this.global['resizing'] = true
+    }
+
+    restoreDOMObserver = () => {
+        this.global['resizing'] = false
+    }
+
     onMouseDown = (evt, leftOrRight) => {
         this.disableDraggable()
+        this.disableDOMObserver()
+
         const { leafIndex, metaKey } = this.column
         const { getColGroups, setResizedWidthInfo, flattenSortedColumns } = this.context
 
@@ -78,6 +98,10 @@ export default class Th extends React.Component {
         window.removeEventListener('mousemove', this.onMouseMove)
         window.removeEventListener('mouseup', this.onMouseUp)
         this.restoreDraggable()
+        console.log(`mouseup `,)
+        setTimeout(() => {
+            this.global['resizing'] = false
+        }, 100)
     }
 
     componentDidMount() {

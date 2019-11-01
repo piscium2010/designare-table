@@ -18,12 +18,10 @@ body {
     table {
         width: auto;
         min-width: initial;
-        // border-collapse: collapse !important;
         border-collapse: separate !important;
         border-spacing: 0px 0px !important;
         border-color: transparent;
-        border-style: solid;
-        border-width: 1px;
+        border-width: 0px;
 
         th,
         td {
@@ -46,10 +44,15 @@ body {
         tbody {
             border-color:inherit;
             tr {
-                border-top: 1px solid rgba(0, 0, 0, 0);
-                border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+                border-width: 1px;
+                border-style: solid;
+                border-top-color: rgba(0, 0, 0, 0);
+                border-bottom-color:  rgba(0, 0, 0, 0.12);
                 &:last-of-type {
                     border-bottom-color: transparent;
+                }
+                &:first-of-type {
+                    border-top-color: rgba(0, 0, 0, 0.12);
                 }   
             }
             td {

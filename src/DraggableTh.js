@@ -61,19 +61,19 @@ export default class DraggableTh extends React.Component {
 
     onDragStart = evt => {
         const column = this.column
-        this.global['designare-column-index'] = column.columnIndex
+        this.global['designare-draggable-column-index'] = column.columnIndex
     }
 
     onDragOver = evt => {
         evt.preventDefault() // allow drag
-        const sourceIndex = this.global['designare-column-index']
+        const sourceIndex = this.global['designare-draggable-column-index']
         const targetIndex = this.column.columnIndex
         sourceIndex < targetIndex ? this.highlightRight() : undefined
         sourceIndex > targetIndex ? this.highlightLeft() : undefined
     }
 
     onDragLeave = evt => {
-        const sourceIndex = this.global['designare-column-index']
+        const sourceIndex = this.global['designare-draggable-column-index']
         const targetIndex = this.column.columnIndex
         sourceIndex < targetIndex ? this.deHighlightRight() : undefined
         sourceIndex > targetIndex ? this.deHighlightLeft() : undefined
@@ -82,7 +82,7 @@ export default class DraggableTh extends React.Component {
     onDrop = evt => {
         evt.preventDefault()
         this.onDragLeave(evt)
-        const sourceIndex = this.global['designare-column-index']
+        const sourceIndex = this.global['designare-draggable-column-index']
         const targetIndex = this.column.columnIndex
         if (!isNaN(sourceIndex) && !isNaN(targetIndex) && sourceIndex != targetIndex) {
             const shiftedColumns = shift(this.originalColumns, sourceIndex, targetIndex)

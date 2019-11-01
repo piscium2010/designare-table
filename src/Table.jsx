@@ -55,7 +55,11 @@ export default class Table extends React.Component {
         this.warnings = new Map()
         this.cells = new Map()
         this.headerCells = new Map()
-        this.global = {}
+        this.global = Object.seal({
+            'designare-draggable-column-index': undefined,
+            'designare-draggable-row-index': undefined,
+            'resizing': false
+        })
         this.contextAPI = {
             getFilterLayerContainer: this.getFilterLayerContainer,
 
@@ -79,6 +83,7 @@ export default class Table extends React.Component {
             removeSyncScrolling: this.removeSyncScrolling,
 
             reSyncWidthAndHeight: this.debouncedReSyncWidthAndHeight,
+            syncScrollBarStatus: this.syncScrollBarStatus,
 
             getColGroups: this.getColGroups,
 
@@ -372,6 +377,10 @@ export default class Table extends React.Component {
         }
     }
 
+    syncScrollBarStatus = () => {
+        syncScrollBarStatus(this.root.current)
+    }
+
     resize = () => this.reSyncWidthAndHeight(true)
 
     componentDidUpdate() {
@@ -526,7 +535,7 @@ function syncWidthAndHeight(table, columns, rowHeight = -1, dimensionInfo, resiz
         removeColgroup(rightBodyRoot)
     }
 
-    const rootWidth = table.offsetWidth
+    const rootWidth = table.getBoundingClientRect().width
 
     // comment out - removing height will cause scrollbar jumping
     // remove height
@@ -592,7 +601,7 @@ function syncWidthAndHeight(table, columns, rowHeight = -1, dimensionInfo, resiz
         resizedWidthArray
     )
     let sum = maxWidthArray.reduce((prev, curr) => prev + curr, 0)
-    const leftOver = rootWidth - sum
+    const leftOver = Math.floor(rootWidth - sum)
     if (leftOver > 0) {
         let balance = leftOver
         for (let i = 0, len = columns.length; i < len; i++) {
@@ -695,6 +704,26 @@ function syncWidthAndHeight(table, columns, rowHeight = -1, dimensionInfo, resiz
         rightRows[i] ? rightRows[i].style['height'] = `${height}px` : undefined
     }
 
+    syncScrollBarStatus(table)
+
+    window.requestAnimationFrame(() => {
+        dimensionInfo.originalMaxWidthArray = originalMaxWidthArray
+        dimensionInfo.dimensionId = dimensionId
+        const info = getDimensionInfo(table, columnSize)
+        Object.assign(dimensionInfo, info)
+    })
+}
+
+function syncScrollBarStatus(table) {
+    const findDOM = find.bind(null, table)
+    // header
+    const [headerWrapper, headerRoot, header] = findDOM('header')
+
+    // body
+    const [bodyWrapper, bodyRoot, body] = findDOM('body')
+    const [leftBodyWrapper, leftBodyRoot, leftBody] = findDOM('body', 'left')
+    const [rightBodyWrapper, rightBodyRoot, rightBody] = findDOM('body', 'right')
+
     if (bodyRoot && bodyRoot.offsetHeight > bodyRoot.parentElement.offsetHeight) {
         //body scroll vertically
         syncHeaderBodyVerticalScrollStatus(headerRoot, true)
@@ -720,13 +749,6 @@ function syncWidthAndHeight(table, columns, rowHeight = -1, dimensionInfo, resiz
         syncBodyHorizontalScrollStatus(leftBodyRoot, false)
         syncBodyHorizontalScrollStatus(rightBodyRoot, false)
     }
-
-    window.requestAnimationFrame(() => {
-        dimensionInfo.originalMaxWidthArray = originalMaxWidthArray
-        dimensionInfo.dimensionId = dimensionId
-        const info = getDimensionInfo(table, columnSize)
-        Object.assign(dimensionInfo, info)
-    })
 }
 
 function getDimensionInfo(table, columnSize) {
