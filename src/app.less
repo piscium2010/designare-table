@@ -7,8 +7,8 @@ body {
 .designare-table {
     display: flex !important;
     flex-direction: column !important;
-    box-shadow: @boxShadow;
     background-color: white;
+    box-shadow: @boxShadow;
 
     table, tr, tbody, thead, th, td {
         background-color: inherit;
@@ -20,44 +20,35 @@ body {
         border-color: transparent !important;
         border-width: 0px !important;
 
-        th,
-        td {
-            padding-top: 0 !important;
-            padding-bottom: 0 !important;
-            padding-left: 16px;
-            padding-right: 16px;
-        }
-
-        thead {
+        thead, tbody {
             border-color:inherit;
+            th,
+            td {
+                padding-top: 0 !important;
+                padding-bottom: 0 !important;
+                padding-left: 16px;
+                padding-right: 16px;
+                border-width: 1px;
+                border-style: solid;
+                border-color:inherit;
+                border-right: none;
+                border-left: none;
+            }
+
             tr {
                 border-width: 1px;
                 border-style: solid;
                 border-color: inherit;
             }
-            
-            th {
-                border-width: 1px;
-                border-style: solid;
-                border-color:inherit;
-            }
         }
 
         tbody {
-            border-color:inherit;
             tr {
-                border-width: 1px;
-                border-style: solid;
                 border-top-color: rgba(0, 0, 0, 0);
                 border-bottom-color:  rgba(0, 0, 0, 0.12);
                 &:last-of-type {
                     border-bottom-color: transparent;
                 }
-            }
-            td {
-                border-width: 1px;
-                border-style: solid;
-                border-color:inherit;
             }
         }
     }
@@ -135,17 +126,14 @@ body {
                     &::after {
                         content:'';
                         display: block;
-                        width: 5px;
+                        width: 4px;
                         position: absolute;
-                        right: -5px;
+                        right: -4px;
                         top:-1px;
                         bottom: -1px;
-                        background-image: linear-gradient(
-                            to right,
-                            rgba(9,9,9,.2) 0,
-                            rgba(9,9,9,.1) 1%,
-                            rgba(0,0,0,0)
-                        );
+                        background-image: 
+                            linear-gradient(to right, rgba(9,9,9,.05) 1%, rgba(0,0,0,0), rgba(0,0,0,0)),
+                            linear-gradient(to right, rgba(9,9,9,.1), rgba(0,0,0,0));
                         pointer-events: none;
                     }
                 }
@@ -178,12 +166,9 @@ body {
                         left: -5px;
                         top:-1px;
                         bottom: -1px;
-                        background-image: linear-gradient(
-                            to left,
-                            rgba(9,9,9,.2) 0,
-                            rgba(9,9,9,.1) 1%,
-                            rgba(0,0,0,0)
-                        );
+                        background-image: 
+                        linear-gradient(to left, rgba(9,9,9,.05) 1%, rgba(0,0,0,0), rgba(0,0,0,0)),
+                        linear-gradient(to left, rgba(9,9,9,.1), rgba(0,0,0,0));
                         pointer-events: none;
                     }
                 }
@@ -218,18 +203,14 @@ body {
                     &::after {
                         content:'';
                         display: block;
-                        width: 5px;
+                        width: 4px;
                         position: absolute;
-                        right: -5px;
+                        right: -4px;
                         top:-1px;
                         bottom: -1px;
-                        // background-color: yellowgreen;
-                        background-image: linear-gradient(
-                            to right,
-                            rgba(9,9,9,.2) 0,
-                            rgba(9,9,9,.1) 1%,
-                            rgba(0,0,0,0)
-                        );
+                        background-image:
+                            linear-gradient(to right, rgba(9,9,9,.05) 1%, rgba(0,0,0,0), rgba(0,0,0,0)),
+                            linear-gradient(to right, rgba(9,9,9,.1), rgba(0,0,0,0));
                         pointer-events: none;
 
                     }
@@ -261,17 +242,14 @@ body {
                     &::after {
                         content:'';
                         display: block;
-                        width: 5px;
+                        width: 4px;
                         position: absolute;
-                        left: -5px;
+                        left: -4px;
                         top:-1px;
                         bottom: -1px;
-                        background-image: linear-gradient(
-                            to left,
-                            rgba(9,9,9,.2) 0,
-                            rgba(9,9,9,.1) 1%,
-                            rgba(0,0,0,0)
-                        );
+                        background-image: 
+                            linear-gradient(to left, rgba(9,9,9,.05) 1%, rgba(0,0,0,0), rgba(0,0,0,0)),
+                            linear-gradient(to left, rgba(9,9,9,.1), rgba(0,0,0,0));
                         pointer-events: none;
                     }
                 }
