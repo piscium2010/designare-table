@@ -540,16 +540,6 @@ function syncWidthAndHeight(table, columns, rowHeight = -1, dimensionInfo, resiz
 
     const rootWidth = table.getBoundingClientRect().width
 
-    // comment out - removing height will cause scrollbar jumping
-    // remove height
-    // removeHeight(header)
-    // removeHeight(leftHeader)
-    // removeHeight(rightHeader)
-    // removeHeight(body)
-    // removeHeight(leftBody)
-    // removeHeight(rightBody)
-
-
     // for sync width
     const headerWidthArray = widthArray(header, columnSize, 'end', 'headerWidthArray')
     const leftHeaderWidthArray = widthArray(leftHeader, columnSize, 'end', 'leftHeaderWidthArray')
@@ -597,13 +587,14 @@ function syncWidthAndHeight(table, columns, rowHeight = -1, dimensionInfo, resiz
         rightBodyWidthArray,
         columnWidthArray
     )
-
-
+        
     let maxWidthArray = max(
         originalMaxWidthArray,
         resizedWidthArray
     )
+
     let sum = maxWidthArray.reduce((prev, curr) => prev + curr, 0)
+
     const leftOver = Math.floor(rootWidth - sum)
     if (leftOver > 0) {
         let balance = leftOver
@@ -626,7 +617,6 @@ function syncWidthAndHeight(table, columns, rowHeight = -1, dimensionInfo, resiz
         }
         sum += leftOver
     }
-
     // console.log(`originalMaxWidthArray`,originalMaxWidthArray)
     // console.log(`leftOver`,leftOver)
 
@@ -646,7 +636,7 @@ function syncWidthAndHeight(table, columns, rowHeight = -1, dimensionInfo, resiz
 
     // }
 
-    const tableWidth = sum + 2 + 'px'
+    const tableWidth = sum + 'px'
     setStyle(leftHeaderRoot, 'minWidth', `${tableWidth}`)
     setStyle(rightHeaderRoot, 'minWidth', `${tableWidth}`)
     setStyle(leftBodyRoot, 'minWidth', `${tableWidth}`)
@@ -727,7 +717,7 @@ function syncScrollBarStatus(table) {
     const [leftBodyWrapper, leftBodyRoot, leftBody] = findDOM('body', 'left')
     const [rightBodyWrapper, rightBodyRoot, rightBody] = findDOM('body', 'right')
 
-    if (bodyRoot && bodyRoot.offsetHeight > bodyRoot.parentElement.offsetHeight) {
+    if (bodyRoot && bodyRoot.offsetHeight - bodyRoot.parentElement.offsetHeight > 1) {
         //body scroll vertically
         syncHeaderBodyVerticalScrollStatus(headerRoot, true)
         hideVerticalScrollBarOfTableFixedHeader(table, true)
@@ -740,7 +730,7 @@ function syncScrollBarStatus(table) {
         hideVerticalScrollBarOfBody(rightBodyRoot, false)
     }
 
-    if (bodyRoot && bodyRoot.offsetWidth > bodyRoot.parentElement.offsetWidth) {
+    if (bodyRoot && bodyRoot.offsetWidth - bodyRoot.parentElement.offsetWidth > 1) {
         //body scroll horizontally
         hideHorizontalScrollBarOfFixBody(leftBodyRoot, true)
         hideHorizontalScrollBarOfFixBody(rightBodyRoot, true)
@@ -838,13 +828,6 @@ function removeColgroup(element) {
     if (colgroup) {
         // element.style.minWidth = 'unset'
         element.removeChild(colgroup)
-    }
-}
-
-function removeHeight(element) {
-    const array = (element && element.children) || []
-    for (let i = 0, len = array.length; i < len; i++) {
-        array[i].style.height = 'auto'
     }
 }
 
