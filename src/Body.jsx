@@ -7,8 +7,7 @@ export default class Body extends React.Component {
     static contextType = Context
     static defaultProps = {
         className: '',
-        onScroll: () => { },
-        tr: ({ cells }) => <tr>{cells}</tr>
+        onScroll: () => { }
     }
 
     get bodyWidth() {

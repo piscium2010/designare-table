@@ -587,7 +587,7 @@ function syncWidthAndHeight(table, columns, rowHeight = -1, dimensionInfo, resiz
         rightBodyWidthArray,
         columnWidthArray
     )
-        
+
     let maxWidthArray = max(
         originalMaxWidthArray,
         resizedWidthArray
@@ -722,12 +722,11 @@ function syncScrollBarStatus(table) {
         syncHeaderBodyVerticalScrollStatus(headerRoot, true)
         hideVerticalScrollBarOfTableFixedHeader(table, true)
         hideVerticalScrollBarOfBody(leftBodyRoot, true)
-        hideVerticalScrollBarOfBody(rightBodyRoot, true)
+
     } else {
         syncHeaderBodyVerticalScrollStatus(headerRoot, false)
         hideVerticalScrollBarOfTableFixedHeader(table, false)
         hideVerticalScrollBarOfBody(leftBodyRoot, false)
-        hideVerticalScrollBarOfBody(rightBodyRoot, false)
     }
 
     if (bodyRoot && bodyRoot.offsetWidth - bodyRoot.parentElement.offsetWidth > 1) {
@@ -742,6 +741,14 @@ function syncScrollBarStatus(table) {
         syncBodyHorizontalScrollStatus(leftBodyRoot, false)
         syncBodyHorizontalScrollStatus(rightBodyRoot, false)
     }
+
+    // hide rightBody scrollbar when and only when it is empty
+    if (rightBody && rightBody.children.length === 0) {
+        hideVerticalScrollBarOfBody(rightBodyRoot, true)
+    } else {
+        hideVerticalScrollBarOfBody(rightBodyRoot, false)
+    }
+
 }
 
 function getDimensionInfo(table, columnSize) {
@@ -877,9 +884,11 @@ function hideHorizontalScrollBarOfFixBody(bodyRoot, scroll = false) {
 
 function hideVerticalScrollBarOfBody(bodyRoot, scroll = false) {
     if (scroll) {
+        // hide
         bodyRoot ? bodyRoot.parentElement.parentElement.style.marginRight = '15px' : undefined
         bodyRoot ? bodyRoot.parentElement.style.marginRight = '-15px' : undefined
     } else {
+        // normal
         bodyRoot ? bodyRoot.parentElement.parentElement.style.marginRight = '0' : undefined
         bodyRoot ? bodyRoot.parentElement.style.marginRight = '0' : undefined
     }

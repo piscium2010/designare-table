@@ -7,6 +7,10 @@ import Observe from './DOMObserver'
 export default class HTMLTbody extends React.Component {
     static contextType = Context
 
+    static defaultProps = {
+        tr: ({ cells }) => <tr>{cells}</tr>
+    }
+
     constructor(props) {
         super(props)
         this.observer = Observe(this)
@@ -36,6 +40,22 @@ export default class HTMLTbody extends React.Component {
             }}
             >
                 <tbody {...restProps} ref={this.ref}>
+                    {/* {
+                        data.map((row, rowIndex) => (
+                            isEmpty
+                                ? <tr key={rowIndex}></tr>
+                                : <Fragment key={rowIndex}>
+                                    {Tr({
+                                        key: rowIndex,
+                                        row,
+                                        rowIndex,
+                                        fixed,
+                                        getColumns: () => flatten(columns),
+                                        cells: <Tds rowIndex={rowIndex} />
+                                    })}
+                                </Fragment>
+                        ))
+                    } */}
                     {
                         isEmpty
                             ? null

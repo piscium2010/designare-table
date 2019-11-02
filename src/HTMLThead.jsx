@@ -7,6 +7,10 @@ import Observe from './DOMObserver'
 export default class HTMLThead extends React.Component {
     static contextType = Context
 
+    static defaultProps = {
+        tr: ({ cells }) => <tr>{cells}</tr>
+    }
+
     constructor(props) {
         super(props)
         this.observer = Observe(this)
