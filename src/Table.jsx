@@ -31,6 +31,7 @@ export default class Table extends React.Component {
         onChangePaging: doNothing,
         activeColor: '#1890ff',
         defaultColor: '#bfbfbf',
+        resizable: false,
         rowHeight: 38
     }
 
@@ -100,7 +101,9 @@ export default class Table extends React.Component {
 
             global: this.global,
             onChangeColumns: props.onChangeColumns,
-            onChangeRows: props.onChangeRows
+            onChangeRows: props.onChangeRows,
+
+            resizable: props.resizable
         }
         this.state = {
             hasError: false,

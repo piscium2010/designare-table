@@ -3,7 +3,7 @@ import { ThsContext } from './context'
 import ReSizing from './ReSizing'
 import debounce from 'lodash/debounce'
 
-const resizableElementWidth = 2
+const resizableElementWidth = 3
 const resizableElementStyle = {
     position: 'absolute',
     top: 0,
@@ -12,7 +12,7 @@ const resizableElementStyle = {
     cursor: 'col-resize',
     zIndex: 1,
     userSelect: 'none'
-    // backgroundColor: 'aliceblue'
+    // backgroundColor: 'blue'
 }
 
 export default class Th extends React.Component {
@@ -20,6 +20,10 @@ export default class Th extends React.Component {
 
     get global() {
         return this.context.global
+    }
+
+    get resizable() {
+        return this.context.resizable
     }
 
     disableDraggable = () => {
@@ -137,9 +141,9 @@ export default class Th extends React.Component {
                 rowSpan={rowSpan}
                 style={{ position: 'relative', ...thStyle, ...style }}
             >
-                {isLeaf && !isFirst && <div className={`designare-resize-element-left`} style={{ ...resizableElementStyle, left: 0 }} onMouseDown={evt => this.onMouseDown(evt, 'left')}></div>}
+                {isLeaf && !isFirst && this.resizable && <div className={`designare-resize-element-left`} style={{ ...resizableElementStyle, left: 0 }} onMouseDown={evt => this.onMouseDown(evt, 'left')}></div>}
                 {isMyColumn ? children : <span>&nbsp;</span>}
-                {isLeaf && !isLast && <div className={`designare-resize-element-right`} style={{ ...resizableElementStyle, right: 0 }} onMouseDown={evt => this.onMouseDown(evt, 'right')}></div>}
+                {isLeaf && !isLast && this.resizable && <div className={`designare-resize-element-right`} style={{ ...resizableElementStyle, right: 0 }} onMouseDown={evt => this.onMouseDown(evt, 'right')}></div>}
             </th>
         )
     }
