@@ -81,6 +81,9 @@ export default class Header extends React.Component {
                 {...restProps}
             >
                 <Animate style={{ marginBottom: 0, position: 'relative', overflowX: 'hidden', backgroundColor: 'inherit' }}>
+                    <Left leftRef={this.leftRef}>
+                        <Thead fixed='left' tr={tr} />
+                    </Left>
                     <Normal
                         deliverHeaderRef={ref => this.headerRef = ref}
                         tableRef={this.tableRef}
@@ -90,9 +93,6 @@ export default class Header extends React.Component {
                     >
                         <Thead tr={tr} />
                     </Normal>
-                    <Left leftRef={this.leftRef}>
-                        <Thead fixed='left' tr={tr} />
-                    </Left>
                     <Right rightRef={this.rightRef}>
                         <Thead fixed='right' tr={tr} />
                     </Right>

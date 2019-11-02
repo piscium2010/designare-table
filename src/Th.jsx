@@ -1,7 +1,6 @@
 import React from 'react'
 import { ThsContext } from './context'
 import ReSizing from './ReSizing'
-import debounce from 'lodash/debounce'
 
 const resizableElementWidth = 3
 const resizableElementStyle = {
@@ -29,7 +28,7 @@ export default class Th extends React.Component {
     disableDraggable = () => {
         if (this.props.deliverRef && this.props.deliverRef.current) {
             const el = this.props.deliverRef.current
-            this.originalDraggable = el.getAttribute('draggable') 
+            this.originalDraggable = el.getAttribute('draggable')
             el.setAttribute('draggable', false)
         }
     }
@@ -98,9 +97,8 @@ export default class Th extends React.Component {
         window.removeEventListener('mousemove', this.onMouseMove)
         window.removeEventListener('mouseup', this.onMouseUp)
         this.restoreDraggable()
-        console.log(`mouseup `,)
         setTimeout(() => {
-            this.global['resizing'] = false
+            this.restoreDOMObserver()
         }, 100)
     }
 
@@ -129,7 +127,7 @@ export default class Th extends React.Component {
         const { colSpan, rowSpan, fixed, isFirst, isLast, isLeaf, isFirstFixedColumn, isLastFixedColumn } = column
         const fixHeader = this.context.fixed
         const isMyColumn = fixHeader ? fixed === fixHeader : !fixed
-        const thStyle = isMyColumn ? { zIndex: 1 } : { visibility: 'hidden', pointerEvents: 'none', zIndex: 0 }
+        const thStyle = isMyColumn ? { zIndex: fixHeader === 'left' ? 2 : 1 } : { visibility: 'hidden', pointerEvents: 'none', zIndex: 0 }
         const fixedColumnShadowClass = isMyColumn && (isFirstFixedColumn || isLastFixedColumn) ? 'designare-fixed' : ''
 
         return (

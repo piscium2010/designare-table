@@ -27,7 +27,7 @@ export default class Td extends React.Component {
                 className={`${leftLastFixedCellClassName} ${rightFirstFixedCellClassName} ${className}`}
                 style={{
                     position: 'relative',
-                    zIndex: 1,
+                    zIndex: fixed === 'left' ? 2 : 1,
                     height: this.rowHeight,
                     ...style
                 }}

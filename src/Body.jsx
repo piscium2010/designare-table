@@ -81,6 +81,13 @@ export default class Body extends React.Component {
                 style={{ flex: '0 1 100%', position: 'relative', overflow: 'hidden', opacity: isInit() ? 1 : 0, ...style }}
                 {...restProps}
             >
+                <Left
+                    leftRef={this.leftRef}
+                    syncScrolling={syncScrolling}
+                    removeSyncScrolling={removeSyncScrolling}
+                >
+                    <HTMLTbody fixed='left' tr={tr} />
+                </Left>
                 <Normal
                     deliverBodyRef={ref => this.bodyRef = ref}
                     tableRef={this.tableRef}
@@ -90,13 +97,6 @@ export default class Body extends React.Component {
                 >
                     <HTMLTbody tr={tr} />
                 </Normal>
-                <Left
-                    leftRef={this.leftRef}
-                    syncScrolling={syncScrolling}
-                    removeSyncScrolling={removeSyncScrolling}
-                >
-                    <HTMLTbody fixed='left' tr={tr} />
-                </Left>
                 <Right
                     rightRef={this.rightRef}
                     syncScrolling={syncScrolling}

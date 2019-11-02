@@ -4,18 +4,19 @@ export default class SyncScrolling {
     map = new Map()
 
     constructor() {
-        this.debouncedRestore = debounce(this.restore, 100)
+        this.debouncedReAddOnScroll = debounce(this.reAddOnScroll, 100)
     }
 
     onScroll = evt => {
-        let master, slave
-        const scrollable = evt.target
-        const { scrollLeft, scrollTop } = scrollable
+        const master = evt.target
+        const { scrollLeft, scrollTop } = master
+        const direction = this.map.get(master)
+        
         this.map.forEach((v, k) => {
-            k === scrollable ? master = k : slave = k
+            const slave = k === master ? undefined : k
             if (slave) {
                 slave.removeEventListener('scroll', this.onScroll)
-                switch (v) {
+                switch (direction) {
                     case 'scrollLeft':
                         slave.scrollLeft = scrollLeft
                         break
@@ -31,10 +32,10 @@ export default class SyncScrolling {
                 }
             }
         })
-        this.debouncedRestore(master/* except */)
+        this.debouncedReAddOnScroll(master/* except */)
     }
 
-    restore = except => {
+    reAddOnScroll = except => {
         this.map.forEach((v, k) => {
             k === except ? undefined : k.addEventListener('scroll', this.onScroll)
         })
