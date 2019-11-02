@@ -365,7 +365,7 @@ export default class Table extends React.Component {
 
     reSyncWidthAndHeight = (force = false) => {
         // return
-        console.log(`rsync`)
+        // console.log(`rsync`)
         const { dimensionInfo, flattenSortedColumns, root } = this
         const dimensionId = code(flattenSortedColumns)
         const isReSized = force || dimensionId !== dimensionInfo.dimensionId || isDimensionChanged(
@@ -422,7 +422,7 @@ export default class Table extends React.Component {
     }
 
     render() {
-        console.log(`render table`)
+        // console.log(`render table`)
         if (this.state.hasError) return <div style={{ color: '#b51a28' }}>{this.state.error}</div>
 
         const {
