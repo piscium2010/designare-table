@@ -158,7 +158,6 @@ export default class Filter extends React.Component {
     }
 
     componentDidMount() {
-        // console.log(`filter did mount`,)
         this.context.addEventListener('tableDidMount', this.tableDidMount)
     }
 

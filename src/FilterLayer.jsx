@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import Layer from '@piscium2010/lime/Layer'
 import '@piscium2010/lime/Layer/layer.css'
 
-export default function FilterLayer({ content: C, filterAPI, show, ...restProps }) {
+export default function FilterLayer({ content, filterAPI, show, ...restProps }) {
     const [visible, setVisible] = useState(show)
     useEffect(() => {
         const timer = show
@@ -12,6 +12,11 @@ export default function FilterLayer({ content: C, filterAPI, show, ...restProps 
     }, [show])
 
     return (
-        <Layer show={show} {...restProps}>{visible ? <C {...filterAPI} /> : null}</Layer>
+        <Layer show={show} {...restProps}>{visible ? <C content={content} filterAPI={filterAPI} /> : null}</Layer>
     )
+}
+
+function C(props) {
+    const { content, filterAPI } = props
+    return content(filterAPI)
 }
