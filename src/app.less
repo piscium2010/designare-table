@@ -22,25 +22,26 @@ body {
 
         thead, tbody {
             border-color:inherit;
-            th,
-            td {
-                padding-top: 0 !important;
-                padding-bottom: 0 !important;
-                padding-left: 16px;
-                padding-right: 16px;
-                border-width: 1px;
-                border-style: solid;
-                border-color:inherit;
-                border-right: none;
-                border-left: none;
-            }
 
             tr {
                 border-width: 1px;
                 border-style: solid;
                 border-color: inherit;
-            }
 
+                th,
+                td {
+                    position: relative;
+                    padding-top: 0 !important;
+                    padding-bottom: 0 !important;
+                    padding-left: 16px;
+                    padding-right: 16px;
+                    border-width: 1px;
+                    border-style: solid;
+                    border-color:inherit;
+                    border-right: none;
+                    border-left: none;
+                }
+            }
         }
 
         tbody {
@@ -50,11 +51,6 @@ body {
                 &:last-of-type {
                     border-bottom-color: transparent;
                 }
-            }
-
-            td {
-                position: relative;
-                z-index: 1;
             }
         }
     }
@@ -121,12 +117,34 @@ body {
 
     &-header {
         background-color: inherit;
+
+        table {
+            thead {
+                tr {
+                    td {
+                        z-index: 1;
+                    }
+                }
+            }
+        }
+
         &-left {
             overflow: hidden;
             top:0;
             left:0;
             position: absolute;
             background-color: inherit;
+
+            table {
+                thead {
+                    tr {
+                        td {
+                            z-index: 2;
+                        }
+                    }
+                }
+            }
+
             &.designare-shadow {
                 .designare-fixed {
                     &::after {
@@ -162,6 +180,17 @@ body {
             right: 0px;
             position: absolute;
             background-color: inherit;
+
+            table {
+                thead {
+                    tr {
+                        td {
+                            z-index: 1;
+                        }
+                    }
+                }
+            }
+
             &.designare-shadow {
                 .designare-fixed {
                     &::after {
@@ -197,6 +226,17 @@ body {
     &-body {
         background-color: inherit;
         position: relative;
+
+        table {
+            tbody {
+                tr {
+                    td {
+                        z-index: 1;
+                    }
+                }
+            }
+        }
+
         &-left {
             position: absolute;
             background-color: inherit;
@@ -205,6 +245,18 @@ body {
             bottom: 15px;
             overflow: hidden;
             height: 100%;
+
+            table {
+                tbody {
+                    tr {
+                        td {
+                            z-index: 2;
+                        }
+                    }
+                }
+            }
+            
+
             &.designare-shadow {
                 .designare-fixed {
                     &::after {
@@ -244,6 +296,17 @@ body {
             overflow: hidden;
             height: 100%;
             background-color: inherit;
+
+            table {
+                tbody {
+                    tr {
+                        td {
+                            z-index: 1;
+                        }
+                    }
+                }
+            }
+
             &.designare-shadow {
                 .designare-fixed {
                     &::after {

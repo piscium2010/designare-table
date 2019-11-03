@@ -608,6 +608,10 @@ function syncWidthAndHeight(table, columns, rowHeight = -1, dimensionInfo, resiz
         }
         if (balance > 0) {
             for (let i = 0, len = columns.length; i < len; i++) {
+                const userSpecifiedWidth = columns[i].width
+                if(userSpecifiedWidth && !isNaN(userSpecifiedWidth)) {
+                    continue
+                }
                 let avg = balance / (len - i)
                 avg = avg - avg % 1
                 maxWidthArray[i] += avg
@@ -722,7 +726,6 @@ function syncScrollBarStatus(table) {
         syncHeaderBodyVerticalScrollStatus(headerRoot, true)
         hideVerticalScrollBarOfTableFixedHeader(table, true)
         hideVerticalScrollBarOfBody(leftBodyRoot, true)
-
     } else {
         syncHeaderBodyVerticalScrollStatus(headerRoot, false)
         hideVerticalScrollBarOfTableFixedHeader(table, false)
@@ -731,22 +734,29 @@ function syncScrollBarStatus(table) {
 
     if (bodyRoot && bodyRoot.offsetWidth - bodyRoot.parentElement.offsetWidth > 1) {
         //body scroll horizontally
-        hideHorizontalScrollBarOfFixBody(leftBodyRoot, true)
-        hideHorizontalScrollBarOfFixBody(rightBodyRoot, true)
+        hideHorizontalScrollBarOfBody(leftBodyRoot, true)
+        hideHorizontalScrollBarOfBody(rightBodyRoot, true)
         syncBodyHorizontalScrollStatus(leftBodyRoot, true)
         syncBodyHorizontalScrollStatus(rightBodyRoot, true)
     } else {
-        hideHorizontalScrollBarOfFixBody(leftBodyRoot, false)
-        hideHorizontalScrollBarOfFixBody(rightBodyRoot, false)
+        hideHorizontalScrollBarOfBody(leftBodyRoot, false)
+        hideHorizontalScrollBarOfBody(rightBodyRoot, false)
         syncBodyHorizontalScrollStatus(leftBodyRoot, false)
         syncBodyHorizontalScrollStatus(rightBodyRoot, false)
     }
 
-    // hide rightBody scrollbar when and only when it is empty
-    if (rightBody && rightBody.children.length === 0) {
+    
+    if (isBodyEmpty(rightBody)) {
+        // hide rightBody vertical scrollbar when and only when it is empty
         hideVerticalScrollBarOfBody(rightBodyRoot, true)
+
+        // hide rightBody horizontal scrollbar when it is empty
+        hideHorizontalScrollBarOfBody(rightBodyRoot, true)
+        rightBodyWrapper.style.visibility = 'hidden'
+
     } else {
         hideVerticalScrollBarOfBody(rightBodyRoot, false)
+        rightBodyWrapper.style.visibility = 'initial'
     }
 
 }
@@ -871,11 +881,13 @@ function appendChild(element, child) {
     element ? element.appendChild(child) : undefined
 }
 
-function hideHorizontalScrollBarOfFixBody(bodyRoot, scroll = false) {
+function hideHorizontalScrollBarOfBody(bodyRoot, scroll = false) {
     if (scroll) {
+        // hide
         bodyRoot ? bodyRoot.parentElement.style.height = 'calc(100% + 15px)' : undefined
         bodyRoot ? bodyRoot.parentElement.parentElement.style.height = 'calc(100% - 15px)' : undefined
     } else {
+        // normal
         bodyRoot ? bodyRoot.parentElement.style.height = '100%' : undefined
         bodyRoot ? bodyRoot.parentElement.parentElement.style.height = '100%' : undefined
     }
@@ -940,4 +952,8 @@ function code(columnsWithMeta, result = [], root = true) {
 
 function getColumnSize(columns) {
     return columns.reduce((prev, curr) => prev + curr.colSpan, 0)
+}
+
+function isBodyEmpty(body) {
+    return body && body.children.length === 0
 }

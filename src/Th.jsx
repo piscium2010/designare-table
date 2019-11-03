@@ -48,7 +48,7 @@ export default class Th extends React.Component {
         this.global['resizing'] = false
     }
 
-    onMouseDown = (evt, leftOrRight) => {
+    onMouseDown = (evt) => {
         this.disableDraggable()
         this.disableDOMObserver()
 
@@ -56,7 +56,7 @@ export default class Th extends React.Component {
         const { getColGroups, setResizedWidthInfo, flattenSortedColumns } = this.context
 
         this.setResizedWidthInfo = setResizedWidthInfo
-        this.leftOrRight = leftOrRight
+        this.leftOrRight = evt.target.dataset['p']
         this.resizing = new ReSizing(evt)
         this.dragable = evt.target
         this.parent = evt.target.parentElement
@@ -127,7 +127,9 @@ export default class Th extends React.Component {
         const { colSpan, rowSpan, fixed, isFirst, isLast, isLeaf, isFirstFixedColumn, isLastFixedColumn } = column
         const fixHeader = this.context.fixed
         const isMyColumn = fixHeader ? fixed === fixHeader : !fixed
-        const thStyle = isMyColumn ? { zIndex: fixHeader === 'left' ? 2 : 1 } : { visibility: 'hidden', pointerEvents: 'none', zIndex: 0 }
+        const thStyle = isMyColumn
+            ? { zIndex: fixHeader === 'left' ? 2 : 1 } // will be used by onMouseDown (drag and drop) as well
+            : { visibility: 'hidden', pointerEvents: 'none', zIndex: 0 }
         const fixedColumnShadowClass = isMyColumn && (isFirstFixedColumn || isLastFixedColumn) ? 'designare-fixed' : ''
 
         return (
@@ -137,11 +139,17 @@ export default class Th extends React.Component {
                 {...restProps}
                 colSpan={colSpan}
                 rowSpan={rowSpan}
-                style={{ position: 'relative', ...thStyle, ...style }}
+                style={{ ...thStyle, ...style }}
             >
-                {isLeaf && !isFirst && this.resizable && <div className={`designare-resize-element-left`} style={{ ...resizableElementStyle, left: 0 }} onMouseDown={evt => this.onMouseDown(evt, 'left')}></div>}
+                {
+                    isLeaf && !isFirst && this.resizable &&
+                    <div className={`designare-resize-element-left`} style={{ ...resizableElementStyle, left: 0 }} data-p='left' onMouseDown={this.onMouseDown}></div>
+                }
                 {isMyColumn ? children : <span>&nbsp;</span>}
-                {isLeaf && !isLast && this.resizable && <div className={`designare-resize-element-right`} style={{ ...resizableElementStyle, right: 0 }} onMouseDown={evt => this.onMouseDown(evt, 'right')}></div>}
+                {
+                    isLeaf && !isLast && this.resizable &&
+                    <div className={`designare-resize-element-right`} style={{ ...resizableElementStyle, right: 0 }} data-p='right' onMouseDown={this.onMouseDown}></div>
+                }
             </th>
         )
     }

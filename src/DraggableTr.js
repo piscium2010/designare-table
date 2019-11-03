@@ -45,16 +45,20 @@ export default class DraggableTr extends React.Component {
         if (this.originalBorderTopColor !== undefined || this.originalBorderTopStyle !== undefined) return
         this.originalBorderTopColor = el.style.borderTopColor
         this.originalBorderTopStyle = el.style.borderTopStyle
+        this.originalBorderTopWidth = el.style.borderTopWidth
         el.style.borderTopColor = this.activeColor
         el.style.borderTopStyle = 'dashed'
+        el.style.borderTopWidth = this.originalBorderTopWidth || '1px'
     }
 
     deHighlightTop = () => {
         const el = this.ref.current
         el.style.borderTopColor = this.originalBorderTopColor
         el.style.borderTopStyle = this.originalBorderTopStyle
+        el.style.borderTopWidth = this.originalBorderTopWidth
         this.originalBorderTopColor = undefined
         this.originalBorderTopStyle = undefined
+        this.originalBorderTopWidth = undefined
     }
 
     highlightBottom = () => {
@@ -62,16 +66,20 @@ export default class DraggableTr extends React.Component {
         if (this.originalBorderBottomColor !== undefined || this.originalBorderBottomStyle !== undefined) return
         this.originalBorderBottomColor = el.style.borderBottomColor
         this.originalBorderBottomStyle = el.style.borderBottomStyle
+        this.originalBorderBottomWidth = el.style.borderBottomWidth
         el.style.borderBottomColor = this.activeColor
         el.style.borderBottomStyle = 'dashed'
+        el.style.borderBottomWidth = this.originalBorderBottomWidth || '1px'
     }
 
     deHighlightBottom = () => {
         const el = this.ref.current
         el.style.borderBottomColor = this.originalBorderBottomColor
         el.style.borderBottomStyle = this.originalBorderBottomStyle
+        el.style.borderBottomWidth = this.originalBorderBottomWidth
         this.originalBorderBottomColor = undefined
         this.originalBorderBottomStyle = undefined
+        this.originalBorderBottomWidth = undefined
     }
 
     onDragStart = evt => {

@@ -37,7 +37,7 @@ export default class HTMLTbody extends React.Component {
                 contextName: 'tbody',
                 fixed,
                 getColumns: () => columns
-            }}
+            }} 
             >
                 <tbody {...restProps} ref={this.ref}>
                     {/* {
