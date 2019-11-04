@@ -50,7 +50,7 @@ export default class Table extends React.Component {
         this.syncScrollingInstance = new SyncScrolling()
         this.dimensionInfo = {}
         this.resizedWidthInfo = new Map()
-        this.debouncedUpdate = debounce(this._update, 60)
+        this.debouncedUpdate = debounce(this.update, 100)
         this.debouncedSyncWidthAndHeight = debounce(this.syncWidthAndHeight, 100, { leading: true, trailing: true })
         this.debouncedReSyncWidthAndHeight = debounce(this.reSyncWidthAndHeight, 100, { leading: true, trailing: true })
         this.warnings = new Map()
@@ -174,14 +174,14 @@ export default class Table extends React.Component {
             })
             keyMap.clear()
             nameMap.clear()
-            this._update()
+            this.update()
         }
     }
 
     removeActiveFilter = columnMetaKey => {
         if (this.activeFilters.has(columnMetaKey)) {
             this.activeFilters.delete(columnMetaKey)
-            this._update()
+            this.update()
         }
     }
 
@@ -196,7 +196,7 @@ export default class Table extends React.Component {
     setActiveSorter = ({ columnMetaKey, dataKey, direction, by }) => {
         if (dataKey !== this.activeSorter.dataKey || direction !== this.activeSorter.direction) {
             this.activeSorter = { columnMetaKey, dataKey, direction, by }
-            this._update()
+            this.update()
         }
     }
 
@@ -335,9 +335,13 @@ export default class Table extends React.Component {
         })
     }
 
-    _update = () => {
-        this.setState({})
-        // this.forceUpdate()
+    update = () => {
+        this.updateId ? ++this.updateId : (this.updateId = 1)
+        const id = this.updateId
+        window.requestAnimationFrame(()=>{
+            id === this.updateId ? this.setState({}) : undefined
+        })
+        // this.setState({})
     }
 
     printWarnings = warnings => {
@@ -386,18 +390,7 @@ export default class Table extends React.Component {
 
     resize = () => this.reSyncWidthAndHeight(true)
 
-    componentDidUpdate() {
-        if (this.state.hasError) return
-        // this.reSyncWidthAndHeight()
-        // this.debouncedReSyncWidthAndHeight()
-        // console.log(`dimensionId`,this.dimensionInfo.dimensionId, code(this.flattenSortedColumns))
-        // if(code(this.flattenSortedColumns) !== this.dimensionInfo.dimensionId) {
-        //     this.debouncedReSyncWidthAndHeight()
-        // }
-    }
-
     componentDidMount() {
-        // console.log(`table did mount`,)
         if (this.state.hasError) return
         const { flattenSortedColumns } = this
         const columnSize = getColumnSize(flattenSortedColumns)
@@ -408,13 +401,11 @@ export default class Table extends React.Component {
                 throw ERR1
         }
 
-        this.syncWidthAndHeight()
         window.addEventListener('resize', this.resize)
+        this.syncWidthAndHeight()
         this.isInit = true
-        window.requestAnimationFrame(() => {
-            this.tableDidMountListeners.forEach((v, k) => k())
-            this._update()
-        })
+        this.tableDidMountListeners.forEach((v, k) => k())
+        this.update()
     }
 
     componentWillUnmount() {
