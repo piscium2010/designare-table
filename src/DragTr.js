@@ -1,10 +1,9 @@
 import React from 'react'
-import Th from './Th'
 import { TBodyContext } from './context'
 import { WARNING1, ERR4, ERR5 } from './messages'
 import { shift } from './util'
 
-export default class DraggableTr extends React.Component {
+export default class DragTr extends React.Component {
     static contextType = TBodyContext
 
     constructor(props) {
