@@ -1,0 +1,19 @@
+{
+    "compilerOptions": {
+        "strict": true,
+        "target": "es5",
+        "declaration": true,
+        "moduleResolution": "node",
+        "module": "CommonJS",
+        "noImplicitAny": false,
+        "emitDecoratorMetadata": true,
+        "experimentalDecorators": true,
+        "downlevelIteration": true,
+        "sourceMap": true,
+        "outDir": "dist",
+        "rootDir": "src",
+        "lib": ["es2015", "dom"]
+    },
+    "exclude": ["node_modules", "test", "dist"],
+    "types": ["node", "jest"]
+}
