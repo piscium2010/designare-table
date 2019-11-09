@@ -1,4 +1,4 @@
-import React from 'react'
+import * as React from 'react'
 
 export function flatten(columns, result = []) {
     columns.forEach(col => col.children ? flatten(col.children, result) : result.push(col))
@@ -120,21 +120,21 @@ export function groupByDepth(columns) {
     return result
 }
 
-export class Queue {
-    i = 0
-    q = []
-    clear = () => {
-        this.i = 0
-        this.q = []
-    }
+// export class Queue {
+//     i = 0
+//     q = []
+//     clear = () => {
+//         this.i = 0
+//         this.q = []
+//     }
 
-    push = v => this.q.push(v)
-    first = () => this.q[this.i++]
+//     push = v => this.q.push(v)
+//     first = () => this.q[this.i++]
 
-    get length() {
-        return this.q.length - this.i
-    }
-}
+//     get length() {
+//         return this.q.length - this.i
+//     }
+// }
 
 export function widthArray(element, requiredLen, startOrend = 'end', msg, debug) {
     let child = element && element.firstElementChild
@@ -196,16 +196,12 @@ export function widthArray(element, requiredLen, startOrend = 'end', msg, debug)
             next = false
         }
     }
-    if (debug) {
-        // console.log(`element`,element)
-        console.log(msg, result)
-    }
+    if (debug) { console.log(msg, result) }
     return pad(result, requiredLen, startOrend, -1 /* pad With */)
 }
 
 export function pad(array = [], expectedLen, startOrend = 'end', padWith) {
     const length = array.length
-    // if (length > expectedLen) throw `fail to pad array:${array}, its length exceeds the expectedLen: ${expectedLen}`
     if (length > expectedLen) throw new CustomError('pad', array, `fail to pad array:${array}, its length exceeds the expectedLen: ${expectedLen}`)
     if (length < expectedLen) {
         const pad = new Array(expectedLen - length)
@@ -245,8 +241,8 @@ export function max(...args) {
 export function shift(array, indexOfDragged, indexOfDropped) {
     indexOfDragged = indexOfDragged / 1
     indexOfDropped = indexOfDropped / 1
-    if(isNaN(indexOfDragged)) throw 'indexOfDragged should be number'
-    if(isNaN(indexOfDropped)) throw 'indexOfDropped should be number'
+    if (isNaN(indexOfDragged)) throw 'indexOfDragged should be number'
+    if (isNaN(indexOfDropped)) throw 'indexOfDropped should be number'
     const result = Array.from(array)
     if (indexOfDragged < indexOfDropped) {
         // shift left

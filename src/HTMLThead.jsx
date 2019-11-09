@@ -1,4 +1,5 @@
-import React, { Fragment } from 'react'
+import * as React from 'react'
+import { Fragment } from 'react'
 import { Context, TheadContext } from './context'
 import { groupByDepth } from './util'
 import Ths from './Ths'

@@ -1,4 +1,4 @@
-import React from 'react'
+import * as React from 'react'
 import { TdsContext } from './context'
 
 export default class Td extends React.Component {

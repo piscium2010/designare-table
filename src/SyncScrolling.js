@@ -1,4 +1,4 @@
-import debounce from 'lodash/debounce'
+import * as debounce from 'lodash/debounce'
 
 export default class SyncScrolling {
     map = new Map()

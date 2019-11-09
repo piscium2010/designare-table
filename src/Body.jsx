@@ -1,7 +1,8 @@
-import React, { useRef, useEffect } from 'react'
+import * as React from 'react'
+import { useRef, useEffect } from 'react'
 import HTMLTbody from './HTMLTbody'
 import { Context } from './context'
-import debounce from 'lodash/debounce'
+import * as debounce from 'lodash/debounce'
 
 export default class Body extends React.Component {
     static contextType = Context

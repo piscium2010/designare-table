@@ -1,4 +1,5 @@
-import React, { Fragment } from 'react'
+import * as React from 'react'
+import { Fragment } from 'react'
 import { Context, TBodyContext } from './context'
 import { flatten } from './util'
 import Tds from './Tds'

@@ -1,4 +1,5 @@
-import React, { useContext, Fragment } from 'react'
+import * as React from 'react'
+import { useContext, Fragment } from 'react'
 import { TheadContext, ThsContext } from './context'
 import Th from './Th'
 

@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react'
+import * as React from 'react'
+import { useState, useEffect } from 'react'
 import Layer from '@piscium2010/lime/Layer'
 import '@piscium2010/lime/Layer/layer.css'
 

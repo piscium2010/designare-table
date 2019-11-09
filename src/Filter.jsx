@@ -1,5 +1,5 @@
-import React from 'react'
-import ReactDOM from 'react-dom'
+import * as React from 'react'
+import * as ReactDOM from 'react-dom'
 import { ThsContext } from './context'
 import Icons from './Icons'
 import FilterLayer from './FilterLayer'

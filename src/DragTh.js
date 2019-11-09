@@ -1,4 +1,4 @@
-import React from 'react'
+import * as React from 'react'
 import Th from './Th'
 import { ThsContext } from './context'
 import { WARNING1, WARNING2 } from './messages'

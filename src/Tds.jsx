@@ -1,4 +1,5 @@
-import React, { Fragment, useContext } from 'react'
+import * as React from 'react'
+import { Fragment, useContext } from 'react'
 import { TBodyContext, TdsContext } from './context'
 import Td from './Td'
 import { ERR2 } from './messages'

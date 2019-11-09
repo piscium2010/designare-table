@@ -1,6 +1,6 @@
 {
   "name": "designare-table",
-  "version": "1.0.0-beta",
+  "version": "1.0.1",
   "description": "",
   "scripts": {
     "test": "jest",
@@ -9,7 +9,7 @@
   },
   "keywords": [],
   "author": "piscium2010 <541032442@qq.com>",
-  "license": "ISC",
+  "license": "MIT",
   "dependencies": {
     "@piscium2010/lime": "^2.3.4",
     "debounce": "^1.2.0",
@@ -27,6 +27,8 @@
     "@babel/preset-react": "^7.0.0",
     "@piscium2010/v-form": "^1.4.0",
     "@testing-library/react": "^9.3.0",
+    "@types/react": "^16.9.11",
+    "@types/react-dom": "^16.9.4",
     "babel-jest": "^24.9.0",
     "babel-loader": "^8.0.6",
     "clean-webpack-plugin": "^3.0.0",
@@ -58,5 +60,9 @@
     "moduleNameMapper": {
       "\\.(css|less)$": "identity-obj-proxy"
     }
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/piscium2010/designare-table.git"
   }
 }

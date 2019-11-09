@@ -1,8 +1,9 @@
-import React, { useRef, useEffect } from 'react'
+import * as React from 'react'
+import { useRef, useEffect } from 'react'
 import Thead from './HTMLThead'
 import Animate from './Animate'
 import { Context } from './context'
-import debounce from 'lodash/debounce'
+import * as debounce from 'lodash/debounce'
 
 export default class Header extends React.Component {
     static contextType = Context

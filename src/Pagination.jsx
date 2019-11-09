@@ -1,4 +1,5 @@
-import React, { useState, useRef, useEffect } from 'react'
+import * as React from 'react'
+import { useState, useRef, useEffect } from 'react'
 import Icons from './Icons'
 
 export default function Pagination(props) {

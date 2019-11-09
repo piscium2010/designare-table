@@ -1,4 +1,5 @@
-import React, { useState, useEffect, Fragment } from 'react'
+import * as React from 'react'
+import { useState, useEffect, Fragment } from 'react'
 import Icons from './Icons'
 
 const loadingLayout = {

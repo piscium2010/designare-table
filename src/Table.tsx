@@ -1,9 +1,13 @@
-import React from 'react'
+import * as React from 'react'
+import * as debounce from 'lodash/debounce'
+import { Fragment } from 'react'
 import { Context } from './context'
-import debounce from 'lodash/debounce'
 import Header from './Header'
 import Body from './Body'
 import Pagination from './Pagination'
+import SyncScrolling from './SyncScrolling'
+import Spinner from './Loading'
+import { ERR0, ERR1 } from './messages'
 import {
     flatten,
     createColumnMeta,
@@ -13,22 +17,82 @@ import {
     widthArray,
     max
 } from './util'
-import SyncScrolling from './SyncScrolling'
-import Spinner from './Loading'
-import { ERR0, ERR1 } from './messages'
 import './table.css'
 
-const doNothing = () => { }
+type filter = {
+    columnMetaKey?: string
+    dataKey: string
+    filterValue: any
+    name?: string
+    by?: string | ((...args) => boolean)
+}
 
-export default class Table extends React.Component {
+type sorter = {
+    columnMetaKey?: string
+    dataKey: string
+    direction: string
+    by?: string | ((...args) => number)
+}
+
+type global = {
+    'designare-draggable-column-index'?: string,
+    'designare-draggable-row-index'?: string,
+    'resizing': boolean
+}
+
+type column = {
+    Header: string | JSX.Element | (() => JSX.Element),
+    Cell?: ({ value, row, dataKey, rowIndex }) => JSX.Element
+    children?: column[]
+    colSpan?: number
+    dataKey?: string
+    width: '*' | number
+    fixed: 'left' | 'right' | undefined
+}
+
+type metaColumn = column & {
+    metaKey: string
+    isFirst?: boolean
+    isLast?: boolean
+    rowSpan: number
+    isFirstFixedColumn?: boolean
+    isLastFixedColumn?: boolean
+    isLeaf?: boolean
+    leafIndex?: number
+}
+
+interface ITableProps extends HTMLDivElement {
+    activeColor?: string
+    defaultColor?: string
+    pageNo?: number
+    pageSize?: number
+    total?: number
+    data?: any[]
+    filters?: filter[]
+    sorter?: sorter
+    onChangePaging?: ({ pageSize, pageNo }) => void
+    columns?: column[]
+    loading?: boolean | JSX.Element | ((...args) => JSX.Element)
+    rowHeight?: number
+    pageSizeOptions?: number[]
+}
+
+type state = {
+    pageNo: number
+    pageSize: number,
+    error?: any
+    hasError: boolean
+}
+
+export default class Table extends React.Component<ITableProps, state> {
     static defaultProps = {
-        children: <React.Fragment><Header /><Body /></React.Fragment>,
+        children: <Fragment><Header /><Body /></Fragment>,
         defaultSorter: {},
-        onChangeColumns: doNothing,
-        onChangeRows: doNothing,
-        onChangeSorter: doNothing,
-        onChangeFilters: doNothing,
-        onChangePaging: doNothing,
+        onChangeColumns: () => { },
+        onChangeRows: () => { },
+        onChangeSorter: () => { },
+        onChangeFilters: () => { },
+        onChangePaging: () => { },
         activeColor: '#1890ff',
         defaultColor: '#bfbfbf',
         resizable: false,
@@ -38,6 +102,78 @@ export default class Table extends React.Component {
     static getDerivedStateFromError(error) {
         return { hasError: true, error }
     }
+
+    root: React.RefObject<HTMLElement>
+    filterLayersRef: React.RefObject<HTMLElement>
+    isInit: boolean
+    activeSorter: { columnMetaKey, dataKey?, direction, by?}
+    tableDidMountListeners: Map<any, ''>
+    activeFilters: Map<string, filter>
+    syncScrollingInstance: SyncScrolling
+    dimensionInfo: {
+        dimensionId?: string,
+        originalMaxWidthArray?: number[],
+        headerWidthArray?: number[],
+        leftHeaderWidthArray?: number[],
+        rightHeaderWidthArray?: number[],
+        bodyWidthArray?: number[],
+        leftBodyWidthArray?: number[],
+        rightBodyWidthArray?: number[],
+        headerHeightArray?: number[],
+        leftHeaderHeightArray?: number[],
+        rightHeaderHeightArray?: number[],
+        bodyHeightArray?: number[],
+        leftBodyHeightArray?: number[],
+        rightBodyHeightArray?: number[],
+        maxWidthArray?: number[]
+    }
+    resizedWidthInfo: Map<string, number>
+    debouncedUpdate: () => void
+    debouncedSyncWidthAndHeight: (force?: boolean) => void
+    debouncedReSyncWidthAndHeight: (force?: boolean) => void
+    warnings: Map<string, 'printed'>
+    cells: Map<any, ''>
+    headerCells: Map<any, ''>
+    global: global
+    contextAPI: {
+        getFilterLayerContainer: (columnMetaKey: string) => Element
+        getDefaultFilters: () => filter[] | undefined
+        getFilters: () => filter[] | undefined
+        setActiveFilter: (f: filter) => void
+        getActiveFilters: () => Map<string, filter>
+        removeActiveFilter: (key: string) => void
+        onChangeFilters: ({ pageSize, pageNo }) => void
+        getDefaultSorter: () => sorter
+        getSorter: () => sorter
+        setActiveSorter: (s: sorter) => void
+        getActiveSorter: () => sorter
+        onChangeSorter: (s: sorter) => void
+        addEventListener: (type: string, func: (...args) => void) => void
+        removeEventListener: (type: string, func: (...args) => void) => void
+        syncScrolling: (scrollable: HTMLElement, mode?: string) => void
+        removeSyncScrolling: (scrollable: HTMLElement) => void
+        reSyncWidthAndHeight: (force?: boolean) => void
+        syncScrollBarStatus: () => void
+        getColGroups: () => any[]
+        setResizedWidthInfo: (columnMetaKey: string, width: number) => void
+        isInit: () => boolean
+        cells: Map<any, ''>
+        headerCells: Map<any, ''>
+        activeColor: string
+        defaultColor: string
+        rowHeight: number
+        global: global
+        onChangeColumns: (columns) => void
+        onChangeRows: (data) => void
+        resizable: boolean
+    }
+    defaultFilters: filter[]
+    defaultSorter: sorter
+    updateId: number
+    flattenSortedColumns: column[]
+    depthOfColumns: number
+    sortedColumns: column[]
+    data: any[]
 
     constructor(props) {
         super(props)
@@ -63,7 +199,6 @@ export default class Table extends React.Component {
         })
         this.contextAPI = {
             getFilterLayerContainer: this.getFilterLayerContainer,
-
             getDefaultFilters: this.getDefaultFilters,
             getFilters: this.getFilters,
             setActiveFilter: this.setActiveFilter,
@@ -87,22 +222,17 @@ export default class Table extends React.Component {
             syncScrollBarStatus: this.syncScrollBarStatus,
 
             getColGroups: this.getColGroups,
-
             setResizedWidthInfo: this.setResizedWidthInfo,
-
             isInit: () => this.isInit,
-
             cells: this.cells,
             headerCells: this.headerCells,
+            global: this.global,
 
             activeColor: props.activeColor,
             defaultColor: props.defaultColor,
             rowHeight: props.rowHeight,
-
-            global: this.global,
             onChangeColumns: props.onChangeColumns,
             onChangeRows: props.onChangeRows,
-
             resizable: props.resizable
         }
         this.state = {
@@ -138,21 +268,20 @@ export default class Table extends React.Component {
     }
 
     getDefaultFilters = () => {
-        return this.defaultFilters ? Array.from(this.defaultFilters) : undefined
+        return this.defaultFilters ? Array.from(this.defaultFilters) as filter[] : undefined
     }
 
     getFilters = () => {
-        return this.props.filters ? Array.from(this.props.filters) : undefined
+        return this.props.filters ? Array.from(this.props.filters) as filter[] : undefined
     }
 
     getActiveFilters = () => {
         return this.activeFilters
     }
 
-    setActiveFilter = ({ columnMetaKey, dataKey, filterValue, name, by }) => {
-        const previous = this.activeFilters.get(columnMetaKey) || {}
+    setActiveFilter = ({ columnMetaKey, dataKey, filterValue, name, by }: filter) => {
+        const previous = this.activeFilters.get(columnMetaKey) || {} as filter
         if (previous.dataKey !== dataKey || previous.filterValue !== filterValue) {
-            // console.log(`set`,dataKey, filterValue)
             this.activeFilters.set(columnMetaKey, { filterValue, name, dataKey, by })
 
             // validate
@@ -193,7 +322,7 @@ export default class Table extends React.Component {
         return this.props.sorter
     }
 
-    setActiveSorter = ({ columnMetaKey, dataKey, direction, by }) => {
+    setActiveSorter = ({ columnMetaKey, dataKey, direction, by }: sorter) => {
         if (dataKey !== this.activeSorter.dataKey || direction !== this.activeSorter.direction) {
             this.activeSorter = { columnMetaKey, dataKey, direction, by }
             this.update()
@@ -201,22 +330,22 @@ export default class Table extends React.Component {
     }
 
     // used when user resize column
-    setResizedWidthInfo = (metaKey, width) => {
-        this.resizedWidthInfo.set(metaKey, width)
+    setResizedWidthInfo = (columnMetaKey: string, width: number) => {
+        this.resizedWidthInfo.set(columnMetaKey, width)
     }
 
     getActiveSorter = () => {
-        return this.activeSorter
+        return this.activeSorter as sorter
     }
 
-    getFilterLayerContainer = columnMetaKey => {
+    getFilterLayerContainer = (columnMetaKey: string) => {
         return this.filterLayersRef.current.getElementsByClassName(columnMetaKey)[0]
     }
 
-    getColGroups = evt => {
+    getColGroups = () => {
         const findDOM = find.bind(null, this.root.current)
-        const roots = []
-        const colgroups = []
+        const roots: HTMLElement[] = []
+        const colgroups: HTMLTableColElement[] = []
         // header
         const [headerWrapper, headerRoot, header] = findDOM('header')
         const [leftHeaderWrapper, leftHeaderRoot, leftHeader] = findDOM('header', 'left')
@@ -267,18 +396,18 @@ export default class Table extends React.Component {
     removeEventListener = (type = 'tableDidMount', func) => {
         switch (type) {
             case 'tableDidMount':
-                this.tableDidMountListeners.delete(func, '')
+                this.tableDidMountListeners.delete(func)
                 break
             default:
                 throw `invalid event type: ${type}`
         }
     }
 
-    syncScrolling = (scrollable, mode = 'scrollLeft') => {
+    syncScrolling = (scrollable: HTMLElement, mode = 'scrollLeft') => {
         this.syncScrollingInstance.add(scrollable, mode)
     }
 
-    removeSyncScrolling = scrollable => {
+    removeSyncScrolling = (scrollable: HTMLElement) => {
         this.syncScrollingInstance.remove(scrollable)
     }
 
@@ -306,9 +435,7 @@ export default class Table extends React.Component {
 
     filterAndSort = data => {
         let result = data
-        // console.log(`original`,data)
         result = this.filter(result)
-        // console.log(`filtered`,result)
         result = this.sort(result)
         return result
     }
@@ -316,7 +443,6 @@ export default class Table extends React.Component {
     paging = data => {
         const { pageNo, pageSize } = this
         const start = (pageNo - 1) * pageSize
-        // console.log(`this.isClientPaging `,this.isClientPaging )
         return this.isClientPaging ? data.slice(start, start + pageSize) : data
     }
 
@@ -338,10 +464,9 @@ export default class Table extends React.Component {
     update = () => {
         this.updateId ? ++this.updateId : (this.updateId = 1)
         const id = this.updateId
-        window.requestAnimationFrame(()=>{
+        window.requestAnimationFrame(() => {
             id === this.updateId ? this.setState({}) : undefined
         })
-        // this.setState({})
     }
 
     printWarnings = warnings => {
@@ -353,7 +478,7 @@ export default class Table extends React.Component {
         })
     }
 
-    syncWidthAndHeight = force => {
+    syncWidthAndHeight = (force?) => {
         const { rowHeight } = this.props
         const { dimensionInfo, flattenSortedColumns, root, resizedWidthInfo, depthOfColumns } = this
         syncWidthAndHeight(
@@ -368,8 +493,6 @@ export default class Table extends React.Component {
     }
 
     reSyncWidthAndHeight = (force = false) => {
-        // return
-        // console.log(`rsync`)
         const { dimensionInfo, flattenSortedColumns, root } = this
         const dimensionId = code(flattenSortedColumns)
         const isReSized = force || dimensionId !== dimensionInfo.dimensionId || isDimensionChanged(
@@ -378,8 +501,7 @@ export default class Table extends React.Component {
             dimensionInfo
         )
         if (isReSized) {
-            console.log(`resized`)
-            // return
+            // console.log(`resized`)
             this.debouncedSyncWidthAndHeight(force)
         }
     }
@@ -413,7 +535,6 @@ export default class Table extends React.Component {
     }
 
     render() {
-        // console.log(`render table`)
         if (this.state.hasError) return <div style={{ color: '#b51a28' }}>{this.state.error}</div>
 
         const {
@@ -433,12 +554,13 @@ export default class Table extends React.Component {
         this.data = this.filterAndSort(data)
         this.data = this.paging(this.data)
         this.flattenSortedColumns = flatten(this.sortedColumns)
+        const styles = { position: 'relative', ...style as any }
 
         return (
-            <div className={`designare-table ${className}`} ref={this.root} style={{ position: 'relative', ...style }}>
-                <div ref={this.filterLayersRef}>
+            <div className={`designare-table ${className}`} ref={this.root as any} style={styles}>
+                <div ref={this.filterLayersRef as any}>
                     {
-                        groupByDepth(this.sortedColumns).map((levelColumns, i) => {
+                        groupByDepth(this.sortedColumns).map(levelColumns => {
                             return levelColumns.map(column => (
                                 <div className={`designare-table-filter-layer-container ${column.metaKey}`} key={column.metaKey}></div>
                             ))
@@ -476,7 +598,7 @@ export default class Table extends React.Component {
     }
 }
 
-function sortColumns(columns) {
+function sortColumns(columns: metaColumn[]) {
     const leftColumns = columns.filter(c => c.fixed === 'left')
     const normalColumns = columns.filter(c => !c.fixed)
     const rightColumns = columns.filter(c => c.fixed === 'right').reverse()
@@ -487,7 +609,7 @@ function sortColumns(columns) {
     return r
 }
 
-function createLeafColumnIndex(columns) {
+function createLeafColumnIndex(columns: metaColumn[]) {
     forEachLeafColumn(columns, (col, i, isLast) => {
         col.isFirst = i === 0
         col.isLast = isLast
@@ -497,13 +619,10 @@ function createLeafColumnIndex(columns) {
 }
 
 function syncWidthAndHeight(table, columns, rowHeight = -1, dimensionInfo, resizedWidthInfo, depthOfColumns, force) {
-    // console.log(`columns`, columns)
     const findDOM = find.bind(null, table), dimensionId = code(columns)
     const columnSize = getColumnSize(columns)
-    // console.log(`columnSize`,columnSize)
     // header
     const [headerWrapper, headerRoot, header] = findDOM('header')
-    // console.log(`heaerRoot`,headerRoot)
     const [leftHeaderWrapper, leftHeaderRoot, leftHeader] = findDOM('header', 'left')
     const [rightHeaderWrapper, rightHeaderRoot, rightHeader] = findDOM('header', 'right')
 
@@ -512,7 +631,6 @@ function syncWidthAndHeight(table, columns, rowHeight = -1, dimensionInfo, resiz
     const [leftBodyWrapper, leftBodyRoot, leftBody] = findDOM('body', 'left')
     const [rightBodyWrapper, rightBodyRoot, rightBody] = findDOM('body', 'right')
 
-    // console.log(`remove`,dimensionInfo.dimensionId, dimensionId)
     if (dimensionInfo.dimensionId !== dimensionId || force) {
         // remove column width
         setStyle(headerRoot, 'minWidth', '0')
@@ -550,7 +668,6 @@ function syncWidthAndHeight(table, columns, rowHeight = -1, dimensionInfo, resiz
             throw `sum of column.colSpan: ${columnSize} does not match length of td: ${len}`
         }
     }
-
 
     const columnWidthArray = columns.reduce((prev, curr) => {
         let { width = -1, colSpan = 1 } = curr, r
@@ -600,7 +717,7 @@ function syncWidthAndHeight(table, columns, rowHeight = -1, dimensionInfo, resiz
         if (balance > 0) {
             for (let i = 0, len = columns.length; i < len; i++) {
                 const userSpecifiedWidth = columns[i].width
-                if(userSpecifiedWidth && !isNaN(userSpecifiedWidth)) {
+                if (userSpecifiedWidth && !isNaN(userSpecifiedWidth)) {
                     continue
                 }
                 let avg = balance / (len - i)
@@ -625,11 +742,6 @@ function syncWidthAndHeight(table, columns, rowHeight = -1, dimensionInfo, resiz
     const bodyColgroup = createColgroup(maxWidthArray)
     const leftBodyColgroup = createColgroup(leftBodyWidthArray.map(mergeMax).filter(positive))
     const rightBodyColgroup = createColgroup(rightBodyWidthArray.map(mergeMax).filter(positive))
-
-    // sync width
-    // if (dimensionInfo.dimensionId !== dimensionId || force) {
-
-    // }
 
     const tableWidth = sum + 'px'
     setStyle(leftHeaderRoot, 'minWidth', `${tableWidth}`)
@@ -664,12 +776,12 @@ function syncWidthAndHeight(table, columns, rowHeight = -1, dimensionInfo, resiz
     const bodyHeightArray = heightArray(body)
     const leftBodyHeightArray = heightArray(leftBody)
     const rightBodyHeightArray = heightArray(rightBody)
-    // console.log(`leftBodyHeightArray`, leftBodyHeightArray)
     const maxBodyHeightArray = max(
         bodyHeightArray,
         leftBodyHeightArray.length === 0 ? bodyHeightArray : leftBodyHeightArray, // ignore when length === 0
         rightBodyHeightArray.length === 0 ? bodyHeightArray : rightBodyHeightArray // ignore when length === 0
     )
+
     // sync height
     const headers = getChildren(header)
     const leftHeaders = getChildren(leftHeader)
@@ -736,7 +848,7 @@ function syncScrollBarStatus(table) {
         syncBodyHorizontalScrollStatus(rightBodyRoot, false)
     }
 
-    
+
     if (isBodyEmpty(rightBody)) {
         // hide rightBody vertical scrollbar when and only when it is empty
         hideVerticalScrollBarOfBody(rightBodyRoot, true)
@@ -813,7 +925,7 @@ function isDimensionChanged(table, columnSize, dimensionInfo) {
     for (let i = 0, len = keys.length; i < len; i++) {
         const k = keys[i]
         if (isArrayChange(dimensionInfo[k], info[k])) {
-            console.log(k, ' is resized')
+            // console.log(k, ' is resized')
             console.log(dimensionInfo[k], info[k])
             result = true
             break
@@ -823,7 +935,7 @@ function isDimensionChanged(table, columnSize, dimensionInfo) {
 }
 
 function heightArray(element) {
-    const r = [], array = (element && element.children) || []
+    const r: number[] = [], array = (element && element.children) || []
     for (let i = 0, len = array.length; i < len; i++) {
         const height = array[i].offsetHeight
         r.push(height)
@@ -834,7 +946,6 @@ function heightArray(element) {
 function removeColgroup(element) {
     const colgroup = element && element.getElementsByTagName('colgroup')[0]
     if (colgroup) {
-        // element.style.minWidth = 'unset'
         element.removeChild(colgroup)
     }
 }
@@ -843,7 +954,6 @@ function createColgroup(widthArray) {
     const sum = widthArray.reduce((prev, curr) => prev + curr, 0)
     const colgroup = document.createElement('colgroup')
     for (let i = 0, len = widthArray.length; i < len; i++) {
-        // const width = i === len - 1 ? Math.ceil(widthArray[i] / sum * 100) + '%' : widthArray[i] + 'px'
         const width = widthArray[i] + 'px'
         const col = document.createElement('col')
         col.style.width = width
@@ -852,7 +962,7 @@ function createColgroup(widthArray) {
     return colgroup
 }
 
-function find(table, a, b) {
+function find(table, a, b?): HTMLElement[] {
     const className = `designare-table-${a}${b ? '-' + b : ''}`
     const wrapper = table.getElementsByClassName(className)[0]
     const container = wrapper && wrapper.getElementsByTagName('table')[0]

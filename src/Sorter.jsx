@@ -1,4 +1,4 @@
-import React from 'react'
+import * as React from 'react'
 import { ThsContext } from './context'
 import Icons from './Icons'
 import { ERR3 } from './messages'

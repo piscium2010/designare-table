@@ -1,4 +1,4 @@
-import React from 'react'
+import * as React from 'react'
 import { TBodyContext } from './context'
 import { WARNING1, ERR4, ERR5 } from './messages'
 import { shift } from './util'
