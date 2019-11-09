@@ -1,14 +1,15 @@
 import * as React from 'react'
-import { Fragment, useContext } from 'react'
+import { useContext } from 'react'
 import { TBodyContext, TdsContext } from './context'
 import Td from './Td'
 import { ERR2 } from './messages'
+import { metaColumn } from './util'
 
 const defaultCell = ({ value }) => <Td>{value}</Td>
 
 export default function Tds(props) {
     if (isNaN(props.rowIndex)) throw ERR2
-    const context = useContext(TBodyContext)
+    const context = useContext(TBodyContext) as { data: any[], getColumns: () => metaColumn[], fixed?: string }
     const { rowIndex } = props
     const { data, getColumns } = context
     const row = data[rowIndex]
@@ -57,7 +58,7 @@ export default function Tds(props) {
                     )
                 })
         )
-    )
+    ) as any
 }
 
 function flattenOne(column, result = []) {

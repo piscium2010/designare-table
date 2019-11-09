@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { TdsContext } from './context'
 
-export default class Td extends React.Component {
+export default class Td extends React.Component<React.HTMLAttributes<HTMLElement>, {}> {
     static contextType = TdsContext
 
     get rowHeight() {

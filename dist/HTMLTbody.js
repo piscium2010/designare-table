@@ -38,7 +38,6 @@ class HTMLTbody extends React.Component {
             React.createElement("tbody", Object.assign({}, restProps, { ref: this.ref }), isEmpty
                 ? null
                 : data.map((row, rowIndex) => (React.createElement(react_1.Fragment, { key: rowIndex }, Tr({
-                    key: rowIndex,
                     row,
                     rowIndex,
                     fixed,

@@ -2,7 +2,6 @@ const config = { attributes: true, childList: true, subtree: true }
 
 export default function (instance) {
     const observer = new MutationObserver(mutationsList => {
-        // console.log(`mutation`,)
         instance.context.global['resizing']
             ? instance.context.syncScrollBarStatus()
             : window.requestAnimationFrame(() => {

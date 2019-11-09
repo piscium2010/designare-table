@@ -31,7 +31,7 @@ class Th extends React.Component {
             if (this.props.deliverRef && this.props.deliverRef.current) {
                 const el = this.props.deliverRef.current;
                 this.originalDraggable = el.getAttribute('draggable');
-                el.setAttribute('draggable', false);
+                el.setAttribute('draggable', 'false');
             }
         };
         this.restoreDraggable = () => {
@@ -57,7 +57,7 @@ class Th extends React.Component {
             this.dragable = evt.target;
             this.parent = evt.target.parentElement;
             this.parentOriginalZIndex = this.parent.style.zIndex / 1;
-            this.parent.style.zIndex = this.parentOriginalZIndex + 1;
+            this.parent.style.zIndex = (this.parentOriginalZIndex + 1);
             this.dragable.style.width = '1000px';
             this.leftOrRight === 'left' ? this.dragable.style.left = '-500px' : this.dragable.style.right = '-500px';
             this.metaKey = this.leftOrRight === 'left' ? flattenSortedColumns[leafIndex - 1].metaKey : metaKey;
@@ -115,7 +115,7 @@ class Th extends React.Component {
         if (this.context.contextName !== 'thead')
             throw 'Th should be within Header component';
         this.column = this.context.getColumn();
-        const _a = this.props, { children, className = '', index, style, deliverRef } = _a, restProps = __rest(_a, ["children", "className", "index", "style", "deliverRef"]);
+        const _a = this.props, { children, className = '', style, deliverRef } = _a, restProps = __rest(_a, ["children", "className", "style", "deliverRef"]);
         const column = this.column;
         const { colSpan, rowSpan, fixed, isFirst, isLast, isLeaf, isFirstFixedColumn, isLastFixedColumn } = column;
         const fixHeader = this.context.fixed;
@@ -127,7 +127,9 @@ class Th extends React.Component {
         return (React.createElement("th", Object.assign({ ref: deliverRef, className: `${fixedColumnShadowClass} ${className}` }, restProps, { colSpan: colSpan, rowSpan: rowSpan, style: Object.assign(Object.assign({}, thStyle), style) }),
             isLeaf && !isFirst && this.resizable &&
                 React.createElement("div", { className: `designare-resize-element-left`, style: Object.assign(Object.assign({}, resizableElementStyle), { left: 0 }), "data-p": 'left', onMouseDown: this.onMouseDown }),
-            isMyColumn ? children : React.createElement("span", null, "\u00A0"),
+            isMyColumn
+                ? children
+                : React.createElement("span", null, "\u00A0"),
             isLeaf && !isLast && this.resizable &&
                 React.createElement("div", { className: `designare-resize-element-right`, style: Object.assign(Object.assign({}, resizableElementStyle), { right: 0 }), "data-p": 'right', onMouseDown: this.onMouseDown })));
     }

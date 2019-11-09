@@ -3,14 +3,27 @@ import { TBodyContext } from './context'
 import { WARNING1, ERR4, ERR5 } from './messages'
 import { shift } from './util'
 
-export default class DragTr extends React.Component {
+interface IDragTrProps extends React.HTMLAttributes<HTMLElement> {
+    row: any
+    getRowId: (row: any) => any
+}
+
+export default class DragTr extends React.Component<IDragTrProps, {}> {
     static contextType = TBodyContext
+    ref: React.RefObject<HTMLElement>
+    originalBorderTopColor: string
+    originalBorderTopStyle: string
+    originalBorderTopWidth: string
+    originalBorderBottomColor: string
+    originalBorderBottomStyle: string
+    originalBorderBottomWidth: string
+    onDragEnd: (event: React.DragEvent<HTMLTableRowElement>) => void
 
     constructor(props) {
         super(props)
         this.ref = React.createRef()
-        if(!props.getRowId) throw ERR4 
-        if(!props.row) throw ERR5
+        if (!props.getRowId) throw ERR4
+        if (!props.row) throw ERR5
     }
 
 
@@ -21,7 +34,7 @@ export default class DragTr extends React.Component {
     get data() {
         return this.context.originalData
     }
-    
+
     get activeColor() {
         return this.context.activeColor
     }
@@ -30,8 +43,8 @@ export default class DragTr extends React.Component {
         const { getRowId } = this.props
         const rowId = getRowId(row), data = this.data
         let rowIndex
-        for(let i = 0, len = data.length; i < len; i++) {
-            if(rowId === getRowId(data[i]) ) {
+        for (let i = 0, len = data.length; i < len; i++) {
+            if (rowId === getRowId(data[i])) {
                 rowIndex = i
                 break
             }
@@ -107,22 +120,20 @@ export default class DragTr extends React.Component {
         const targetIndex = this.getRowIndex(this.props.row)
         if (!isNaN(sourceIndex) && !isNaN(targetIndex) && sourceIndex != targetIndex) {
             const shifted = shift(this.data, sourceIndex, targetIndex)
-            console.log(`r`,shifted)
             this.context.onChangeRows(shifted)
         }
     }
 
     render() {
-        let { ref, children, row, getRowId, ...restProps } = this.props
+        let { children, row, getRowId, ...restProps } = this.props
         if (this.context.fixed) { console.warn(WARNING1) }
-        ref = this.ref
 
         return (
             this.context.fixed
-                ? <tr ref={this.ref} {...restProps}>{children}</tr>
+                ? <tr ref={this.ref as any} {...restProps}>{children}</tr>
                 : <tr
-                    ref={this.ref}
-                    draggable='true'
+                    ref={this.ref as any}
+                    draggable={true}
                     onDragStart={this.onDragStart}
                     onDragOver={this.onDragOver}
                     onDragLeave={this.onDragLeave}

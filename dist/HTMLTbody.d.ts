@@ -1,18 +1,27 @@
-export default class HTMLTbody extends React.Component<any, any, any> {
+import * as React from 'react';
+import { metaColumn } from './util';
+interface IHTMLTbodyProps extends React.HTMLAttributes<HTMLElement> {
+    tr?: (args: {
+        row: any;
+        rowIndex: number;
+        fixed: string;
+        getColumns: () => metaColumn[];
+        cells: JSX.Element;
+    }) => JSX.Element;
+    fixed?: string;
+}
+export default class HTMLTbody extends React.Component<IHTMLTbodyProps, {}> {
     static contextType: React.Context<{}>;
     static defaultProps: {
         tr: ({ cells }: {
             cells: any;
         }) => JSX.Element;
     };
+    observer: any;
+    ref: React.RefObject<HTMLElement>;
     constructor(props: any);
-    observer: {
-        observe: (el: any) => void;
-        disconnect: () => void;
-    };
-    ref: React.RefObject<any>;
     componentDidMount(): void;
     componentWillUnmount(): void;
     render(): JSX.Element;
 }
-import * as React from "react";
+export {};

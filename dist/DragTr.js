@@ -93,7 +93,6 @@ class DragTr extends React.Component {
             const targetIndex = this.getRowIndex(this.props.row);
             if (!isNaN(sourceIndex) && !isNaN(targetIndex) && sourceIndex != targetIndex) {
                 const shifted = util_1.shift(this.data, sourceIndex, targetIndex);
-                console.log(`r`, shifted);
                 this.context.onChangeRows(shifted);
             }
         };
@@ -113,14 +112,13 @@ class DragTr extends React.Component {
         return this.context.activeColor;
     }
     render() {
-        let _a = this.props, { ref, children, row, getRowId } = _a, restProps = __rest(_a, ["ref", "children", "row", "getRowId"]);
+        let _a = this.props, { children, row, getRowId } = _a, restProps = __rest(_a, ["children", "row", "getRowId"]);
         if (this.context.fixed) {
             console.warn(messages_1.WARNING1);
         }
-        ref = this.ref;
         return (this.context.fixed
             ? React.createElement("tr", Object.assign({ ref: this.ref }, restProps), children)
-            : React.createElement("tr", Object.assign({ ref: this.ref, draggable: 'true', onDragStart: this.onDragStart, onDragOver: this.onDragOver, onDragLeave: this.onDragLeave, onDrop: this.onDrop, onDragEnd: this.onDragEnd }, restProps), children));
+            : React.createElement("tr", Object.assign({ ref: this.ref, draggable: true, onDragStart: this.onDragStart, onDragOver: this.onDragOver, onDragLeave: this.onDragLeave, onDrop: this.onDrop, onDragEnd: this.onDragEnd }, restProps), children));
     }
 }
 exports.default = DragTr;

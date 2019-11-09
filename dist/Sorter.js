@@ -27,7 +27,7 @@ class Sorter extends React.Component {
                 const direction = sorter.direction;
                 const { by, directions = [] } = this.props;
                 const status = ['default'].concat(directions);
-                if (!status.includes(direction)) {
+                if (status.indexOf(direction) < 0) {
                     throw `direction: ${direction || 'empty'} is not in Sorter of ${this.dataKey}`;
                 }
                 this.context.setActiveSorter({ columnMetaKey: this.columnMetaKey, direction, by: sortMethod(by), dataKey: this.dataKey });
@@ -73,15 +73,15 @@ class Sorter extends React.Component {
             throw 'Sorter component should be within Header component';
         const _a = this.props, { activeColor, by, defaultColor, className = '', directions = [], style, onClickCapture, render: Render } = _a, restProps = __rest(_a, ["activeColor", "by", "defaultColor", "className", "directions", "style", "onClickCapture", "render"]);
         const s = getActiveSorter(), dataKey = this.dataKey;
-        const isActive = s.dataKey === dataKey && directions.includes(s.direction);
+        const isActive = s.dataKey === dataKey && directions.indexOf(s.direction) >= 0;
         const status = directions.concat('default');
         const i = isActive ? status.indexOf(s.direction) : 0;
-        const onClick = () => {
+        const onClick = evt => {
             const isSorterInControlledMode = getSorter() ? true : false;
             const next = isActive ? i + 1 : 0;
             const direction = status[next % status.length];
             onChangeSorter(Object.assign({ dataKey, direction, by }, restProps));
-            onClickCapture();
+            onClickCapture(evt);
             if (!isSorterInControlledMode) {
                 this.setActiveSorter({ dataKey, direction });
             }

@@ -1,4 +1,4 @@
-export default function _default(instance: any): {
+export default function (instance: any): {
     observe: (el: any) => void;
     disconnect: () => void;
 };

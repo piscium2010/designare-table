@@ -1,1 +1,2 @@
-export default function _default(props: any): JSX.Element;
+/// <reference types="react" />
+export default function (props: any): JSX.Element;

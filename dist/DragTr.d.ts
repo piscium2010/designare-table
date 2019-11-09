@@ -1,20 +1,26 @@
-export default class DragTr extends React.Component<any, any, any> {
+import * as React from 'react';
+interface IDragTrProps extends React.HTMLAttributes<HTMLElement> {
+    row: any;
+    getRowId: (row: any) => any;
+}
+export default class DragTr extends React.Component<IDragTrProps, {}> {
     static contextType: React.Context<{}>;
+    ref: React.RefObject<HTMLElement>;
+    originalBorderTopColor: string;
+    originalBorderTopStyle: string;
+    originalBorderTopWidth: string;
+    originalBorderBottomColor: string;
+    originalBorderBottomStyle: string;
+    originalBorderBottomWidth: string;
+    onDragEnd: (event: React.DragEvent<HTMLTableRowElement>) => void;
     constructor(props: any);
-    ref: React.RefObject<any>;
     get global(): any;
     get data(): any;
     get activeColor(): any;
-    getRowIndex: (row: any) => number;
+    getRowIndex: (row: any) => any;
     highlightTop: () => void;
-    originalBorderTopColor: any;
-    originalBorderTopStyle: any;
-    originalBorderTopWidth: any;
     deHighlightTop: () => void;
     highlightBottom: () => void;
-    originalBorderBottomColor: any;
-    originalBorderBottomStyle: any;
-    originalBorderBottomWidth: any;
     deHighlightBottom: () => void;
     onDragStart: (evt: any) => void;
     onDragOver: (evt: any) => void;
@@ -22,4 +28,4 @@ export default class DragTr extends React.Component<any, any, any> {
     onDrop: (evt: any) => void;
     render(): JSX.Element;
 }
-import * as React from "react";
+export {};

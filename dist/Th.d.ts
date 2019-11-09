@@ -1,34 +1,39 @@
-export default class Th extends React.Component<any, any, any> {
+import * as React from 'react';
+import ReSizing from './ReSizing';
+import { metaColumn } from './util';
+interface IThProps extends React.HTMLAttributes<HTMLDivElement> {
+    deliverRef?: React.RefObject<HTMLElement>;
+}
+export default class Th extends React.Component<IThProps, {}> {
     static contextType: React.Context<{}>;
-    constructor(props: Readonly<any>);
-    constructor(props: any, context?: any);
-    get global(): any;
-    get resizable(): any;
+    column: metaColumn;
+    originalDraggable: string;
+    setResizedWidthInfo: any;
+    leftOrRight: string;
+    dragable: HTMLElement;
+    resizing: ReSizing;
+    parent: HTMLElement;
+    parentOriginalZIndex: number;
+    metaKey: string;
+    colgroups: HTMLElement[];
+    colIndex: number;
+    colWidth: number;
+    minWidthArray: number[];
+    wrappers: HTMLElement[];
+    wrapperWidthArray: number[];
+    get global(): {
+        resizing: boolean;
+    };
+    get resizable(): boolean;
     disableDraggable: () => void;
-    originalDraggable: any;
     restoreDraggable: () => void;
     disableDOMObserver: () => void;
     restoreDOMObserver: () => void;
     onMouseDown: (evt: any) => void;
-    setResizedWidthInfo: any;
-    leftOrRight: any;
-    resizing: ReSizing;
-    dragable: any;
-    parent: any;
-    parentOriginalZIndex: number;
-    metaKey: any;
-    colgroups: any;
-    colIndex: any;
-    colWidth: number;
-    minWidthArray: any;
-    wrappers: any;
-    wrapperWidthArray: any;
     onMouseMove: (evt: any) => void;
     onMouseUp: (evt: any) => void;
     componentDidMount(): void;
     componentWillUnmount(): void;
     render(): JSX.Element;
-    column: any;
 }
-import * as React from "react";
-import ReSizing from "./ReSizing";
+export {};

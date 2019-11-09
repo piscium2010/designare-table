@@ -1,4 +1,17 @@
-export default class Sorter extends React.Component<any, any, any> {
+import * as React from 'react';
+interface ISorterProps extends React.HTMLAttributes<HTMLDivElement> {
+    activeColor?: string;
+    defaultColor?: string;
+    by?: string | ((...args: any[]) => number);
+    directions?: Array<string>;
+    render: (args: {
+        direction: string;
+        directions: string[];
+        defaultColor: string;
+        activeColor: string;
+    }) => JSX.Element;
+}
+export default class Sorter extends React.Component<ISorterProps, {}> {
     static contextType: React.Context<{}>;
     static defaultProps: {
         by: string;
@@ -11,8 +24,6 @@ export default class Sorter extends React.Component<any, any, any> {
             activeColor: any;
         }) => JSX.Element;
     };
-    constructor(props: Readonly<any>);
-    constructor(props: any, context?: any);
     get activeColor(): any;
     get defaultColor(): any;
     get dataKey(): any;
@@ -25,4 +36,4 @@ export default class Sorter extends React.Component<any, any, any> {
     componentWillUnmount(): void;
     render(): JSX.Element;
 }
-import * as React from "react";
+export {};

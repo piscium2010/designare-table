@@ -1,5 +1,5 @@
 export default class ReSizing {
+    clientX: number;
     constructor(mouseDownEvent: any);
-    clientX: any;
     move: (evt: any) => number;
 }

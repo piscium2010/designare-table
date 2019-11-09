@@ -1,9 +1,10 @@
 import * as React from 'react'
 import { ThsContext } from './context'
 import ReSizing from './ReSizing'
+import { metaColumn } from './util'
 
 const resizableElementWidth = 3
-const resizableElementStyle = {
+const resizableElementStyle: React.CSSProperties = {
     position: 'absolute',
     top: 0,
     bottom: 0,
@@ -11,17 +12,35 @@ const resizableElementStyle = {
     cursor: 'col-resize',
     zIndex: 1,
     userSelect: 'none'
-    // backgroundColor: 'blue'
 }
 
-export default class Th extends React.Component {
-    static contextType = ThsContext
+interface IThProps extends React.HTMLAttributes<HTMLDivElement> {
+    deliverRef?: React.RefObject<HTMLElement>
+}
 
-    get global() {
+export default class Th extends React.Component<IThProps, {}> {
+    static contextType = ThsContext
+    column: metaColumn
+    originalDraggable: string
+    setResizedWidthInfo: any
+    leftOrRight: string
+    dragable: HTMLElement
+    resizing: ReSizing
+    parent: HTMLElement
+    parentOriginalZIndex: number
+    metaKey: string
+    colgroups: HTMLElement[]
+    colIndex: number
+    colWidth: number
+    minWidthArray: number[]
+    wrappers: HTMLElement[]
+    wrapperWidthArray: number[]
+
+    get global(): { resizing: boolean } {
         return this.context.global
     }
 
-    get resizable() {
+    get resizable(): boolean {
         return this.context.resizable
     }
 
@@ -29,7 +48,7 @@ export default class Th extends React.Component {
         if (this.props.deliverRef && this.props.deliverRef.current) {
             const el = this.props.deliverRef.current
             this.originalDraggable = el.getAttribute('draggable')
-            el.setAttribute('draggable', false)
+            el.setAttribute('draggable', 'false')
         }
     }
 
@@ -60,8 +79,8 @@ export default class Th extends React.Component {
         this.resizing = new ReSizing(evt)
         this.dragable = evt.target
         this.parent = evt.target.parentElement
-        this.parentOriginalZIndex = this.parent.style.zIndex / 1
-        this.parent.style.zIndex = this.parentOriginalZIndex + 1
+        this.parentOriginalZIndex = this.parent.style.zIndex as any / 1
+        this.parent.style.zIndex = (this.parentOriginalZIndex + 1) as any
         this.dragable.style.width = '1000px'
         this.leftOrRight === 'left' ? this.dragable.style.left = '-500px' : this.dragable.style.right = '-500px'
         this.metaKey = this.leftOrRight === 'left' ? flattenSortedColumns[leafIndex - 1].metaKey : metaKey
@@ -91,7 +110,7 @@ export default class Th extends React.Component {
     }
 
     onMouseUp = evt => {
-        this.parent.style.zIndex = this.parentOriginalZIndex
+        this.parent.style.zIndex = this.parentOriginalZIndex as any
         this.leftOrRight === 'left' ? this.dragable.style.left = '0' : this.dragable.style.right = '0'
         this.dragable.style.width = `${resizableElementWidth}px`
         window.removeEventListener('mousemove', this.onMouseMove)
@@ -118,7 +137,6 @@ export default class Th extends React.Component {
         const {
             children,
             className = '',
-            index,
             style,
             deliverRef,
             ...restProps
@@ -127,14 +145,14 @@ export default class Th extends React.Component {
         const { colSpan, rowSpan, fixed, isFirst, isLast, isLeaf, isFirstFixedColumn, isLastFixedColumn } = column
         const fixHeader = this.context.fixed
         const isMyColumn = fixHeader ? fixed === fixHeader : !fixed
-        const thStyle = isMyColumn
+        const thStyle: React.CSSProperties = isMyColumn
             ? { zIndex: fixHeader === 'left' ? 2 : 1 } // will be used by onMouseDown (drag and drop) as well
             : { visibility: 'hidden', pointerEvents: 'none', zIndex: 0 }
         const fixedColumnShadowClass = isMyColumn && (isFirstFixedColumn || isLastFixedColumn) ? 'designare-fixed' : ''
 
         return (
             <th
-                ref={deliverRef}
+                ref={deliverRef as any}
                 className={`${fixedColumnShadowClass} ${className}`}
                 {...restProps}
                 colSpan={colSpan}
@@ -145,7 +163,11 @@ export default class Th extends React.Component {
                     isLeaf && !isFirst && this.resizable &&
                     <div className={`designare-resize-element-left`} style={{ ...resizableElementStyle, left: 0 }} data-p='left' onMouseDown={this.onMouseDown}></div>
                 }
-                {isMyColumn ? children : <span>&nbsp;</span>}
+                {
+                    isMyColumn
+                        ? children
+                        : <span>&nbsp;</span>
+                }
                 {
                     isLeaf && !isLast && this.resizable &&
                     <div className={`designare-resize-element-right`} style={{ ...resizableElementStyle, right: 0 }} data-p='right' onMouseDown={this.onMouseDown}></div>

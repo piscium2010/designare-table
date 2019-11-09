@@ -2,6 +2,7 @@ import * as debounce from 'lodash/debounce'
 
 export default class SyncScrolling {
     map = new Map()
+    debouncedReAddOnScroll: (except?: HTMLElement) => void
 
     constructor() {
         this.debouncedReAddOnScroll = debounce(this.reAddOnScroll, 100)
@@ -11,7 +12,7 @@ export default class SyncScrolling {
         const master = evt.target
         const { scrollLeft, scrollTop } = master
         const direction = this.map.get(master)
-        
+
         this.map.forEach((v, k) => {
             const slave = k === master ? undefined : k
             if (slave) {

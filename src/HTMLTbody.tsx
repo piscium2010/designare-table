@@ -1,20 +1,28 @@
 import * as React from 'react'
 import { Fragment } from 'react'
 import { Context, TBodyContext } from './context'
-import { flatten } from './util'
+import { flatten, metaColumn } from './util'
 import Tds from './Tds'
-import Observe from './DOMObserver'
+import Observer from './DOMObserver'
 
-export default class HTMLTbody extends React.Component {
+interface IHTMLTbodyProps extends React.HTMLAttributes<HTMLElement> {
+    tr?: (args: { row: any, rowIndex: number, fixed: string, getColumns: () => metaColumn[], cells: JSX.Element }) => JSX.Element
+    fixed?: string
+}
+
+export default class HTMLTbody extends React.Component<IHTMLTbodyProps, {}> {
     static contextType = Context
 
     static defaultProps = {
         tr: ({ cells }) => <tr>{cells}</tr>
     }
 
+    observer
+    ref: React.RefObject<HTMLElement>
+
     constructor(props) {
         super(props)
-        this.observer = Observe(this)
+        this.observer = Observer(this)
         this.ref = React.createRef()
     }
 
@@ -38,32 +46,15 @@ export default class HTMLTbody extends React.Component {
                 contextName: 'tbody',
                 fixed,
                 getColumns: () => columns
-            }} 
+            }}
             >
-                <tbody {...restProps} ref={this.ref}>
-                    {/* {
-                        data.map((row, rowIndex) => (
-                            isEmpty
-                                ? <tr key={rowIndex}></tr>
-                                : <Fragment key={rowIndex}>
-                                    {Tr({
-                                        key: rowIndex,
-                                        row,
-                                        rowIndex,
-                                        fixed,
-                                        getColumns: () => flatten(columns),
-                                        cells: <Tds rowIndex={rowIndex} />
-                                    })}
-                                </Fragment>
-                        ))
-                    } */}
+                <tbody {...restProps} ref={this.ref as any}>
                     {
                         isEmpty
                             ? null
                             : data.map((row, rowIndex) => (
                                 <Fragment key={rowIndex}>
                                     {Tr({
-                                        key: rowIndex,
                                         row,
                                         rowIndex,
                                         fixed,

@@ -2,7 +2,7 @@ import * as React from 'react'
 import { useState, useEffect, Fragment } from 'react'
 import Icons from './Icons'
 
-const loadingLayout = {
+const loadingLayout: React.CSSProperties = {
     position: 'absolute',
     top: 0,
     left: 0,
