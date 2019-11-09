@@ -12,7 +12,7 @@ interface ITbody extends React.HTMLAttributes<HTMLDivElement> {
     }) => JSX.Element
 }
 
-export default class Tbody extends React.Component<ITbody, any> {
+export default class Tbody extends React.Component<ITbody, void> {
     static contextType = Context
     static defaultProps = {
         onScroll: evt => { }
@@ -28,6 +28,17 @@ export default class Tbody extends React.Component<ITbody, any> {
     shadowRight: boolean
     debouncedReset: () => void
 
+    constructor(props) {
+        super(props)
+        this.bodyRef
+        this.tableRef = React.createRef()
+        this.leftRef = React.createRef()
+        this.rightRef = React.createRef()
+        this.shadowLeft = false
+        this.shadowRight = false
+        this.debouncedReset = debounce(this.reset, 100)
+    }
+
     get bodyWidth() {
         return this._bodyWidth || (this._bodyWidth = this.bodyRef.current.offsetWidth)
     }
@@ -42,17 +53,6 @@ export default class Tbody extends React.Component<ITbody, any> {
 
     set tableWidth(value) {
         this._tableWidth = value
-    }
-
-    constructor(props) {
-        super(props)
-        this.bodyRef
-        this.tableRef = React.createRef()
-        this.leftRef = React.createRef()
-        this.rightRef = React.createRef()
-        this.shadowLeft = false
-        this.shadowRight = false
-        this.debouncedReset = debounce(this.reset, 100)
     }
 
     onScroll = evt => {
