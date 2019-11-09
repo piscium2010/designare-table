@@ -4,11 +4,29 @@ import HTMLTbody from './HTMLTbody'
 import { Context } from './context'
 import * as debounce from 'lodash/debounce'
 
-export default class Body extends React.Component {
+interface ITbody extends React.HTMLAttributes<HTMLDivElement> {
+    tr?: (args?: {
+        row: any,
+        rowIndex: number,
+        cells: JSX.Element
+    }) => JSX.Element
+}
+
+export default class Tbody extends React.Component<ITbody, any> {
     static contextType = Context
     static defaultProps = {
         onScroll: evt => { }
     }
+
+    _bodyWidth: number
+    _tableWidth: number
+    bodyRef: React.RefObject<HTMLDivElement>
+    tableRef: React.RefObject<HTMLTableElement>
+    leftRef: React.RefObject<HTMLDivElement>
+    rightRef: React.RefObject<HTMLDivElement>
+    shadowLeft: boolean
+    shadowRight: boolean
+    debouncedReset: () => void
 
     get bodyWidth() {
         return this._bodyWidth || (this._bodyWidth = this.bodyRef.current.offsetWidth)

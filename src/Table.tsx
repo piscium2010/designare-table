@@ -42,7 +42,7 @@ type global = {
 
 type column = {
     Header: string | JSX.Element | (() => JSX.Element),
-    Cell?: ({ value, row, dataKey, rowIndex }: {
+    Cell?: (args?: {
         value: any;
         row: any;
         dataKey: string;
@@ -66,7 +66,7 @@ type metaColumn = column & {
     leafIndex?: number
 }
 
-interface ITableProps extends HTMLDivElement {
+interface ITableProps extends React.HTMLAttributes<HTMLDivElement> {
     activeColor?: string
     defaultColor?: string
     pageNo?: number
@@ -79,7 +79,7 @@ interface ITableProps extends HTMLDivElement {
     onChangePaging?: ({ pageSize, pageNo }) => void
     onChangeRows?: (data: any[]) => void
     onChangeSorter?: (sorter: sorter) => void
-    onChangeFilters?: (filters:filter[]) => void
+    onChangeFilters?: (filters: filter[]) => void
     columns: column[]
     loading?: boolean | JSX.Element | ((...args) => JSX.Element)
     rowHeight?: number
@@ -563,10 +563,9 @@ export default class Table extends React.Component<ITableProps, state> {
         this.data = this.filterAndSort(data)
         this.data = this.paging(this.data)
         this.flattenSortedColumns = flatten(this.sortedColumns)
-        const styles = { position: 'relative', ...style as any }
 
         return (
-            <div className={`designare-table ${className}`} ref={this.root as any} style={styles}>
+            <div className={`designare-table ${className}`} ref={this.root as any} style={{ position: 'relative', ...style }}>
                 <div ref={this.filterLayersRef as any}>
                     {
                         groupByDepth(this.sortedColumns).map(levelColumns => {
