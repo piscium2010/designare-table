@@ -2,8 +2,8 @@ import * as React from 'react'
 import * as debounce from 'lodash/debounce'
 import { Fragment } from 'react'
 import { Context } from './context'
-import Header from './Header'
-import Body from './Body'
+import Header from './Thead'
+import Body from './Tbody'
 import Pagination from './Pagination'
 import SyncScrolling from './SyncScrolling'
 import Spinner from './Loading'
@@ -42,7 +42,12 @@ type global = {
 
 type column = {
     Header: string | JSX.Element | (() => JSX.Element),
-    Cell?: ({ value, row, dataKey, rowIndex }) => JSX.Element
+    Cell?: ({ value, row, dataKey, rowIndex }: {
+        value: any;
+        row: any;
+        dataKey: string;
+        rowIndex: number;
+    }) => JSX.Element;
     children?: column[]
     colSpan?: number
     dataKey?: string
@@ -70,8 +75,12 @@ interface ITableProps extends HTMLDivElement {
     data?: any[]
     filters?: filter[]
     sorter?: sorter
+    onChangeColumns?: (columns: column[]) => void
     onChangePaging?: ({ pageSize, pageNo }) => void
-    columns?: column[]
+    onChangeRows?: (data: any[]) => void
+    onChangeSorter?: (sorter: sorter) => void
+    onChangeFilters?: (filters:filter[]) => void
+    columns: column[]
     loading?: boolean | JSX.Element | ((...args) => JSX.Element)
     rowHeight?: number
     pageSizeOptions?: number[]

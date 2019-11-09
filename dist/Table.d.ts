@@ -24,8 +24,8 @@ declare type column = {
     Cell?: ({ value, row, dataKey, rowIndex }: {
         value: any;
         row: any;
-        dataKey: any;
-        rowIndex: any;
+        dataKey: string;
+        rowIndex: number;
     }) => JSX.Element;
     children?: column[];
     colSpan?: number;
@@ -42,11 +42,15 @@ interface ITableProps extends HTMLDivElement {
     data?: any[];
     filters?: filter[];
     sorter?: sorter;
+    onChangeColumns?: (columns: column[]) => void;
     onChangePaging?: ({ pageSize, pageNo }: {
         pageSize: any;
         pageNo: any;
     }) => void;
-    columns?: column[];
+    onChangeRows?: (data: any) => void;
+    onChangeSorter?: (sorter: sorter) => void;
+    onChangeFilters?: (filters: filter[]) => void;
+    columns: column[];
     loading?: boolean | JSX.Element | ((...args: any[]) => JSX.Element);
     rowHeight?: number;
     pageSizeOptions?: number[];

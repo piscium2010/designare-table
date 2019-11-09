@@ -7,8 +7,7 @@ import * as debounce from 'lodash/debounce'
 export default class Body extends React.Component {
     static contextType = Context
     static defaultProps = {
-        className: '',
-        onScroll: () => { }
+        onScroll: evt => { }
     }
 
     get bodyWidth() {
@@ -75,7 +74,7 @@ export default class Body extends React.Component {
 
     render() {
         const { isInit, syncScrolling, removeSyncScrolling } = this.context
-        const { className, tr, style, onScroll, ...restProps } = this.props
+        const { className = '', tr, style, onScroll, ...restProps } = this.props
         return (
             <div
                 className={`designare-table-fixed-body animate ${className}`}

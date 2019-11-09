@@ -1,6 +1,6 @@
 import * as React from 'react'
 import { useRef, useEffect } from 'react'
-import Thead from './HTMLThead'
+import HTMLThead from './HTMLThead'
 import Animate from './Animate'
 import { Context } from './context'
 import * as debounce from 'lodash/debounce'
@@ -83,7 +83,7 @@ export default class Header extends React.Component {
             >
                 <Animate style={{ marginBottom: 0, position: 'relative', overflowX: 'hidden', backgroundColor: 'inherit' }}>
                     <Left leftRef={this.leftRef}>
-                        <Thead fixed='left' tr={tr} />
+                        <HTMLThead fixed='left' tr={tr} />
                     </Left>
                     <Normal
                         deliverHeaderRef={ref => this.headerRef = ref}
@@ -92,10 +92,10 @@ export default class Header extends React.Component {
                         removeSyncScrolling={removeSyncScrolling}
                         onScroll={this.onScroll}
                     >
-                        <Thead tr={tr} />
+                        <HTMLThead tr={tr} />
                     </Normal>
                     <Right rightRef={this.rightRef}>
-                        <Thead fixed='right' tr={tr} />
+                        <HTMLThead fixed='right' tr={tr} />
                     </Right>
                 </Animate>
             </div>

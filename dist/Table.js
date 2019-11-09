@@ -4,8 +4,8 @@ const React = require("react");
 const debounce = require("lodash/debounce");
 const react_1 = require("react");
 const context_1 = require("./context");
-const Header_1 = require("./Header");
-const Body_1 = require("./Body");
+const Thead_1 = require("./Thead");
+const Tbody_1 = require("./Tbody");
 const Pagination_1 = require("./Pagination");
 const SyncScrolling_1 = require("./SyncScrolling");
 const Loading_1 = require("./Loading");
@@ -339,8 +339,8 @@ class Table extends React.Component {
 exports.default = Table;
 Table.defaultProps = {
     children: React.createElement(react_1.Fragment, null,
-        React.createElement(Header_1.default, null),
-        React.createElement(Body_1.default, null)),
+        React.createElement(Thead_1.default, null),
+        React.createElement(Tbody_1.default, null)),
     defaultSorter: {},
     onChangeColumns: () => { },
     onChangeRows: () => { },
