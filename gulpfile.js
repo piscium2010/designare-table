@@ -7,7 +7,6 @@ const tsProject = ts.createProject('tsconfig.json')
 const merge = require('merge-stream')
 const path = require('path')
 
-
 function clean(next) {
     if (!fs.existsSync('dist')) { fs.mkdirSync('dist'); }
     rmDir('dist')
@@ -18,7 +17,6 @@ function stylesheet(next) {
     src('src/*.less')
         .pipe(less())
         .pipe(gulp.dest('dist', { overwrite: true }))
-        .pipe(gulp.dest('src', { overwrite: true }))
     next()
 }
 
@@ -35,36 +33,11 @@ function compile(next) {
     next()
 }
 
-// gulp.task('clean', cb => {
-//     rmDir('dist')
-//     cb()
-// })
-
-// gulp.task('compile:less:lime', () => {
-//     return gulp.src('src/lime.less')
-//         .pipe(less())
-//         .pipe(gulp.dest('dist', { overwrite: true }))
-// })
-
-// gulp.task('compile:less:each', () => {
-//     return gulp.src(['src/**/*.less','!src/**/individual*.less'])
-//         .pipe(less())
-//         .pipe(gulp.dest('dist', { overwrite: true }))
-// })
-
-// gulp.task('compile:tsx', () => {
-//     const tsOutput = gulp.src(['src/**/*.tsx', 'src/**/*.ts', 'src/index.js'])
-//         .pipe(tsProject())
-//     return merge(tsOutput, tsOutput.js).pipe(gulp.dest('dist', { overwrite: true }))
-// })
-
-// gulp.task('copy:package', cb => {
-//     copyFile('package.json', 'dist/package.json')
-//     copyFile('readme.md', 'dist/readme.md')
-//     cb()
-// })
-
-// gulp.task('default', ['clean', 'compile:less:lime','compile:less:each', 'compile:tsx', 'copy:package'])
+function copy(next) {
+    copyFile('package.json', 'dist/package.json')
+    copyFile('readme.md', 'dist/readme.md')
+    next()
+}
 
 function copyFile(source, target) {
     fs.createReadStream(source).pipe(fs.createWriteStream(target));
@@ -97,4 +70,4 @@ function rmDir(dirPath, removeSelf = false) {
     }
 }
 
-exports.default = series(clean, stylesheet, compile)
+exports.default = series(clean, stylesheet, compile, copy)
