@@ -1,21 +1,36 @@
 const fs = require('fs')
 const { series, src } = require('gulp')
 const gulp = require('gulp')
-// const ts = require('gulp-typescript')
-// const less = require('gulp-less')
-// const tsProject = ts.createProject('tsconfig.json')
-// const merge = require('merge-stream')
-// const path = require('path')
+const ts = require('gulp-typescript')
+const less = require('gulp-less')
+const tsProject = ts.createProject('tsconfig.json')
+const merge = require('merge-stream')
+const path = require('path')
 
 
 function clean(next) {
     if (!fs.existsSync('dist')) { fs.mkdirSync('dist'); }
+    rmDir('dist')
     next()
 }
 
-function less(next) {
-        src('src/app.less')
+function stylesheet(next) {
+    src('src/*.less')
         .pipe(less())
+        .pipe(gulp.dest('dist', { overwrite: true }))
+        .pipe(gulp.dest('src', { overwrite: true }))
+    next()
+}
+
+function compile(next) {
+    const tsOutput = src([
+        'src/**/*.tsx',
+        'src/**/*.ts',
+        'src/**/*.js',
+        'src/**/*.jsx'
+    ])
+        .pipe(tsProject())
+    merge(tsOutput, tsOutput.js)
         .pipe(gulp.dest('dist', { overwrite: true }))
     next()
 }
@@ -82,4 +97,4 @@ function rmDir(dirPath, removeSelf = false) {
     }
 }
 
-exports.default = series(clean)
+exports.default = series(clean, stylesheet, compile)

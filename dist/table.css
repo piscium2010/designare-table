@@ -1,0 +1,322 @@
+.designare-table {
+  display: flex !important;
+  flex-direction: column !important;
+  background-color: white;
+  box-shadow: 0px 2px 1px -1px rgba(0, 0, 0, 0.2), 0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 1px 3px 0px rgba(0, 0, 0, 0.12) !important;
+}
+.designare-table table,
+.designare-table tr,
+.designare-table tbody,
+.designare-table thead,
+.designare-table th,
+.designare-table td {
+  background-color: inherit;
+}
+.designare-table table {
+  border-collapse: separate !important;
+  border-spacing: 0px 0px !important;
+  border-color: transparent !important;
+  border-width: 0px !important;
+}
+.designare-table table thead,
+.designare-table table tbody {
+  border-color: inherit;
+}
+.designare-table table thead tr,
+.designare-table table tbody tr {
+  border-width: 1px;
+  border-style: solid;
+  border-color: inherit;
+}
+.designare-table table thead tr th,
+.designare-table table tbody tr th,
+.designare-table table thead tr td,
+.designare-table table tbody tr td {
+  position: relative;
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+  padding-left: 16px;
+  padding-right: 16px;
+  border-width: 1px;
+  border-style: solid;
+  border-color: inherit;
+  border-right: none;
+  border-left: none;
+}
+.designare-table table tbody tr {
+  border-top-color: rgba(0, 0, 0, 0);
+  border-bottom-color: rgba(0, 0, 0, 0.12);
+}
+.designare-table table tbody tr:last-of-type {
+  border-bottom-color: transparent;
+}
+.designare-table-filter.active,
+.designare-table-filter:hover {
+  background-color: rgba(0, 0, 0, 0.03);
+}
+.designare-table-fixed-header {
+  position: relative;
+  background-color: inherit;
+  border-left: none !important;
+  border-right: none !important;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+}
+.designare-table-fixed-header.designare-mask::after {
+  content: "";
+  position: absolute;
+  height: 100%;
+  width: 18px;
+  background-color: inherit;
+  right: 0px;
+  top: 0;
+  z-index: 1;
+}
+.designare-table-fixed-header > div {
+  margin: -9px 0 -9px 0 !important;
+}
+.designare-table-fixed-body {
+  border-left: none !important;
+  border-right: none !important;
+  background-color: inherit;
+}
+.designare-table-layer.designare-shadow {
+  box-shadow: 0px 2px 1px -1px rgba(0, 0, 0, 0.2), 0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 1px 3px 0px rgba(0, 0, 0, 0.12) !important;
+}
+.designare-table-header,
+.designare-table-header-left,
+.designare-table-header-right {
+  padding: 9px 0 !important;
+  margin-bottom: -18px !important;
+}
+.designare-table-header::-webkit-scrollbar,
+.designare-table-header-left::-webkit-scrollbar,
+.designare-table-header-right::-webkit-scrollbar {
+  -webkit-appearance: none;
+}
+.designare-table-header::-webkit-scrollbar:horizontal,
+.designare-table-header-left::-webkit-scrollbar:horizontal,
+.designare-table-header-right::-webkit-scrollbar:horizontal {
+  height: 18px;
+}
+.designare-table-header {
+  background-color: inherit;
+}
+.designare-table-header table thead tr td {
+  z-index: 1;
+}
+.designare-table-header-left {
+  overflow: hidden;
+  top: 0;
+  left: 0;
+  position: absolute;
+  background-color: inherit;
+}
+.designare-table-header-left table thead tr td {
+  z-index: 2;
+}
+.designare-table-header-left.designare-shadow .designare-fixed::after {
+  content: '';
+  display: block;
+  width: 4px;
+  position: absolute;
+  right: -4px;
+  top: -1px;
+  bottom: -1px;
+  background-image: linear-gradient(to right, rgba(9, 9, 9, 0.05) 1%, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0)), linear-gradient(to right, rgba(9, 9, 9, 0.1), rgba(0, 0, 0, 0));
+  pointer-events: none;
+}
+.designare-table-header-left::after {
+  content: '';
+  display: block;
+  width: 1px;
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  background-color: inherit;
+  z-index: 1;
+}
+.designare-table-header-right {
+  overflow: hidden;
+  top: 0;
+  right: 0px;
+  position: absolute;
+  background-color: inherit;
+}
+.designare-table-header-right table thead tr td {
+  z-index: 1;
+}
+.designare-table-header-right.designare-shadow .designare-fixed::after {
+  content: '';
+  display: block;
+  width: 5px;
+  position: absolute;
+  left: -5px;
+  top: -1px;
+  bottom: -1px;
+  background-image: linear-gradient(to left, rgba(9, 9, 9, 0.05) 1%, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0)), linear-gradient(to left, rgba(9, 9, 9, 0.1), rgba(0, 0, 0, 0));
+  pointer-events: none;
+}
+.designare-table-header-right::after {
+  content: '';
+  display: block;
+  width: 1px;
+  position: absolute;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  background-color: inherit;
+  z-index: 1;
+}
+.designare-table-body {
+  background-color: inherit;
+  position: relative;
+}
+.designare-table-body table tbody tr td {
+  z-index: 1;
+}
+.designare-table-body-left {
+  position: absolute;
+  background-color: inherit;
+  top: 0;
+  left: 0px;
+  bottom: 15px;
+  overflow: hidden;
+  height: 100%;
+}
+.designare-table-body-left table tbody tr td {
+  z-index: 2;
+}
+.designare-table-body-left.designare-shadow .designare-fixed::after {
+  content: '';
+  display: block;
+  width: 4px;
+  position: absolute;
+  right: -4px;
+  top: -1px;
+  bottom: -1px;
+  background-image: linear-gradient(to right, rgba(9, 9, 9, 0.05) 1%, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0)), linear-gradient(to right, rgba(9, 9, 9, 0.1), rgba(0, 0, 0, 0));
+  pointer-events: none;
+}
+.designare-table-body-left::after {
+  content: '';
+  display: block;
+  width: 1px;
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  background-color: inherit;
+  z-index: 1;
+}
+.designare-table-body-right {
+  position: absolute;
+  right: 0px;
+  top: 0;
+  bottom: 15px;
+  overflow: hidden;
+  height: 100%;
+  background-color: inherit;
+}
+.designare-table-body-right table tbody tr td {
+  z-index: 1;
+}
+.designare-table-body-right.designare-shadow .designare-fixed::after {
+  content: '';
+  display: block;
+  width: 4px;
+  position: absolute;
+  left: -4px;
+  top: -1px;
+  bottom: -1px;
+  background-image: linear-gradient(to left, rgba(9, 9, 9, 0.05) 1%, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0)), linear-gradient(to left, rgba(9, 9, 9, 0.1), rgba(0, 0, 0, 0));
+  pointer-events: none;
+}
+.designare-table-body-right::after {
+  content: '';
+  display: block;
+  width: 1px;
+  position: absolute;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  background-color: inherit;
+  z-index: 1;
+}
+.designare-table-pagination-btn {
+  border-radius: 2px;
+  cursor: pointer;
+  height: 36px;
+  color: rgba(0, 0, 0, 0.87);
+  font-size: 15px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-width: 36px;
+  fill: rgba(0, 0, 0, 0.26);
+  transition: background-color 0.3s;
+}
+.designare-table-pagination-btn:hover {
+  background-color: #f5f5f5;
+  background-color: rgba(0, 0, 0, 0.03);
+}
+.designare-table-pagination-btn.disabled {
+  cursor: not-allowed;
+  fill: rgba(0, 0, 0, 0.26);
+  background-color: transparent !important;
+}
+.designare-table-pagination-btn input {
+  height: 26px;
+  outline: none !important;
+  max-width: 72px;
+}
+.designare-table-pagination-desc {
+  height: 36px;
+  color: rgba(0, 0, 0, 0.87);
+  font-size: 15px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  user-select: none;
+  color: rgba(0, 0, 0, 0.26);
+}
+.designare-table-pagination-desc .th-light {
+  fill: rgba(0, 0, 0, 0.16);
+}
+.designare-table-pagination-total {
+  padding-left: 16px;
+}
+.designare-table-pagination-number {
+  height: 36px;
+  color: rgba(0, 0, 0, 0.87);
+  font-size: 15px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-width: 36px;
+  color: rgba(0, 0, 0, 0.26);
+  transition: background-color 0.3s;
+}
+.designare-table-pagination-number.active {
+  color: rgba(0, 0, 0, 0.87);
+}
+.designare-table-pagination-number.option {
+  cursor: pointer;
+}
+.designare-table-pagination-number.option:hover {
+  background-color: rgba(0, 0, 0, 0.03);
+}
+.designare-table .designare-spin {
+  animation: designare-loading 1.2s infinite;
+}
+@keyframes designare-loading {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+.designare-table .animate .designare-transition {
+  transition: color 0.3s, background-color 0.3s;
+}

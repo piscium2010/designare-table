@@ -16,7 +16,7 @@ import {
 import SyncScrolling from './SyncScrolling'
 import Spinner from './Loading'
 import { ERR0, ERR1 } from './messages'
-import './app.less'
+import './table.css'
 
 const doNothing = () => { }
 
