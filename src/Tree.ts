@@ -1,4 +1,3 @@
-// todo test cases
 export default function Tree(option) {
     if (Object.keys(option).length !== 1) throw `Invalid tree option`
     const field = Object.keys(option)[0]

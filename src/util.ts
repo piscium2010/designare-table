@@ -1,4 +1,28 @@
-import * as React from 'react'
+export type column = {
+    Header: string | JSX.Element | (() => JSX.Element),
+    Cell?: (args?: {
+        value: any;
+        row: any;
+        dataKey: string;
+        rowIndex: number;
+    }) => JSX.Element;
+    children?: column[]
+    colSpan?: number
+    dataKey?: string
+    width: '*' | number
+    fixed: 'left' | 'right' | undefined
+}
+
+export type metaColumn = column & {
+    metaKey: string
+    isFirst?: boolean
+    isLast?: boolean
+    rowSpan: number
+    isFirstFixedColumn?: boolean
+    isLastFixedColumn?: boolean
+    isLeaf?: boolean
+    leafIndex?: number
+}
 
 export function flatten(columns, result = []) {
     columns.forEach(col => col.children ? flatten(col.children, result) : result.push(col))
@@ -8,13 +32,15 @@ export function flatten(columns, result = []) {
 export function createColumnMeta(
     columns,
     maxDepth,
-    parentKey = '',
-    parentFix,
+    parentKey: string = '',
+    parentFix: string = undefined,
     depth = 1/* start from 1 */,
-    warnings = [],
-    store = {}
+    warnings: string[] = [],
+    store: { wildcard?: boolean } = {}
 ) {
-    const columnsWithMeta = []
+
+    const columnsWithMeta: metaColumn[] = []
+
     columns.forEach((column, i) => {
         const key = `${parentKey ? parentKey + '-' : ''}` + getColumnKey(column)
 
@@ -60,9 +86,8 @@ export function createColumnMeta(
         }
         columnsWithMeta.push(clone)
     })
-    return [columnsWithMeta, warnings]
+    return [columnsWithMeta, warnings] as [metaColumn[], string[]]
 }
-
 
 export function forEachLeafColumn(columns, visitor, n = { count: 0 }, isLast = true) {
     for (let i = 0, len = columns.length; i < len; i++) {
@@ -120,23 +145,7 @@ export function groupByDepth(columns) {
     return result
 }
 
-// export class Queue {
-//     i = 0
-//     q = []
-//     clear = () => {
-//         this.i = 0
-//         this.q = []
-//     }
-
-//     push = v => this.q.push(v)
-//     first = () => this.q[this.i++]
-
-//     get length() {
-//         return this.q.length - this.i
-//     }
-// }
-
-export function widthArray(element, requiredLen, startOrend = 'end', msg, debug) {
+export function widthArray(element, requiredLen, startOrend = 'end', msg?, debug?) {
     let child = element && element.firstElementChild
     let rowIndex = 0, placeholder = -1, matrix = [], result = [], n = 0
     const rowOf = index => matrix[index] || (matrix[index] = [])
@@ -200,7 +209,7 @@ export function widthArray(element, requiredLen, startOrend = 'end', msg, debug)
     return pad(result, requiredLen, startOrend, -1 /* pad With */)
 }
 
-export function pad(array = [], expectedLen, startOrend = 'end', padWith) {
+export function pad(array = [], expectedLen, startOrend = 'end', padWith?) {
     const length = array.length
     if (length > expectedLen) throw new CustomError('pad', array, `fail to pad array:${array}, its length exceeds the expectedLen: ${expectedLen}`)
     if (length < expectedLen) {
@@ -264,6 +273,7 @@ export function shift(array, indexOfDragged, indexOfDropped) {
 }
 
 class CustomError extends Error {
+    value: any
     constructor(name, value, ...params) {
         super(...params)
         this.name = name

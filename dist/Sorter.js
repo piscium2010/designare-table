@@ -110,7 +110,7 @@ Sorter.defaultProps = {
     }
 };
 function sortByNumeric(a, b) {
-    let left = a / 1, right = b / 1; // convert to number
+    let left = a / 1, right = b / 1;
     left = isNaN(left) ? 0 : left;
     right = isNaN(right) ? 0 : right;
     return left - right;

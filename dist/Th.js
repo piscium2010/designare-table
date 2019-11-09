@@ -23,7 +23,6 @@ const resizableElementStyle = {
     cursor: 'col-resize',
     zIndex: 1,
     userSelect: 'none'
-    // backgroundColor: 'blue'
 };
 class Th extends React.Component {
     constructor() {
@@ -122,7 +121,7 @@ class Th extends React.Component {
         const fixHeader = this.context.fixed;
         const isMyColumn = fixHeader ? fixed === fixHeader : !fixed;
         const thStyle = isMyColumn
-            ? { zIndex: fixHeader === 'left' ? 2 : 1 } // will be used by onMouseDown (drag and drop) as well
+            ? { zIndex: fixHeader === 'left' ? 2 : 1 }
             : { visibility: 'hidden', pointerEvents: 'none', zIndex: 0 };
         const fixedColumnShadowClass = isMyColumn && (isFirstFixedColumn || isLastFixedColumn) ? 'designare-fixed' : '';
         return (React.createElement("th", Object.assign({ ref: deliverRef, className: `${fixedColumnShadowClass} ${className}` }, restProps, { colSpan: colSpan, rowSpan: rowSpan, style: Object.assign(Object.assign({}, thStyle), style) }),

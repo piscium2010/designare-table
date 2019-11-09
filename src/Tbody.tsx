@@ -4,7 +4,7 @@ import HTMLTbody from './HTMLTbody'
 import { Context } from './context'
 import * as debounce from 'lodash/debounce'
 
-interface ITbody extends React.HTMLAttributes<HTMLDivElement> {
+interface ITbodyProps extends React.HTMLAttributes<HTMLDivElement> {
     tr?: (args?: {
         row: any,
         rowIndex: number,
@@ -12,7 +12,7 @@ interface ITbody extends React.HTMLAttributes<HTMLDivElement> {
     }) => JSX.Element
 }
 
-export default class Tbody extends React.Component<ITbody, void> {
+export default class Tbody extends React.Component<ITbodyProps, {}> {
     static contextType = Context
     static defaultProps = {
         onScroll: evt => { }

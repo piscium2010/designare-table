@@ -65,7 +65,7 @@ class DraggableTh extends React.Component {
             this.global['designare-draggable-column-index'] = column.columnIndex;
         };
         this.onDragOver = evt => {
-            evt.preventDefault(); // allow drag
+            evt.preventDefault();
             const sourceIndex = this.global['designare-draggable-column-index'];
             const targetIndex = this.column.columnIndex;
             sourceIndex < targetIndex ? this.highlightRight() : undefined;

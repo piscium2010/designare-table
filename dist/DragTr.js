@@ -74,7 +74,7 @@ class DragTr extends React.Component {
             this.global['designare-draggable-row-index'] = this.getRowIndex(this.props.row);
         };
         this.onDragOver = evt => {
-            evt.preventDefault(); // allow drag
+            evt.preventDefault();
             const sourceIndex = this.global['designare-draggable-row-index'];
             const targetIndex = this.getRowIndex(this.props.row);
             sourceIndex > targetIndex ? this.highlightTop() : undefined;

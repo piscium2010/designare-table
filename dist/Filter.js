@@ -43,7 +43,6 @@ class Filter extends React.Component {
             if (className.includes
                 && className.includes(this.columnMetaKey)
                 && className.includes('designare-table-filter')) {
-                // evt from filter icon, do nothing, leave it to onToggleFilter func
                 return;
             }
             this.off();

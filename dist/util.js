@@ -5,11 +5,10 @@ function flatten(columns, result = []) {
     return result;
 }
 exports.flatten = flatten;
-function createColumnMeta(columns, maxDepth, parentKey = '', parentFix, depth = 1 /* start from 1 */, warnings = [], store = {}) {
+function createColumnMeta(columns, maxDepth, parentKey = '', parentFix = undefined, depth = 1, warnings = [], store = {}) {
     const columnsWithMeta = [];
     columns.forEach((column, i) => {
         const key = `${parentKey ? parentKey + '-' : ''}` + getColumnKey(column);
-        // errors
         if (column.Cell && typeof column.Cell !== 'function')
             throw new Error('designare-table: Cell must be react function component');
         if (column.Cell && column.Cell.prototype && column.Cell.prototype.render)
@@ -22,7 +21,6 @@ function createColumnMeta(columns, maxDepth, parentKey = '', parentFix, depth = 
             throw new Error('designare-table: column can not have both Cell and children');
         if (column.colSpan && column.children)
             throw new Error('designare-table: column can not have both colSpan and children');
-        // warnings
         if (column.rowSpan) {
             warnings.push(`do not suppport rowSpan for now. Warning from ${column.Header}`);
         }
@@ -74,7 +72,6 @@ function getColumnKey(column, keys = []) {
     return keys.join(':');
 }
 exports.getColumnKey = getColumnKey;
-// test cases
 function childrenLength(children, sum = 0) {
     children.forEach(sub => {
         if (sub.children) {
@@ -86,7 +83,6 @@ function childrenLength(children, sum = 0) {
     return sum;
 }
 exports.childrenLength = childrenLength;
-// test cases
 function depthOf(columns, depth = 1) {
     return columns
         ? depth + columns.reduce((prev, col) => Math.max(prev, depthOf(col.children, depth)), 0)
@@ -95,7 +91,7 @@ function depthOf(columns, depth = 1) {
 exports.depthOf = depthOf;
 function groupByDepth(columns) {
     const result = [];
-    const walkOne = (column, depth = 1 /* start from 1 */) => {
+    const walkOne = (column, depth = 1) => {
         const index = depth - 1;
         result[index] = result[index] || [];
         result[index].push(column);
@@ -107,19 +103,6 @@ function groupByDepth(columns) {
     return result;
 }
 exports.groupByDepth = groupByDepth;
-// export class Queue {
-//     i = 0
-//     q = []
-//     clear = () => {
-//         this.i = 0
-//         this.q = []
-//     }
-//     push = v => this.q.push(v)
-//     first = () => this.q[this.i++]
-//     get length() {
-//         return this.q.length - this.i
-//     }
-// }
 function widthArray(element, requiredLen, startOrend = 'end', msg, debug) {
     let child = element && element.firstElementChild;
     let rowIndex = 0, placeholder = -1, matrix = [], result = [], n = 0;
@@ -185,7 +168,7 @@ function widthArray(element, requiredLen, startOrend = 'end', msg, debug) {
     if (debug) {
         console.log(msg, result);
     }
-    return pad(result, requiredLen, startOrend, -1 /* pad With */);
+    return pad(result, requiredLen, startOrend, -1);
 }
 exports.widthArray = widthArray;
 function pad(array = [], expectedLen, startOrend = 'end', padWith) {
@@ -205,15 +188,6 @@ function padMatrix(matrix) {
     return matrix.map(a => pad(a, maxLen, 'end'));
 }
 exports.padMatrix = padMatrix;
-/**
- * input:
- * [1, 4]
- * [3, 2]
- * output:
- * [3, 4]
- *
- * @param  {...any} args
- */
 function max(...args) {
     const r = [], len = args[0].length, lenMatch = args.every(a => a.length === len), maxReducer = (prev, curr) => Math.max(prev, curr);
     if (!lenMatch)
@@ -234,7 +208,6 @@ function shift(array, indexOfDragged, indexOfDropped) {
         throw 'indexOfDropped should be number';
     const result = Array.from(array);
     if (indexOfDragged < indexOfDropped) {
-        // shift left
         const temp = result[indexOfDragged];
         for (let i = indexOfDragged; i < indexOfDropped; i++) {
             result[i] = result[i + 1];
@@ -242,7 +215,6 @@ function shift(array, indexOfDragged, indexOfDropped) {
         result[indexOfDropped] = temp;
     }
     else if (indexOfDragged > indexOfDropped) {
-        // shift right
         const temp = result[indexOfDragged];
         for (let i = indexOfDragged; i > indexOfDropped; i--) {
             result[i] = result[i - 1];

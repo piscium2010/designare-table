@@ -28,7 +28,7 @@ class SyncScrolling {
                     }
                 }
             });
-            this.debouncedReAddOnScroll(master /* except */);
+            this.debouncedReAddOnScroll(master);
         };
         this.reAddOnScroll = except => {
             this.map.forEach((v, k) => {

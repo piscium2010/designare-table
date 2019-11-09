@@ -5,12 +5,27 @@ import Animate from './Animate'
 import { Context } from './context'
 import * as debounce from 'lodash/debounce'
 
-export default class Header extends React.Component {
+interface ITheadProps extends React.HTMLAttributes<HTMLDivElement> {
+    tr?: (args?: {
+        cells: JSX.Element
+    }) => JSX.Element
+}
+
+export default class Thead extends React.Component<ITheadProps, {}> {
     static contextType = Context
     static defaultProps = {
-        className: '',
-        onScroll: () => { }
+        onScroll: evt => { }
     }
+
+    _headerWidth: number
+    _tableWidth: number
+    headerRef: React.RefObject<HTMLDivElement>
+    tableRef: React.RefObject<HTMLTableElement>
+    leftRef: React.RefObject<HTMLDivElement>
+    rightRef: React.RefObject<HTMLDivElement>
+    shadowLeft: boolean
+    shadowRight: boolean
+    debouncedReset: () => void
 
     get headerWidth() {
         return this._headerWidth || (this._headerWidth = this.headerRef.current.offsetWidth)
@@ -74,7 +89,7 @@ export default class Header extends React.Component {
 
     render() {
         const { isInit, syncScrolling, removeSyncScrolling } = this.context
-        const { className, tr, style, ...restProps } = this.props
+        const { className = '', tr, style, ...restProps } = this.props
         return (
             <div
                 className={`designare-table-fixed-header ${className}`}

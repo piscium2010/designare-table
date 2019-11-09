@@ -1,6 +1,5 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-// todo test cases
 function Tree(option) {
     if (Object.keys(option).length !== 1)
         throw `Invalid tree option`;

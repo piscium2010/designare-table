@@ -3,7 +3,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const config = { attributes: true, childList: true, subtree: true };
 function default_1(instance) {
     const observer = new MutationObserver(mutationsList => {
-        // console.log(`mutation`,)
         instance.context.global['resizing']
             ? instance.context.syncScrollBarStatus()
             : window.requestAnimationFrame(() => {

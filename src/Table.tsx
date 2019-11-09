@@ -2,8 +2,8 @@ import * as React from 'react'
 import * as debounce from 'lodash/debounce'
 import { Fragment } from 'react'
 import { Context } from './context'
-import Header from './Thead'
-import Body from './Tbody'
+import Thead from './Thead'
+import Tbody from './Tbody'
 import Pagination from './Pagination'
 import SyncScrolling from './SyncScrolling'
 import Spinner from './Loading'
@@ -15,7 +15,9 @@ import {
     depthOf,
     groupByDepth,
     widthArray,
-    max
+    max,
+    column,
+    metaColumn,
 } from './util'
 import './table.css'
 
@@ -38,32 +40,6 @@ type global = {
     'designare-draggable-column-index'?: string,
     'designare-draggable-row-index'?: string,
     'resizing': boolean
-}
-
-type column = {
-    Header: string | JSX.Element | (() => JSX.Element),
-    Cell?: (args?: {
-        value: any;
-        row: any;
-        dataKey: string;
-        rowIndex: number;
-    }) => JSX.Element;
-    children?: column[]
-    colSpan?: number
-    dataKey?: string
-    width: '*' | number
-    fixed: 'left' | 'right' | undefined
-}
-
-type metaColumn = column & {
-    metaKey: string
-    isFirst?: boolean
-    isLast?: boolean
-    rowSpan: number
-    isFirstFixedColumn?: boolean
-    isLastFixedColumn?: boolean
-    isLeaf?: boolean
-    leafIndex?: number
 }
 
 interface ITableProps extends React.HTMLAttributes<HTMLDivElement> {
@@ -95,7 +71,7 @@ type state = {
 
 export default class Table extends React.Component<ITableProps, state> {
     static defaultProps = {
-        children: <Fragment><Header /><Body /></Fragment>,
+        children: <Fragment><Thead /><Tbody /></Fragment>,
         defaultSorter: {},
         onChangeColumns: () => { },
         onChangeRows: () => { },

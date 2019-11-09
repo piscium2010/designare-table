@@ -21,7 +21,7 @@ function FilterLayer(_a) {
     react_1.useEffect(() => {
         const timer = show
             ? setVisible(true)
-            : window.setTimeout(() => setVisible(false), 250 /* spare time for slide out animation which is 200ms */);
+            : window.setTimeout(() => setVisible(false), 250);
         return () => window.clearTimeout(timer);
     }, [show]);
     return (React.createElement(Layer_1.default, Object.assign({ show: show }, restProps), visible ? React.createElement(C, { content: content, filterAPI: filterAPI }) : null));

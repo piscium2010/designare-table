@@ -1,5 +1,6 @@
 import * as React from 'react';
 import SyncScrolling from './SyncScrolling';
+import { column } from './util';
 import './table.css';
 declare type filter = {
     columnMetaKey?: string;
@@ -19,21 +20,7 @@ declare type global = {
     'designare-draggable-row-index'?: string;
     'resizing': boolean;
 };
-declare type column = {
-    Header: string | JSX.Element | (() => JSX.Element);
-    Cell?: ({ value, row, dataKey, rowIndex }: {
-        value: any;
-        row: any;
-        dataKey: string;
-        rowIndex: number;
-    }) => JSX.Element;
-    children?: column[];
-    colSpan?: number;
-    dataKey?: string;
-    width: '*' | number;
-    fixed: 'left' | 'right' | undefined;
-};
-interface ITableProps extends HTMLDivElement {
+interface ITableProps extends React.HTMLAttributes<HTMLDivElement> {
     activeColor?: string;
     defaultColor?: string;
     pageNo?: number;
@@ -47,7 +34,7 @@ interface ITableProps extends HTMLDivElement {
         pageSize: any;
         pageNo: any;
     }) => void;
-    onChangeRows?: (data: any) => void;
+    onChangeRows?: (data: any[]) => void;
     onChangeSorter?: (sorter: sorter) => void;
     onChangeFilters?: (filters: filter[]) => void;
     columns: column[];
