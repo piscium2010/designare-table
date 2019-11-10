@@ -5,7 +5,7 @@ export default function Animate(props) {
     const ref = useRef(null)
     useEffect(() => {
         window.requestAnimationFrame(() => {
-            ref.current.classList.add('animate')
+            ref.current && ref.current.classList.add('animate')
         })
     }, [])
     return (

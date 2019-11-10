@@ -6,7 +6,7 @@ function Animate(props) {
     const ref = react_1.useRef(null);
     react_1.useEffect(() => {
         window.requestAnimationFrame(() => {
-            ref.current.classList.add('animate');
+            ref.current && ref.current.classList.add('animate');
         });
     }, []);
     return (React.createElement("div", Object.assign({ ref: ref }, props), props.children));

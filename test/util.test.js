@@ -1,4 +1,4 @@
-import { createColumnMeta, widthArray, shift } from '../src/util'
+import { createColumnMeta, widthArray, shift } from '../dist/util'
 
 test('width', () => {
     const maxDepth = 1

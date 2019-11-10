@@ -33,16 +33,10 @@
     "gulp": "^4.0.2",
     "gulp-less": "^4.0.1",
     "gulp-typescript": "^5.0.1",
-    "identity-obj-proxy": "^3.0.0",
     "jest": "^24.9.0",
     "less": "^3.10.3",
     "merge-stream": "^2.0.0",
     "typescript": "^3.7.2"
-  },
-  "jest": {
-    "moduleNameMapper": {
-      "\\.(css|less)$": "identity-obj-proxy"
-    }
   },
   "repository": {
     "type": "git",
