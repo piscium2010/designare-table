@@ -1,13 +1,13 @@
 {
   "name": "designare-table",
-  "version": "1.0.1",
+  "version": "1.2.0",
   "description": "",
   "main": "index.js",
   "scripts": {
     "test": "jest",
     "build": "gulp"
   },
-  "keywords": [],
+  "keywords": ["table","react","designare"],
   "author": "piscium2010 <541032442@qq.com>",
   "license": "MIT",
   "dependencies": {
