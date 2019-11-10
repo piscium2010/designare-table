@@ -1,6 +1,6 @@
 {
   "name": "designare-table",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -11,12 +11,16 @@
   "author": "piscium2010 <541032442@qq.com>",
   "license": "MIT",
   "dependencies": {
-    "@piscium2010/lime": "^2.3.4",
-    "debounce": "^1.2.0",
-    "react": "^16.9.0",
-    "react-dom": "^16.9.0"
+    "@piscium2010/lime": "^2.3.7",
+    "debounce": "^1.2.0"
+  },
+  "peerDependencies": {
+    "react": ">=16.9.0",
+    "react-dom": ">=16.9.0"
   },
   "devDependencies": {
+    "react": "^16.9.0",
+    "react-dom": "^16.9.0",
     "@babel/cli": "^7.6.0",
     "@babel/core": "^7.6.0",
     "@babel/plugin-proposal-class-properties": "^7.5.5",
