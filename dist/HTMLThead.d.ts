@@ -12,8 +12,8 @@ export default class HTMLThead extends React.Component<IHTMLTheadProps, {}> {
             cells: any;
         }) => JSX.Element;
     };
-    observer: any;
-    ref: React.RefObject<HTMLElement>;
+    private observer;
+    private ref;
     constructor(props: any);
     componentDidMount(): void;
     componentWillUnmount(): void;

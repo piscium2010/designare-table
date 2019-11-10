@@ -20,21 +20,21 @@ interface IThProps extends React.HTMLAttributes<HTMLDivElement> {
 
 export default class Th extends React.Component<IThProps, {}> {
     static contextType = ThsContext
-    column: metaColumn
-    originalDraggable: string
-    setResizedWidthInfo: any
-    leftOrRight: string
-    dragable: HTMLElement
-    resizing: ReSizing
-    parent: HTMLElement
-    parentOriginalZIndex: number
-    metaKey: string
-    colgroups: HTMLElement[]
-    colIndex: number
-    colWidth: number
-    minWidthArray: number[]
-    wrappers: HTMLElement[]
-    wrapperWidthArray: number[]
+    private column: metaColumn
+    private originalDraggable: string
+    private setResizedWidthInfo: any
+    private leftOrRight: string
+    private dragable: HTMLElement
+    private resizing: ReSizing
+    private parent: HTMLElement
+    private parentOriginalZIndex: number
+    private metaKey: string
+    private colgroups: HTMLElement[]
+    private colIndex: number
+    private colWidth: number
+    private minWidthArray: number[]
+    private wrappers: HTMLElement[]
+    private wrapperWidthArray: number[]
 
     get global(): { resizing: boolean } {
         return this.context.global

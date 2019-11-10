@@ -18,15 +18,15 @@ export default class Tbody extends React.Component<ITbodyProps, {}> {
         onScroll: evt => { }
     }
 
-    _bodyWidth: number
-    _tableWidth: number
-    bodyRef: React.RefObject<HTMLDivElement>
-    tableRef: React.RefObject<HTMLTableElement>
-    leftRef: React.RefObject<HTMLDivElement>
-    rightRef: React.RefObject<HTMLDivElement>
-    shadowLeft: boolean
-    shadowRight: boolean
-    debouncedReset: () => void
+    private _bodyWidth: number
+    private _tableWidth: number
+    private bodyRef: React.RefObject<HTMLDivElement>
+    private tableRef: React.RefObject<HTMLTableElement>
+    private leftRef: React.RefObject<HTMLDivElement>
+    private rightRef: React.RefObject<HTMLDivElement>
+    private shadowLeft: boolean
+    private shadowRight: boolean
+    private debouncedReset: () => void
 
     constructor(props) {
         super(props)

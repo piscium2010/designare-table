@@ -4,9 +4,23 @@ import { ThsContext } from './context'
 import Icons from './Icons'
 import FilterLayer from './FilterLayer'
 
-const defaultStyle = { position: 'absolute', top: 0, right: 0, bottom: 0, display: 'flex', justifyContent: 'center', cursor: 'pointer', userSelect: 'none' }
+const defaultStyle: React.CSSProperties = { position: 'absolute', top: 0, right: 0, bottom: 0, display: 'flex', justifyContent: 'center', cursor: 'pointer', userSelect: 'none' }
 
-export default class Filter extends React.Component {
+interface IFilterProps extends React.HTMLAttributes<HTMLDivElement> {
+    activeColor?: string
+    defaultColor?: string
+    name?: string
+    by?: string | ((...args) => boolean)
+    render: () => JSX.Element
+}
+
+type state = {
+    show: boolean
+    top: number
+    right: number
+}
+
+export default class Filter extends React.Component<IFilterProps, state> {
     static contextType = ThsContext
     static defaultProps = {
         children: () => 'please implement your filter content',
@@ -14,8 +28,11 @@ export default class Filter extends React.Component {
         render: () => <Icons.Filter />
     }
 
-    ref = React.createRef()
     state = { show: false, top: 0, right: 0 }
+
+    private _container: HTMLElement
+    private ref: React.RefObject<HTMLElement> = React.createRef()
+    private filterValue: any
 
     get activeColor() {
         return this.props.activeColor || this.context.activeColor
@@ -195,7 +212,7 @@ export default class Filter extends React.Component {
             <span>
                 &nbsp;&nbsp;&nbsp;
                 <div
-                    ref={this.ref}
+                    ref={this.ref as any}
                     className={`designare-table-filter designare-transition ${className} ${this.columnMetaKey} ${isActive ? 'active' : ''}`}
                     onClick={this.onToggleFilter}
                     style={{ width: width, ...defaultStyle, ...style, color: isActive ? this.activeColor : this.defaultColor }}

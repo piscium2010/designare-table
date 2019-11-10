@@ -595,7 +595,6 @@ function isDimensionChanged(table, columnSize, dimensionInfo) {
     for (let i = 0, len = keys.length; i < len; i++) {
         const k = keys[i];
         if (isArrayChange(dimensionInfo[k], info[k])) {
-            console.log(dimensionInfo[k], info[k]);
             result = true;
             break;
         }

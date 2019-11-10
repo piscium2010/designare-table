@@ -16,7 +16,7 @@ const Th_1 = require("./Th");
 const context_1 = require("./context");
 const messages_1 = require("./messages");
 const util_1 = require("./util");
-class DraggableTh extends React.Component {
+class DragTh extends React.Component {
     constructor() {
         super(...arguments);
         this.ref = React.createRef();
@@ -111,8 +111,8 @@ class DraggableTh extends React.Component {
         deliverRef = this.ref;
         return (this.context.fixed || column.depth > 1
             ? React.createElement(Th_1.default, Object.assign({ deliverRef: this.ref }, restProps), children)
-            : React.createElement(Th_1.default, Object.assign({ deliverRef: this.ref, draggable: 'true', onDragStart: this.onDragStart, onDragOver: this.onDragOver, onDragLeave: this.onDragLeave, onDrop: this.onDrop, onDragEnd: this.onDragEnd }, restProps), children));
+            : React.createElement(Th_1.default, Object.assign({ deliverRef: this.ref, draggable: true, onDragStart: this.onDragStart, onDragOver: this.onDragOver, onDragLeave: this.onDragLeave, onDrop: this.onDrop, onDragEnd: this.onDragEnd }, restProps), children));
     }
 }
-exports.default = DraggableTh;
-DraggableTh.contextType = context_1.ThsContext;
+exports.default = DragTh;
+DragTh.contextType = context_1.ThsContext;

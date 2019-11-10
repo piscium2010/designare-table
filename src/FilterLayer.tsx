@@ -9,7 +9,7 @@ export default function FilterLayer({ content, filterAPI, show, ...restProps }) 
         const timer = show
             ? setVisible(true)
             : window.setTimeout(() => setVisible(false), 250/* spare time for slide out animation which is 200ms */)
-        return () => window.clearTimeout(timer)
+        return () => window.clearTimeout(timer as number)
     }, [show])
 
     return (

@@ -20,8 +20,8 @@ const defaultStyle = { position: 'absolute', top: 0, right: 0, bottom: 0, displa
 class Filter extends React.Component {
     constructor() {
         super(...arguments);
-        this.ref = React.createRef();
         this.state = { show: false, top: 0, right: 0 };
+        this.ref = React.createRef();
         this.on = () => {
             const { top, right, height } = this.ref.current.getBoundingClientRect();
             this.container.classList.add('show');

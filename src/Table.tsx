@@ -88,14 +88,14 @@ export default class Table extends React.Component<ITableProps, state> {
         return { hasError: true, error }
     }
 
-    root: React.RefObject<HTMLElement>
-    filterLayersRef: React.RefObject<HTMLElement>
-    isInit: boolean
-    activeSorter: { columnMetaKey, dataKey?, direction, by?}
-    tableDidMountListeners: Map<any, ''>
-    activeFilters: Map<string, filter>
-    syncScrollingInstance: SyncScrolling
-    dimensionInfo: {
+    private root: React.RefObject<HTMLElement>
+    private filterLayersRef: React.RefObject<HTMLElement>
+    private isInit: boolean
+    private activeSorter: { columnMetaKey, dataKey?, direction, by?}
+    private tableDidMountListeners: Map<any, ''>
+    private activeFilters: Map<string, filter>
+    private syncScrollingInstance: SyncScrolling
+    private dimensionInfo: {
         dimensionId?: string,
         originalMaxWidthArray?: number[],
         headerWidthArray?: number[],
@@ -112,15 +112,15 @@ export default class Table extends React.Component<ITableProps, state> {
         rightBodyHeightArray?: number[],
         maxWidthArray?: number[]
     }
-    resizedWidthInfo: Map<string, number>
-    debouncedUpdate: () => void
-    debouncedSyncWidthAndHeight: (force?: boolean) => void
-    debouncedReSyncWidthAndHeight: (force?: boolean) => void
-    warnings: Map<string, 'printed'>
-    cells: Map<any, ''>
-    headerCells: Map<any, ''>
-    global: global
-    contextAPI: {
+    private resizedWidthInfo: Map<string, number>
+    private debouncedUpdate: () => void
+    private debouncedSyncWidthAndHeight: (force?: boolean) => void
+    private debouncedReSyncWidthAndHeight: (force?: boolean) => void
+    private warnings: Map<string, 'printed'>
+    private cells: Map<any, ''>
+    private headerCells: Map<any, ''>
+    private global: global
+    private contextAPI: {
         getFilterLayerContainer: (columnMetaKey: string) => Element
         getDefaultFilters: () => filter[] | undefined
         getFilters: () => filter[] | undefined
@@ -152,13 +152,13 @@ export default class Table extends React.Component<ITableProps, state> {
         onChangeRows: (data) => void
         resizable: boolean
     }
-    defaultFilters: filter[]
-    defaultSorter: sorter
-    updateId: number
-    flattenSortedColumns: column[]
-    depthOfColumns: number
-    sortedColumns: column[]
-    data: any[]
+    private defaultFilters: filter[]
+    private defaultSorter: sorter
+    private updateId: number
+    private flattenSortedColumns: column[]
+    private depthOfColumns: number
+    private sortedColumns: column[]
+    private data: any[]
 
     constructor(props) {
         super(props)
@@ -910,7 +910,7 @@ function isDimensionChanged(table, columnSize, dimensionInfo) {
         const k = keys[i]
         if (isArrayChange(dimensionInfo[k], info[k])) {
             // console.log(k, ' is resized')
-            console.log(dimensionInfo[k], info[k])
+            // console.log(dimensionInfo[k], info[k])
             result = true
             break
         }

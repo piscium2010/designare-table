@@ -1,8 +1,8 @@
 import * as debounce from 'lodash/debounce'
 
 export default class SyncScrolling {
-    map = new Map()
-    debouncedReAddOnScroll: (except?: HTMLElement) => void
+    private map = new Map()
+    private debouncedReAddOnScroll: (except?: HTMLElement) => void
 
     constructor() {
         this.debouncedReAddOnScroll = debounce(this.reAddOnScroll, 100)

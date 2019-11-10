@@ -17,8 +17,8 @@ export default class HTMLThead extends React.Component<IHTMLTheadProps, {}> {
         tr: ({ cells }) => <tr>{cells}</tr>
     }
 
-    observer
-    ref: React.RefObject<HTMLElement>
+    private observer
+    private ref: React.RefObject<HTMLElement>
 
     constructor(props) {
         super(props)

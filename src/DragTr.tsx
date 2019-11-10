@@ -10,14 +10,14 @@ interface IDragTrProps extends React.HTMLAttributes<HTMLElement> {
 
 export default class DragTr extends React.Component<IDragTrProps, {}> {
     static contextType = TBodyContext
-    ref: React.RefObject<HTMLElement>
-    originalBorderTopColor: string
-    originalBorderTopStyle: string
-    originalBorderTopWidth: string
-    originalBorderBottomColor: string
-    originalBorderBottomStyle: string
-    originalBorderBottomWidth: string
-    onDragEnd: (event: React.DragEvent<HTMLTableRowElement>) => void
+    private ref: React.RefObject<HTMLElement>
+    private originalBorderTopColor: string
+    private originalBorderTopStyle: string
+    private originalBorderTopWidth: string
+    private originalBorderBottomColor: string
+    private originalBorderBottomStyle: string
+    private originalBorderBottomWidth: string
+    private onDragEnd: (event: React.DragEvent<HTMLTableRowElement>) => void
 
     constructor(props) {
         super(props)

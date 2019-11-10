@@ -1,6 +1,6 @@
 import * as React from 'react'
 
-const defaultStyle = { pointerEvents: 'none' }
+const defaultStyle: React.CSSProperties = { pointerEvents: 'none' }
 const xmlns = 'http://www.w3.org/2000/svg'
 
 const CaretUp = ({ style = {}, ...restProps }) => (

@@ -4,10 +4,21 @@ import { ThsContext } from './context'
 import { WARNING1, WARNING2 } from './messages'
 import { shift } from './util'
 
-export default class DraggableTh extends React.Component {
+interface IDragThProps extends React.HTMLAttributes<HTMLElement> {
+    deliverRef?: React.RefObject<HTMLElement>
+}
+
+export default class DragTh extends React.Component<IDragThProps, {}> {
     static contextType = ThsContext
 
-    ref = React.createRef()
+    private ref: React.RefObject<HTMLElement> = React.createRef()
+    private originalBorderRightColor: string
+    private originalBorderRightStyle: string
+    private originalBorderRightWidth: string
+    private originalBorderLeftColor: string
+    private originalBorderLeftStyle: string
+    private originalBorderLeftWidth: string
+    private onDragEnd: (event: React.DragEvent<HTMLElement>) => void
 
     get global() {
         return this.context.global
@@ -109,7 +120,7 @@ export default class DraggableTh extends React.Component {
                 ? <Th deliverRef={this.ref} {...restProps}>{children}</Th>
                 : <Th
                     deliverRef={this.ref}
-                    draggable='true'
+                    draggable={true}
                     onDragStart={this.onDragStart}
                     onDragOver={this.onDragOver}
                     onDragLeave={this.onDragLeave}

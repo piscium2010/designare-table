@@ -17,15 +17,15 @@ export default class Thead extends React.Component<ITheadProps, {}> {
         onScroll: evt => { }
     }
 
-    _headerWidth: number
-    _tableWidth: number
-    headerRef: React.RefObject<HTMLDivElement>
-    tableRef: React.RefObject<HTMLTableElement>
-    leftRef: React.RefObject<HTMLDivElement>
-    rightRef: React.RefObject<HTMLDivElement>
-    shadowLeft: boolean
-    shadowRight: boolean
-    debouncedReset: () => void
+    private _headerWidth: number
+    private _tableWidth: number
+    private headerRef: React.RefObject<HTMLDivElement>
+    private tableRef: React.RefObject<HTMLTableElement>
+    private leftRef: React.RefObject<HTMLDivElement>
+    private rightRef: React.RefObject<HTMLDivElement>
+    private shadowLeft: boolean
+    private shadowRight: boolean
+    private debouncedReset: () => void
 
     get headerWidth() {
         return this._headerWidth || (this._headerWidth = this.headerRef.current.offsetWidth)

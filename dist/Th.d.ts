@@ -1,26 +1,24 @@
 import * as React from 'react';
-import ReSizing from './ReSizing';
-import { metaColumn } from './util';
 interface IThProps extends React.HTMLAttributes<HTMLDivElement> {
     deliverRef?: React.RefObject<HTMLElement>;
 }
 export default class Th extends React.Component<IThProps, {}> {
     static contextType: React.Context<{}>;
-    column: metaColumn;
-    originalDraggable: string;
-    setResizedWidthInfo: any;
-    leftOrRight: string;
-    dragable: HTMLElement;
-    resizing: ReSizing;
-    parent: HTMLElement;
-    parentOriginalZIndex: number;
-    metaKey: string;
-    colgroups: HTMLElement[];
-    colIndex: number;
-    colWidth: number;
-    minWidthArray: number[];
-    wrappers: HTMLElement[];
-    wrapperWidthArray: number[];
+    private column;
+    private originalDraggable;
+    private setResizedWidthInfo;
+    private leftOrRight;
+    private dragable;
+    private resizing;
+    private parent;
+    private parentOriginalZIndex;
+    private metaKey;
+    private colgroups;
+    private colIndex;
+    private colWidth;
+    private minWidthArray;
+    private wrappers;
+    private wrapperWidthArray;
     get global(): {
         resizing: boolean;
     };

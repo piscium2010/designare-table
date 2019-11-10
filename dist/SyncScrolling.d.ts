@@ -1,6 +1,6 @@
 export default class SyncScrolling {
-    map: Map<any, any>;
-    debouncedReAddOnScroll: (except?: HTMLElement) => void;
+    private map;
+    private debouncedReAddOnScroll;
     constructor();
     onScroll: (evt: any) => void;
     reAddOnScroll: (except: any) => void;

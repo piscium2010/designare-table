@@ -17,8 +17,8 @@ export default class HTMLTbody extends React.Component<IHTMLTbodyProps, {}> {
             cells: any;
         }) => JSX.Element;
     };
-    observer: any;
-    ref: React.RefObject<HTMLElement>;
+    private observer;
+    private ref;
     constructor(props: any);
     componentDidMount(): void;
     componentWillUnmount(): void;

@@ -1,21 +1,24 @@
-export default class DraggableTh extends React.Component<any, any, any> {
+import * as React from 'react';
+interface IDragThProps extends React.HTMLAttributes<HTMLElement> {
+    deliverRef?: React.RefObject<HTMLElement>;
+}
+export default class DragTh extends React.Component<IDragThProps, {}> {
     static contextType: React.Context<{}>;
-    constructor(props: Readonly<any>);
-    constructor(props: any, context?: any);
-    ref: React.RefObject<any>;
+    private ref;
+    private originalBorderRightColor;
+    private originalBorderRightStyle;
+    private originalBorderRightWidth;
+    private originalBorderLeftColor;
+    private originalBorderLeftStyle;
+    private originalBorderLeftWidth;
+    private onDragEnd;
     get global(): any;
     get originalColumns(): any;
     get column(): any;
     get activeColor(): any;
     highlightRight: () => void;
-    originalBorderRightColor: any;
-    originalBorderRightStyle: any;
-    originalBorderRightWidth: any;
     deHighlightRight: () => void;
     highlightLeft: () => void;
-    originalBorderLeftColor: any;
-    originalBorderLeftStyle: any;
-    originalBorderLeftWidth: any;
     deHighlightLeft: () => void;
     onDragStart: (evt: any) => void;
     onDragOver: (evt: any) => void;
@@ -23,4 +26,4 @@ export default class DraggableTh extends React.Component<any, any, any> {
     onDrop: (evt: any) => void;
     render(): JSX.Element;
 }
-import * as React from "react";
+export {};
