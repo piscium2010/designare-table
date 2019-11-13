@@ -17,7 +17,10 @@
         "sourceMap": true,
         "outDir": "dist",
         "removeComments": true,
-        "lib": ["es2015", "dom"]
+        "lib": ["es2015", "dom"],
+        "alwaysStrict": false,
+        "noImplicitUseStrict": true
+        
     },
     "exclude": ["node_modules", "test", "dist"],
     "types": ["node", "jest"]

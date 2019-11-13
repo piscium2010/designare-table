@@ -777,8 +777,11 @@ function syncWidthAndHeight(table, columns, rowHeight = -1, dimensionInfo, resiz
     for (let i = 0, len = maxHeaderHeightArray.length; i < len; i++) {
         const height = Math.max(maxHeaderHeightArray[i], Math.ceil(rowHeight / depthOfColumns))
         headers[i].style['height'] = `${height}px`
+        headers[i].style['line-height'] = `${height-2}px`
         leftHeaders[i].style['height'] = `${height}px`
+        leftHeaders[i].style['line-height'] = `${height-2}px`
         rightHeaders[i].style['height'] = `${height}px`
+        rightHeaders[i].style['line-height'] = `${height-2}px`
     }
 
     for (let i = 0, len = maxBodyHeightArray.length; i < len; i++) {

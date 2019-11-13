@@ -1,4 +1,3 @@
-"use strict";
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = function (d, b) {
         extendStatics = Object.setPrototypeOf ||
@@ -566,8 +565,11 @@ function syncWidthAndHeight(table, columns, rowHeight, dimensionInfo, resizedWid
     for (var i = 0, len = maxHeaderHeightArray.length; i < len; i++) {
         var height = Math.max(maxHeaderHeightArray[i], Math.ceil(rowHeight / depthOfColumns));
         headers[i].style['height'] = height + "px";
+        headers[i].style['line-height'] = height - 2 + "px";
         leftHeaders[i].style['height'] = height + "px";
+        leftHeaders[i].style['line-height'] = height - 2 + "px";
         rightHeaders[i].style['height'] = height + "px";
+        rightHeaders[i].style['line-height'] = height - 2 + "px";
     }
     for (var i = 0, len = maxBodyHeightArray.length; i < len; i++) {
         var height = Math.max(maxBodyHeightArray[i], rowHeight);

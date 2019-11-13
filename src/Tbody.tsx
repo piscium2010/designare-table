@@ -96,7 +96,7 @@ export default class Tbody extends React.Component<ITbodyProps, {}> {
         return (
             <div
                 className={`designare-table-fixed-body animate ${className}`}
-                style={{ flex: '0 1 100%', position: 'relative', overflow: 'hidden', opacity: isInit() ? 1 : 0, ...style }}
+                style={{ flex: '1 1 auto', position: 'relative', overflow: 'hidden', opacity: isInit() ? 1 : 0, ...style }}
                 {...restProps}
             >
                 <Left

@@ -7,7 +7,11 @@
     "test": "jest",
     "build": "gulp"
   },
-  "keywords": ["table","react","designare"],
+  "keywords": [
+    "table",
+    "react",
+    "designare"
+  ],
   "author": "piscium2010 <541032442@qq.com>",
   "license": "MIT",
   "dependencies": {

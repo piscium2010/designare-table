@@ -1,4 +1,3 @@
-"use strict";
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = function (d, b) {
         extendStatics = Object.setPrototypeOf ||
@@ -218,8 +217,8 @@ var Filter = (function (_super) {
         var _a = this.props, by = _a.by, _b = _a.className, className = _b === void 0 ? '' : _b, C = _a.children, _c = _a.style, style = _c === void 0 ? {} : _c, onClick = _a.onClick, activeColor = _a.activeColor, defaultColor = _a.defaultColor, Render = _a.render, restProps = __rest(_a, ["by", "className", "children", "style", "onClick", "activeColor", "defaultColor", "render"]);
         var width = style.width || 18;
         var isActive = this.isActive || show;
-        return (React.createElement("span", null,
-            "\u00A0\u00A0\u00A0",
+        return (React.createElement(React.Fragment, null,
+            React.createElement("span", null, "\u00A0\u00A0\u00A0"),
             React.createElement("div", __assign({ ref: this.ref, className: "designare-table-filter designare-transition " + className + " " + this.columnMetaKey + " " + (isActive ? 'active' : ''), onClick: this.onToggleFilter, style: __assign(__assign(__assign({ width: width }, defaultStyle), style), { color: isActive ? this.activeColor : this.defaultColor }) }, restProps),
                 React.createElement(Render, null))));
     };

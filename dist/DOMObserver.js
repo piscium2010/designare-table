@@ -1,4 +1,3 @@
-"use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var config = { attributes: true, childList: true, subtree: true };
 function default_1(instance) {

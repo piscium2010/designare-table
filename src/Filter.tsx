@@ -209,17 +209,17 @@ export default class Filter extends React.Component<IFilterProps, state> {
         const isActive = this.isActive || show
 
         return (
-            <span>
-                &nbsp;&nbsp;&nbsp;
+            <React.Fragment>
+                <span>&nbsp;&nbsp;&nbsp;</span>
                 <div
                     ref={this.ref as any}
                     className={`designare-table-filter designare-transition ${className} ${this.columnMetaKey} ${isActive ? 'active' : ''}`}
                     onClick={this.onToggleFilter}
                     style={{ width: width, ...defaultStyle, ...style, color: isActive ? this.activeColor : this.defaultColor }}
                     {...restProps}>
-                    <Render/>
+                    <Render />
                 </div>
-            </span>
+            </React.Fragment>
         )
     }
 }

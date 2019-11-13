@@ -1,4 +1,3 @@
-"use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ERR0 = 'designare-table: Cell should render element wrapped by Td component of designare-table';
 exports.ERR1 = 'designare-table: if Header is not string, it should render one and only one Th component of designare-table';
