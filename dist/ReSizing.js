@@ -1,9 +1,11 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-class ReSizing {
-    constructor(mouseDownEvent) {
-        this.move = evt => evt.clientX - this.clientX;
+var ReSizing = (function () {
+    function ReSizing(mouseDownEvent) {
+        var _this = this;
+        this.move = function (evt) { return evt.clientX - _this.clientX; };
         this.clientX = mouseDownEvent.clientX;
     }
-}
+    return ReSizing;
+}());
 exports.default = ReSizing;

@@ -1,4 +1,28 @@
 "use strict";
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+var __assign = (this && this.__assign) || function () {
+    __assign = Object.assign || function(t) {
+        for (var s, i = 1, n = arguments.length; i < n; i++) {
+            s = arguments[i];
+            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
+                t[p] = s[p];
+        }
+        return t;
+    };
+    return __assign.apply(this, arguments);
+};
 var __rest = (this && this.__rest) || function (s, e) {
     var t = {};
     for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p) && e.indexOf(p) < 0)
@@ -11,18 +35,19 @@ var __rest = (this && this.__rest) || function (s, e) {
     return t;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const React = require("react");
-const context_1 = require("./context");
-const messages_1 = require("./messages");
-const util_1 = require("./util");
-class DragTr extends React.Component {
-    constructor(props) {
-        super(props);
-        this.getRowIndex = row => {
-            const { getRowId } = this.props;
-            const rowId = getRowId(row), data = this.data;
-            let rowIndex;
-            for (let i = 0, len = data.length; i < len; i++) {
+var React = require("react");
+var context_1 = require("./context");
+var messages_1 = require("./messages");
+var util_1 = require("./util");
+var DragTr = (function (_super) {
+    __extends(DragTr, _super);
+    function DragTr(props) {
+        var _this = _super.call(this, props) || this;
+        _this.getRowIndex = function (row) {
+            var getRowId = _this.props.getRowId;
+            var rowId = getRowId(row), data = _this.data;
+            var rowIndex;
+            for (var i = 0, len = data.length; i < len; i++) {
                 if (rowId === getRowId(data[i])) {
                     rowIndex = i;
                     break;
@@ -30,96 +55,110 @@ class DragTr extends React.Component {
             }
             return rowIndex;
         };
-        this.highlightTop = () => {
-            const el = this.ref.current;
-            if (this.originalBorderTopColor !== undefined || this.originalBorderTopStyle !== undefined)
+        _this.highlightTop = function () {
+            var el = _this.ref.current;
+            if (_this.originalBorderTopColor !== undefined || _this.originalBorderTopStyle !== undefined)
                 return;
-            this.originalBorderTopColor = el.style.borderTopColor;
-            this.originalBorderTopStyle = el.style.borderTopStyle;
-            this.originalBorderTopWidth = el.style.borderTopWidth;
-            el.style.borderTopColor = this.activeColor;
+            _this.originalBorderTopColor = el.style.borderTopColor;
+            _this.originalBorderTopStyle = el.style.borderTopStyle;
+            _this.originalBorderTopWidth = el.style.borderTopWidth;
+            el.style.borderTopColor = _this.activeColor;
             el.style.borderTopStyle = 'dashed';
-            el.style.borderTopWidth = this.originalBorderTopWidth || '1px';
+            el.style.borderTopWidth = _this.originalBorderTopWidth || '1px';
         };
-        this.deHighlightTop = () => {
-            const el = this.ref.current;
-            el.style.borderTopColor = this.originalBorderTopColor;
-            el.style.borderTopStyle = this.originalBorderTopStyle;
-            el.style.borderTopWidth = this.originalBorderTopWidth;
-            this.originalBorderTopColor = undefined;
-            this.originalBorderTopStyle = undefined;
-            this.originalBorderTopWidth = undefined;
+        _this.deHighlightTop = function () {
+            var el = _this.ref.current;
+            el.style.borderTopColor = _this.originalBorderTopColor;
+            el.style.borderTopStyle = _this.originalBorderTopStyle;
+            el.style.borderTopWidth = _this.originalBorderTopWidth;
+            _this.originalBorderTopColor = undefined;
+            _this.originalBorderTopStyle = undefined;
+            _this.originalBorderTopWidth = undefined;
         };
-        this.highlightBottom = () => {
-            const el = this.ref.current;
-            if (this.originalBorderBottomColor !== undefined || this.originalBorderBottomStyle !== undefined)
+        _this.highlightBottom = function () {
+            var el = _this.ref.current;
+            if (_this.originalBorderBottomColor !== undefined || _this.originalBorderBottomStyle !== undefined)
                 return;
-            this.originalBorderBottomColor = el.style.borderBottomColor;
-            this.originalBorderBottomStyle = el.style.borderBottomStyle;
-            this.originalBorderBottomWidth = el.style.borderBottomWidth;
-            el.style.borderBottomColor = this.activeColor;
+            _this.originalBorderBottomColor = el.style.borderBottomColor;
+            _this.originalBorderBottomStyle = el.style.borderBottomStyle;
+            _this.originalBorderBottomWidth = el.style.borderBottomWidth;
+            el.style.borderBottomColor = _this.activeColor;
             el.style.borderBottomStyle = 'dashed';
-            el.style.borderBottomWidth = this.originalBorderBottomWidth || '1px';
+            el.style.borderBottomWidth = _this.originalBorderBottomWidth || '1px';
         };
-        this.deHighlightBottom = () => {
-            const el = this.ref.current;
-            el.style.borderBottomColor = this.originalBorderBottomColor;
-            el.style.borderBottomStyle = this.originalBorderBottomStyle;
-            el.style.borderBottomWidth = this.originalBorderBottomWidth;
-            this.originalBorderBottomColor = undefined;
-            this.originalBorderBottomStyle = undefined;
-            this.originalBorderBottomWidth = undefined;
+        _this.deHighlightBottom = function () {
+            var el = _this.ref.current;
+            el.style.borderBottomColor = _this.originalBorderBottomColor;
+            el.style.borderBottomStyle = _this.originalBorderBottomStyle;
+            el.style.borderBottomWidth = _this.originalBorderBottomWidth;
+            _this.originalBorderBottomColor = undefined;
+            _this.originalBorderBottomStyle = undefined;
+            _this.originalBorderBottomWidth = undefined;
         };
-        this.onDragStart = evt => {
-            this.global['designare-draggable-row-index'] = this.getRowIndex(this.props.row);
+        _this.onDragStart = function (evt) {
+            _this.global['designare-draggable-row-index'] = _this.getRowIndex(_this.props.row);
         };
-        this.onDragOver = evt => {
+        _this.onDragOver = function (evt) {
             evt.preventDefault();
-            const sourceIndex = this.global['designare-draggable-row-index'];
-            const targetIndex = this.getRowIndex(this.props.row);
-            sourceIndex > targetIndex ? this.highlightTop() : undefined;
-            sourceIndex < targetIndex ? this.highlightBottom() : undefined;
+            var sourceIndex = _this.global['designare-draggable-row-index'];
+            var targetIndex = _this.getRowIndex(_this.props.row);
+            sourceIndex > targetIndex ? _this.highlightTop() : undefined;
+            sourceIndex < targetIndex ? _this.highlightBottom() : undefined;
         };
-        this.onDragLeave = evt => {
-            const sourceIndex = this.global['designare-draggable-row-index'];
-            const targetIndex = this.getRowIndex(this.props.row);
-            sourceIndex > targetIndex ? this.deHighlightTop() : undefined;
-            sourceIndex < targetIndex ? this.deHighlightBottom() : undefined;
+        _this.onDragLeave = function (evt) {
+            var sourceIndex = _this.global['designare-draggable-row-index'];
+            var targetIndex = _this.getRowIndex(_this.props.row);
+            sourceIndex > targetIndex ? _this.deHighlightTop() : undefined;
+            sourceIndex < targetIndex ? _this.deHighlightBottom() : undefined;
         };
-        this.onDrop = evt => {
+        _this.onDrop = function (evt) {
             evt.preventDefault();
-            this.onDragLeave(evt);
-            const sourceIndex = this.global['designare-draggable-row-index'];
-            const targetIndex = this.getRowIndex(this.props.row);
+            _this.onDragLeave(evt);
+            var sourceIndex = _this.global['designare-draggable-row-index'];
+            var targetIndex = _this.getRowIndex(_this.props.row);
             if (!isNaN(sourceIndex) && !isNaN(targetIndex) && sourceIndex != targetIndex) {
-                const shifted = util_1.shift(this.data, sourceIndex, targetIndex);
-                this.context.onChangeRows(shifted);
+                var shifted = util_1.shift(_this.data, sourceIndex, targetIndex);
+                _this.context.onChangeRows(shifted);
             }
         };
-        this.ref = React.createRef();
+        _this.ref = React.createRef();
         if (!props.getRowId)
             throw messages_1.ERR4;
         if (!props.row)
             throw messages_1.ERR5;
+        return _this;
     }
-    get global() {
-        return this.context.global;
-    }
-    get data() {
-        return this.context.originalData;
-    }
-    get activeColor() {
-        return this.context.activeColor;
-    }
-    render() {
-        let _a = this.props, { children, row, getRowId } = _a, restProps = __rest(_a, ["children", "row", "getRowId"]);
+    Object.defineProperty(DragTr.prototype, "global", {
+        get: function () {
+            return this.context.global;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(DragTr.prototype, "data", {
+        get: function () {
+            return this.context.originalData;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(DragTr.prototype, "activeColor", {
+        get: function () {
+            return this.context.activeColor;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    DragTr.prototype.render = function () {
+        var _a = this.props, children = _a.children, row = _a.row, getRowId = _a.getRowId, restProps = __rest(_a, ["children", "row", "getRowId"]);
         if (this.context.fixed) {
             console.warn(messages_1.WARNING1);
         }
         return (this.context.fixed
-            ? React.createElement("tr", Object.assign({ ref: this.ref }, restProps), children)
-            : React.createElement("tr", Object.assign({ ref: this.ref, draggable: true, onDragStart: this.onDragStart, onDragOver: this.onDragOver, onDragLeave: this.onDragLeave, onDrop: this.onDrop, onDragEnd: this.onDragEnd }, restProps), children));
-    }
-}
+            ? React.createElement("tr", __assign({ ref: this.ref }, restProps), children)
+            : React.createElement("tr", __assign({ ref: this.ref, draggable: true, onDragStart: this.onDragStart, onDragOver: this.onDragOver, onDragLeave: this.onDragLeave, onDrop: this.onDrop, onDragEnd: this.onDragEnd }, restProps), children));
+    };
+    DragTr.contextType = context_1.TBodyContext;
+    return DragTr;
+}(React.Component));
 exports.default = DragTr;
-DragTr.contextType = context_1.TBodyContext;

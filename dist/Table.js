@@ -1,97 +1,140 @@
 "use strict";
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+var __assign = (this && this.__assign) || function () {
+    __assign = Object.assign || function(t) {
+        for (var s, i = 1, n = arguments.length; i < n; i++) {
+            s = arguments[i];
+            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
+                t[p] = s[p];
+        }
+        return t;
+    };
+    return __assign.apply(this, arguments);
+};
+var __read = (this && this.__read) || function (o, n) {
+    var m = typeof Symbol === "function" && o[Symbol.iterator];
+    if (!m) return o;
+    var i = m.call(o), r, ar = [], e;
+    try {
+        while ((n === void 0 || n-- > 0) && !(r = i.next()).done) ar.push(r.value);
+    }
+    catch (error) { e = { error: error }; }
+    finally {
+        try {
+            if (r && !r.done && (m = i["return"])) m.call(i);
+        }
+        finally { if (e) throw e.error; }
+    }
+    return ar;
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-const React = require("react");
-const debounce = require("lodash/debounce");
-const react_1 = require("react");
-const context_1 = require("./context");
-const Thead_1 = require("./Thead");
-const Tbody_1 = require("./Tbody");
-const Pagination_1 = require("./Pagination");
-const SyncScrolling_1 = require("./SyncScrolling");
-const Loading_1 = require("./Loading");
-const messages_1 = require("./messages");
-const util_1 = require("./util");
+var React = require("react");
+var debounce = require("lodash/debounce");
+var react_1 = require("react");
+var context_1 = require("./context");
+var Thead_1 = require("./Thead");
+var Tbody_1 = require("./Tbody");
+var Pagination_1 = require("./Pagination");
+var SyncScrolling_1 = require("./SyncScrolling");
+var Loading_1 = require("./Loading");
+var messages_1 = require("./messages");
+var util_1 = require("./util");
 require("./table.css");
-class Table extends React.Component {
-    constructor(props) {
-        super(props);
-        this.getDefaultFilters = () => {
-            return this.defaultFilters ? Array.from(this.defaultFilters) : undefined;
+var Table = (function (_super) {
+    __extends(Table, _super);
+    function Table(props) {
+        var _this = _super.call(this, props) || this;
+        _this.getDefaultFilters = function () {
+            return _this.defaultFilters ? Array.from(_this.defaultFilters) : undefined;
         };
-        this.getFilters = () => {
-            return this.props.filters ? Array.from(this.props.filters) : undefined;
+        _this.getFilters = function () {
+            return _this.props.filters ? Array.from(_this.props.filters) : undefined;
         };
-        this.getActiveFilters = () => {
-            return this.activeFilters;
+        _this.getActiveFilters = function () {
+            return _this.activeFilters;
         };
-        this.setActiveFilter = ({ columnMetaKey, dataKey, filterValue, name, by }) => {
-            const previous = this.activeFilters.get(columnMetaKey) || {};
+        _this.setActiveFilter = function (_a) {
+            var columnMetaKey = _a.columnMetaKey, dataKey = _a.dataKey, filterValue = _a.filterValue, name = _a.name, by = _a.by;
+            var previous = _this.activeFilters.get(columnMetaKey) || {};
             if (previous.dataKey !== dataKey || previous.filterValue !== filterValue) {
-                this.activeFilters.set(columnMetaKey, { filterValue, name, dataKey, by });
-                const keyMap = new Map(), nameMap = new Map();
-                this.activeFilters.forEach(f => {
-                    const { dataKey, name } = f;
-                    keyMap.has(dataKey) ? keyMap.set(dataKey, keyMap.get(dataKey) + 1) : keyMap.set(dataKey, 1);
+                _this.activeFilters.set(columnMetaKey, { filterValue: filterValue, name: name, dataKey: dataKey, by: by });
+                var keyMap_1 = new Map(), nameMap_1 = new Map();
+                _this.activeFilters.forEach(function (f) {
+                    var dataKey = f.dataKey, name = f.name;
+                    keyMap_1.has(dataKey) ? keyMap_1.set(dataKey, keyMap_1.get(dataKey) + 1) : keyMap_1.set(dataKey, 1);
                     if (name !== undefined) {
-                        nameMap.has(name) ? nameMap.set(name, nameMap.get(name) + 1) : nameMap.set(name, 1);
+                        nameMap_1.has(name) ? nameMap_1.set(name, nameMap_1.get(name) + 1) : nameMap_1.set(name, 1);
                     }
                 });
-                keyMap.forEach((v, dataKey) => {
+                keyMap_1.forEach(function (v, dataKey) {
                     if (v > 1)
-                        throw new Error(`More than one Filter is found for dataKey ${dataKey}.\n Please specify 'name' to distinguish each filter \n e.g.\nfilter: <Filter name='address'/> \ntable: <Table filters={[{name:'address', filterValue:'west lake'}]}/>`);
+                        throw new Error("More than one Filter is found for dataKey " + dataKey + ".\n Please specify 'name' to distinguish each filter \n e.g.\nfilter: <Filter name='address'/> \ntable: <Table filters={[{name:'address', filterValue:'west lake'}]}/>");
                 });
-                nameMap.forEach((v, name) => {
+                nameMap_1.forEach(function (v, name) {
                     if (v > 1)
-                        throw new Error(`More than one Filter is found for name ${name}.\n name should be unique for each filter`);
+                        throw new Error("More than one Filter is found for name " + name + ".\n name should be unique for each filter");
                 });
-                keyMap.clear();
-                nameMap.clear();
-                this.update();
+                keyMap_1.clear();
+                nameMap_1.clear();
+                _this.update();
             }
         };
-        this.removeActiveFilter = columnMetaKey => {
-            if (this.activeFilters.has(columnMetaKey)) {
-                this.activeFilters.delete(columnMetaKey);
-                this.update();
+        _this.removeActiveFilter = function (columnMetaKey) {
+            if (_this.activeFilters.has(columnMetaKey)) {
+                _this.activeFilters.delete(columnMetaKey);
+                _this.update();
             }
         };
-        this.getDefaultSorter = () => {
-            return this.defaultSorter;
+        _this.getDefaultSorter = function () {
+            return _this.defaultSorter;
         };
-        this.getSorter = () => {
-            return this.props.sorter;
+        _this.getSorter = function () {
+            return _this.props.sorter;
         };
-        this.setActiveSorter = ({ columnMetaKey, dataKey, direction, by }) => {
-            if (dataKey !== this.activeSorter.dataKey || direction !== this.activeSorter.direction) {
-                this.activeSorter = { columnMetaKey, dataKey, direction, by };
-                this.update();
+        _this.setActiveSorter = function (_a) {
+            var columnMetaKey = _a.columnMetaKey, dataKey = _a.dataKey, direction = _a.direction, by = _a.by;
+            if (dataKey !== _this.activeSorter.dataKey || direction !== _this.activeSorter.direction) {
+                _this.activeSorter = { columnMetaKey: columnMetaKey, dataKey: dataKey, direction: direction, by: by };
+                _this.update();
             }
         };
-        this.setResizedWidthInfo = (columnMetaKey, width) => {
-            this.resizedWidthInfo.set(columnMetaKey, width);
+        _this.setResizedWidthInfo = function (columnMetaKey, width) {
+            _this.resizedWidthInfo.set(columnMetaKey, width);
         };
-        this.getActiveSorter = () => {
-            return this.activeSorter;
+        _this.getActiveSorter = function () {
+            return _this.activeSorter;
         };
-        this.getFilterLayerContainer = (columnMetaKey) => {
-            return this.filterLayersRef.current.getElementsByClassName(columnMetaKey)[0];
+        _this.getFilterLayerContainer = function (columnMetaKey) {
+            return _this.filterLayersRef.current.getElementsByClassName(columnMetaKey)[0];
         };
-        this.getColGroups = () => {
-            const findDOM = find.bind(null, this.root.current);
-            const roots = [];
-            const colgroups = [];
-            const [headerWrapper, headerRoot, header] = findDOM('header');
-            const [leftHeaderWrapper, leftHeaderRoot, leftHeader] = findDOM('header', 'left');
-            const [rightHeaderWrapper, rightHeaderRoot, rightHeader] = findDOM('header', 'right');
-            const [bodyWrapper, bodyRoot, body] = findDOM('body');
-            const [leftBodyWrapper, leftBodyRoot, leftBody] = findDOM('body', 'left');
-            const [rightBodyWrapper, rightBodyRoot, rightBody] = findDOM('body', 'right');
-            const headerColGroup = headerRoot.getElementsByTagName('colgroup')[0];
-            const leftHeaderColGroup = leftHeaderRoot.getElementsByTagName('colgroup')[0];
-            const rightHeaderColGroup = rightHeaderRoot.getElementsByTagName('colgroup')[0];
-            const bodyColGroup = bodyRoot.getElementsByTagName('colgroup')[0];
-            const leftBodyColGroup = leftBodyRoot.getElementsByTagName('colgroup')[0];
-            const rightBodyColGroup = rightBodyRoot.getElementsByTagName('colgroup')[0];
+        _this.getColGroups = function () {
+            var findDOM = find.bind(null, _this.root.current);
+            var roots = [];
+            var colgroups = [];
+            var _a = __read(findDOM('header'), 3), headerWrapper = _a[0], headerRoot = _a[1], header = _a[2];
+            var _b = __read(findDOM('header', 'left'), 3), leftHeaderWrapper = _b[0], leftHeaderRoot = _b[1], leftHeader = _b[2];
+            var _c = __read(findDOM('header', 'right'), 3), rightHeaderWrapper = _c[0], rightHeaderRoot = _c[1], rightHeader = _c[2];
+            var _d = __read(findDOM('body'), 3), bodyWrapper = _d[0], bodyRoot = _d[1], body = _d[2];
+            var _e = __read(findDOM('body', 'left'), 3), leftBodyWrapper = _e[0], leftBodyRoot = _e[1], leftBody = _e[2];
+            var _f = __read(findDOM('body', 'right'), 3), rightBodyWrapper = _f[0], rightBodyRoot = _f[1], rightBody = _f[2];
+            var headerColGroup = headerRoot.getElementsByTagName('colgroup')[0];
+            var leftHeaderColGroup = leftHeaderRoot.getElementsByTagName('colgroup')[0];
+            var rightHeaderColGroup = rightHeaderRoot.getElementsByTagName('colgroup')[0];
+            var bodyColGroup = bodyRoot.getElementsByTagName('colgroup')[0];
+            var leftBodyColGroup = leftBodyRoot.getElementsByTagName('colgroup')[0];
+            var rightBodyColGroup = rightBodyRoot.getElementsByTagName('colgroup')[0];
             headerColGroup ? colgroups.push(headerColGroup) : undefined;
             leftHeaderColGroup ? colgroups.push(leftHeaderColGroup) : undefined;
             rightHeaderColGroup ? colgroups.push(rightHeaderColGroup) : undefined;
@@ -104,155 +147,159 @@ class Table extends React.Component {
             bodyRoot ? roots.push(bodyRoot) : undefined;
             leftBodyRoot ? roots.push(leftBodyRoot) : undefined;
             rightBodyRoot ? roots.push(rightBodyRoot) : undefined;
-            const minWidthArray = Array.from(this.dimensionInfo.originalMaxWidthArray);
-            const maxWidthArray = Array.from(this.dimensionInfo.maxWidthArray);
+            var minWidthArray = Array.from(_this.dimensionInfo.originalMaxWidthArray);
+            var maxWidthArray = Array.from(_this.dimensionInfo.maxWidthArray);
             return [roots, colgroups, minWidthArray, maxWidthArray];
         };
-        this.addEventListener = (type = 'tableDidMount', func) => {
+        _this.addEventListener = function (type, func) {
+            if (type === void 0) { type = 'tableDidMount'; }
             switch (type) {
                 case 'tableDidMount':
-                    this.tableDidMountListeners.set(func, '');
+                    _this.tableDidMountListeners.set(func, '');
                     break;
                 default:
-                    throw `invalid event type: ${type}`;
+                    throw "invalid event type: " + type;
             }
         };
-        this.removeEventListener = (type = 'tableDidMount', func) => {
+        _this.removeEventListener = function (type, func) {
+            if (type === void 0) { type = 'tableDidMount'; }
             switch (type) {
                 case 'tableDidMount':
-                    this.tableDidMountListeners.delete(func);
+                    _this.tableDidMountListeners.delete(func);
                     break;
                 default:
-                    throw `invalid event type: ${type}`;
+                    throw "invalid event type: " + type;
             }
         };
-        this.syncScrolling = (scrollable, mode = 'scrollLeft') => {
-            this.syncScrollingInstance.add(scrollable, mode);
+        _this.syncScrolling = function (scrollable, mode) {
+            if (mode === void 0) { mode = 'scrollLeft'; }
+            _this.syncScrollingInstance.add(scrollable, mode);
         };
-        this.removeSyncScrolling = (scrollable) => {
-            this.syncScrollingInstance.remove(scrollable);
+        _this.removeSyncScrolling = function (scrollable) {
+            _this.syncScrollingInstance.remove(scrollable);
         };
-        this.sort = data => {
-            const result = Array.from(data);
-            const { dataKey, direction, by } = this.getActiveSorter();
+        _this.sort = function (data) {
+            var result = Array.from(data);
+            var _a = _this.getActiveSorter(), dataKey = _a.dataKey, direction = _a.direction, by = _a.by;
             if (dataKey && direction && direction !== 'default' && typeof by === 'function') {
-                result.sort((a, b) => by(a[dataKey], b[dataKey]));
+                result.sort(function (a, b) { return by(a[dataKey], b[dataKey]); });
                 if (direction === 'des')
                     result.reverse();
             }
             return result;
         };
-        this.filter = data => {
-            let result = data;
-            this.activeFilters.forEach(f => {
-                const { dataKey, by, filterValue } = f;
+        _this.filter = function (data) {
+            var result = data;
+            _this.activeFilters.forEach(function (f) {
+                var dataKey = f.dataKey, by = f.by, filterValue = f.filterValue;
                 if (typeof by === 'function') {
-                    result = result.filter(row => by({ dataKey, filterValue, row }));
+                    result = result.filter(function (row) { return by({ dataKey: dataKey, filterValue: filterValue, row: row }); });
                 }
             });
             return result;
         };
-        this.filterAndSort = data => {
-            let result = data;
-            result = this.filter(result);
-            result = this.sort(result);
+        _this.filterAndSort = function (data) {
+            var result = data;
+            result = _this.filter(result);
+            result = _this.sort(result);
             return result;
         };
-        this.paging = data => {
-            const { pageNo, pageSize } = this;
-            const start = (pageNo - 1) * pageSize;
-            return this.isClientPaging ? data.slice(start, start + pageSize) : data;
+        _this.paging = function (data) {
+            var _a = _this, pageNo = _a.pageNo, pageSize = _a.pageSize;
+            var start = (pageNo - 1) * pageSize;
+            return _this.isClientPaging ? data.slice(start, start + pageSize) : data;
         };
-        this.onGoToPage = pageNo => {
-            let next;
+        _this.onGoToPage = function (pageNo) {
+            var next;
             next = Math.max(1, pageNo);
-            next = Math.min(Math.ceil(this.total / this.pageSize), next);
-            this.setState({ pageNo: next }, () => {
-                this.props.onChangePaging({ pageNo: next, pageSize: this.pageSize });
+            next = Math.min(Math.ceil(_this.total / _this.pageSize), next);
+            _this.setState({ pageNo: next }, function () {
+                _this.props.onChangePaging({ pageNo: next, pageSize: _this.pageSize });
             });
         };
-        this.setPageSize = pageSize => {
-            this.setState({ pageSize, pageNo: 1 }, () => {
-                this.props.onChangePaging({ pageSize, pageNo: 1 });
+        _this.setPageSize = function (pageSize) {
+            _this.setState({ pageSize: pageSize, pageNo: 1 }, function () {
+                _this.props.onChangePaging({ pageSize: pageSize, pageNo: 1 });
             });
         };
-        this.update = () => {
-            this.updateId ? ++this.updateId : (this.updateId = 1);
-            const id = this.updateId;
-            window.requestAnimationFrame(() => {
-                id === this.updateId ? this.setState({}) : undefined;
+        _this.update = function () {
+            _this.updateId ? ++_this.updateId : (_this.updateId = 1);
+            var id = _this.updateId;
+            window.requestAnimationFrame(function () {
+                id === _this.updateId ? _this.setState({}) : undefined;
             });
         };
-        this.printWarnings = warnings => {
-            warnings.forEach(str => {
-                if (!this.warnings.has(str)) {
-                    console.warn(`designare-table: ${str} `);
-                    this.warnings.set(str, 'printed');
+        _this.printWarnings = function (warnings) {
+            warnings.forEach(function (str) {
+                if (!_this.warnings.has(str)) {
+                    console.warn("designare-table: " + str + " ");
+                    _this.warnings.set(str, 'printed');
                 }
             });
         };
-        this.syncWidthAndHeight = (force) => {
-            const { rowHeight } = this.props;
-            const { dimensionInfo, flattenSortedColumns, root, resizedWidthInfo, depthOfColumns } = this;
+        _this.syncWidthAndHeight = function (force) {
+            var rowHeight = _this.props.rowHeight;
+            var _a = _this, dimensionInfo = _a.dimensionInfo, flattenSortedColumns = _a.flattenSortedColumns, root = _a.root, resizedWidthInfo = _a.resizedWidthInfo, depthOfColumns = _a.depthOfColumns;
             syncWidthAndHeight(root.current, flattenSortedColumns, rowHeight, dimensionInfo, resizedWidthInfo, depthOfColumns, force);
         };
-        this.reSyncWidthAndHeight = (force = false) => {
-            const { dimensionInfo, flattenSortedColumns, root } = this;
-            const dimensionId = code(flattenSortedColumns);
-            const isReSized = force || dimensionId !== dimensionInfo.dimensionId || isDimensionChanged(root.current, getColumnSize(flattenSortedColumns), dimensionInfo);
+        _this.reSyncWidthAndHeight = function (force) {
+            if (force === void 0) { force = false; }
+            var _a = _this, dimensionInfo = _a.dimensionInfo, flattenSortedColumns = _a.flattenSortedColumns, root = _a.root;
+            var dimensionId = code(flattenSortedColumns);
+            var isReSized = force || dimensionId !== dimensionInfo.dimensionId || isDimensionChanged(root.current, getColumnSize(flattenSortedColumns), dimensionInfo);
             if (isReSized) {
-                this.debouncedSyncWidthAndHeight(force);
+                _this.debouncedSyncWidthAndHeight(force);
             }
         };
-        this.syncScrollBarStatus = () => {
-            syncScrollBarStatus(this.root.current);
+        _this.syncScrollBarStatus = function () {
+            syncScrollBarStatus(_this.root.current);
         };
-        this.resize = () => this.reSyncWidthAndHeight(true);
-        this.root = React.createRef();
-        this.filterLayersRef = React.createRef();
-        this.isInit = false;
-        this.activeSorter = { columnMetaKey: '', direction: '' };
-        this.tableDidMountListeners = new Map();
-        this.activeFilters = new Map();
-        this.syncScrollingInstance = new SyncScrolling_1.default();
-        this.dimensionInfo = {};
-        this.resizedWidthInfo = new Map();
-        this.debouncedUpdate = debounce(this.update, 100);
-        this.debouncedSyncWidthAndHeight = debounce(this.syncWidthAndHeight, 100, { leading: true, trailing: true });
-        this.debouncedReSyncWidthAndHeight = debounce(this.reSyncWidthAndHeight, 100, { leading: true, trailing: true });
-        this.warnings = new Map();
-        this.cells = new Map();
-        this.headerCells = new Map();
-        this.global = Object.seal({
+        _this.resize = function () { return _this.reSyncWidthAndHeight(true); };
+        _this.root = React.createRef();
+        _this.filterLayersRef = React.createRef();
+        _this.isInit = false;
+        _this.activeSorter = { columnMetaKey: '', direction: '' };
+        _this.tableDidMountListeners = new Map();
+        _this.activeFilters = new Map();
+        _this.syncScrollingInstance = new SyncScrolling_1.default();
+        _this.dimensionInfo = {};
+        _this.resizedWidthInfo = new Map();
+        _this.debouncedUpdate = debounce(_this.update, 100);
+        _this.debouncedSyncWidthAndHeight = debounce(_this.syncWidthAndHeight, 100, { leading: true, trailing: true });
+        _this.debouncedReSyncWidthAndHeight = debounce(_this.reSyncWidthAndHeight, 100, { leading: true, trailing: true });
+        _this.warnings = new Map();
+        _this.cells = new Map();
+        _this.headerCells = new Map();
+        _this.global = Object.seal({
             'designare-draggable-column-index': undefined,
             'designare-draggable-row-index': undefined,
             'resizing': false
         });
-        this.contextAPI = {
-            getFilterLayerContainer: this.getFilterLayerContainer,
-            getDefaultFilters: this.getDefaultFilters,
-            getFilters: this.getFilters,
-            setActiveFilter: this.setActiveFilter,
-            getActiveFilters: this.getActiveFilters,
-            removeActiveFilter: this.removeActiveFilter,
+        _this.contextAPI = {
+            getFilterLayerContainer: _this.getFilterLayerContainer,
+            getDefaultFilters: _this.getDefaultFilters,
+            getFilters: _this.getFilters,
+            setActiveFilter: _this.setActiveFilter,
+            getActiveFilters: _this.getActiveFilters,
+            removeActiveFilter: _this.removeActiveFilter,
             onChangeFilters: props.onChangeFilters,
-            getDefaultSorter: this.getDefaultSorter,
-            getSorter: this.getSorter,
-            setActiveSorter: this.setActiveSorter,
-            getActiveSorter: this.getActiveSorter,
+            getDefaultSorter: _this.getDefaultSorter,
+            getSorter: _this.getSorter,
+            setActiveSorter: _this.setActiveSorter,
+            getActiveSorter: _this.getActiveSorter,
             onChangeSorter: props.onChangeSorter,
-            addEventListener: this.addEventListener,
-            removeEventListener: this.removeEventListener,
-            syncScrolling: this.syncScrolling,
-            removeSyncScrolling: this.removeSyncScrolling,
-            reSyncWidthAndHeight: this.debouncedReSyncWidthAndHeight,
-            syncScrollBarStatus: this.syncScrollBarStatus,
-            getColGroups: this.getColGroups,
-            setResizedWidthInfo: this.setResizedWidthInfo,
-            isInit: () => this.isInit,
-            cells: this.cells,
-            headerCells: this.headerCells,
-            global: this.global,
+            addEventListener: _this.addEventListener,
+            removeEventListener: _this.removeEventListener,
+            syncScrolling: _this.syncScrolling,
+            removeSyncScrolling: _this.removeSyncScrolling,
+            reSyncWidthAndHeight: _this.debouncedReSyncWidthAndHeight,
+            syncScrollBarStatus: _this.syncScrollBarStatus,
+            getColGroups: _this.getColGroups,
+            setResizedWidthInfo: _this.setResizedWidthInfo,
+            isInit: function () { return _this.isInit; },
+            cells: _this.cells,
+            headerCells: _this.headerCells,
+            global: _this.global,
             activeColor: props.activeColor,
             defaultColor: props.defaultColor,
             rowHeight: props.rowHeight,
@@ -260,40 +307,61 @@ class Table extends React.Component {
             onChangeRows: props.onChangeRows,
             resizable: props.resizable
         };
-        this.state = {
+        _this.state = {
             hasError: false,
             pageNo: 'defaultPageNo' in props ? props.defaultPageNo : 1,
             pageSize: 'defaultPageSize' in props ? props.defaultPageSize : 10,
         };
-        this.defaultFilters = 'defaultFilters' in props ? Array.from(props.defaultFilters) : undefined;
-        this.defaultSorter = 'defaultSorter' in props ? props.defaultSorter : undefined;
+        _this.defaultFilters = 'defaultFilters' in props ? Array.from(props.defaultFilters) : undefined;
+        _this.defaultSorter = 'defaultSorter' in props ? props.defaultSorter : undefined;
+        return _this;
     }
-    static getDerivedStateFromError(error) {
-        return { hasError: true, error };
-    }
-    get pageNo() {
-        return 'pageNo' in this.props ? this.props.pageNo : this.state.pageNo;
-    }
-    get pageSize() {
-        return 'pageSize' in this.props ? this.props.pageSize : this.state.pageSize;
-    }
-    get total() {
-        return 'total' in this.props ? this.props.total : this.props.data ? this.props.data.length : 0;
-    }
-    get isPaging() {
-        const pageSize = 'pageSize' in this.props ? true : false;
-        const pageSizeOptions = 'pageSizeOptions' in this.props ? true : false;
-        return pageSize || pageSizeOptions;
-    }
-    get isClientPaging() {
-        const total = 'total' in this.props ? true : false;
-        return this.isPaging && !total;
-    }
-    componentDidMount() {
+    Table.getDerivedStateFromError = function (error) {
+        return { hasError: true, error: error };
+    };
+    Object.defineProperty(Table.prototype, "pageNo", {
+        get: function () {
+            return 'pageNo' in this.props ? this.props.pageNo : this.state.pageNo;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(Table.prototype, "pageSize", {
+        get: function () {
+            return 'pageSize' in this.props ? this.props.pageSize : this.state.pageSize;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(Table.prototype, "total", {
+        get: function () {
+            return 'total' in this.props ? this.props.total : this.props.data ? this.props.data.length : 0;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(Table.prototype, "isPaging", {
+        get: function () {
+            var pageSize = 'pageSize' in this.props ? true : false;
+            var pageSizeOptions = 'pageSizeOptions' in this.props ? true : false;
+            return pageSize || pageSizeOptions;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(Table.prototype, "isClientPaging", {
+        get: function () {
+            var total = 'total' in this.props ? true : false;
+            return this.isPaging && !total;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Table.prototype.componentDidMount = function () {
         if (this.state.hasError)
             return;
-        const { flattenSortedColumns } = this;
-        const columnSize = getColumnSize(flattenSortedColumns);
+        var flattenSortedColumns = this.flattenSortedColumns;
+        var columnSize = getColumnSize(flattenSortedColumns);
         if (columnSize > 0) {
             if (this.cells.size % columnSize !== 0)
                 throw messages_1.ERR0;
@@ -303,76 +371,78 @@ class Table extends React.Component {
         window.addEventListener('resize', this.resize);
         this.syncWidthAndHeight();
         this.isInit = true;
-        this.tableDidMountListeners.forEach((v, k) => k());
+        this.tableDidMountListeners.forEach(function (v, k) { return k(); });
         this.update();
-    }
-    componentWillUnmount() {
+    };
+    Table.prototype.componentWillUnmount = function () {
         window.removeEventListener('resize', this.resize);
-    }
-    render() {
+    };
+    Table.prototype.render = function () {
         if (this.state.hasError)
             return React.createElement("div", { style: { color: '#b51a28' } }, this.state.error);
-        const { activeColor, defaultColor, className = '', columns = [], data = [], style, loading, pageSizeOptions, } = this.props;
+        var _a = this.props, activeColor = _a.activeColor, defaultColor = _a.defaultColor, _b = _a.className, className = _b === void 0 ? '' : _b, _c = _a.columns, columns = _c === void 0 ? [] : _c, _d = _a.data, data = _d === void 0 ? [] : _d, style = _a.style, loading = _a.loading, pageSizeOptions = _a.pageSizeOptions;
         this.depthOfColumns = util_1.depthOf(columns);
-        const [columnsWithMeta, warnings] = util_1.createColumnMeta(columns, this.depthOfColumns);
+        var _e = __read(util_1.createColumnMeta(columns, this.depthOfColumns), 2), columnsWithMeta = _e[0], warnings = _e[1];
         this.printWarnings(warnings);
         this.sortedColumns = sortColumns(columnsWithMeta);
         this.data = this.filterAndSort(data);
         this.data = this.paging(this.data);
         this.flattenSortedColumns = util_1.flatten(this.sortedColumns);
-        return (React.createElement("div", { className: `designare-table ${className}`, ref: this.root, style: Object.assign({ position: 'relative' }, style) },
-            React.createElement("div", { ref: this.filterLayersRef }, util_1.groupByDepth(this.sortedColumns).map(levelColumns => {
-                return levelColumns.map(column => (React.createElement("div", { className: `designare-table-filter-layer-container ${column.metaKey}`, key: column.metaKey })));
+        return (React.createElement("div", { className: "designare-table " + className, ref: this.root, style: __assign({ position: 'relative' }, style) },
+            React.createElement("div", { ref: this.filterLayersRef }, util_1.groupByDepth(this.sortedColumns).map(function (levelColumns) {
+                return levelColumns.map(function (column) { return (React.createElement("div", { className: "designare-table-filter-layer-container " + column.metaKey, key: column.metaKey })); });
             })),
-            React.createElement(context_1.Context.Provider, { value: Object.assign({ originalColumns: columns, columns: this.sortedColumns, originalData: data, data: this.data, flattenSortedColumns: this.flattenSortedColumns }, this.contextAPI) }, this.props.children),
+            React.createElement(context_1.Context.Provider, { value: __assign({ originalColumns: columns, columns: this.sortedColumns, originalData: data, data: this.data, flattenSortedColumns: this.flattenSortedColumns }, this.contextAPI) }, this.props.children),
             this.isInit && this.isPaging && data.length > 0 &&
                 React.createElement(Pagination_1.default, { isFirstPage: this.pageNo === 1, isLastPage: this.pageNo === Math.ceil(this.total / this.pageSize), pageNo: this.pageNo, onGoToPage: this.onGoToPage, pageSize: this.pageSize, setPageSize: this.setPageSize, total: this.total, pageSizeOptions: pageSizeOptions }),
             loading && React.createElement(Loading_1.default, { loading: loading, style: { color: activeColor } })));
-    }
-}
+    };
+    Table.defaultProps = {
+        children: React.createElement(react_1.Fragment, null,
+            React.createElement(Thead_1.default, null),
+            React.createElement(Tbody_1.default, null)),
+        defaultSorter: {},
+        onChangeColumns: function () { },
+        onChangeRows: function () { },
+        onChangeSorter: function () { },
+        onChangeFilters: function () { },
+        onChangePaging: function () { },
+        activeColor: '#1890ff',
+        defaultColor: '#bfbfbf',
+        resizable: false,
+        rowHeight: 38
+    };
+    return Table;
+}(React.Component));
 exports.default = Table;
-Table.defaultProps = {
-    children: React.createElement(react_1.Fragment, null,
-        React.createElement(Thead_1.default, null),
-        React.createElement(Tbody_1.default, null)),
-    defaultSorter: {},
-    onChangeColumns: () => { },
-    onChangeRows: () => { },
-    onChangeSorter: () => { },
-    onChangeFilters: () => { },
-    onChangePaging: () => { },
-    activeColor: '#1890ff',
-    defaultColor: '#bfbfbf',
-    resizable: false,
-    rowHeight: 38
-};
 function sortColumns(columns) {
-    const leftColumns = columns.filter(c => c.fixed === 'left');
-    const normalColumns = columns.filter(c => !c.fixed);
-    const rightColumns = columns.filter(c => c.fixed === 'right').reverse();
+    var leftColumns = columns.filter(function (c) { return c.fixed === 'left'; });
+    var normalColumns = columns.filter(function (c) { return !c.fixed; });
+    var rightColumns = columns.filter(function (c) { return c.fixed === 'right'; }).reverse();
     leftColumns.length > 0 ? leftColumns[leftColumns.length - 1].isLastFixedColumn = true : undefined;
     rightColumns[0] ? rightColumns[0].isFirstFixedColumn = true : undefined;
-    const r = [].concat(leftColumns).concat(normalColumns).concat(rightColumns);
+    var r = [].concat(leftColumns).concat(normalColumns).concat(rightColumns);
     createLeafColumnIndex(r);
     return r;
 }
 function createLeafColumnIndex(columns) {
-    util_1.forEachLeafColumn(columns, (col, i, isLast) => {
+    util_1.forEachLeafColumn(columns, function (col, i, isLast) {
         col.isFirst = i === 0;
         col.isLast = isLast;
         col.isLeaf = true;
         col.leafIndex = i;
     });
 }
-function syncWidthAndHeight(table, columns, rowHeight = -1, dimensionInfo, resizedWidthInfo, depthOfColumns, force) {
-    const findDOM = find.bind(null, table), dimensionId = code(columns);
-    const columnSize = getColumnSize(columns);
-    const [headerWrapper, headerRoot, header] = findDOM('header');
-    const [leftHeaderWrapper, leftHeaderRoot, leftHeader] = findDOM('header', 'left');
-    const [rightHeaderWrapper, rightHeaderRoot, rightHeader] = findDOM('header', 'right');
-    const [bodyWrapper, bodyRoot, body] = findDOM('body');
-    const [leftBodyWrapper, leftBodyRoot, leftBody] = findDOM('body', 'left');
-    const [rightBodyWrapper, rightBodyRoot, rightBody] = findDOM('body', 'right');
+function syncWidthAndHeight(table, columns, rowHeight, dimensionInfo, resizedWidthInfo, depthOfColumns, force) {
+    if (rowHeight === void 0) { rowHeight = -1; }
+    var findDOM = find.bind(null, table), dimensionId = code(columns);
+    var columnSize = getColumnSize(columns);
+    var _a = __read(findDOM('header'), 3), headerWrapper = _a[0], headerRoot = _a[1], header = _a[2];
+    var _b = __read(findDOM('header', 'left'), 3), leftHeaderWrapper = _b[0], leftHeaderRoot = _b[1], leftHeader = _b[2];
+    var _c = __read(findDOM('header', 'right'), 3), rightHeaderWrapper = _c[0], rightHeaderRoot = _c[1], rightHeader = _c[2];
+    var _d = __read(findDOM('body'), 3), bodyWrapper = _d[0], bodyRoot = _d[1], body = _d[2];
+    var _e = __read(findDOM('body', 'left'), 3), leftBodyWrapper = _e[0], leftBodyRoot = _e[1], leftBody = _e[2];
+    var _f = __read(findDOM('body', 'right'), 3), rightBodyWrapper = _f[0], rightBodyRoot = _f[1], rightBody = _f[2];
     if (dimensionInfo.dimensionId !== dimensionId || force) {
         setStyle(headerRoot, 'minWidth', '0');
         setStyle(leftHeaderRoot, 'minWidth', '0');
@@ -387,13 +457,13 @@ function syncWidthAndHeight(table, columns, rowHeight = -1, dimensionInfo, resiz
         removeColgroup(leftBodyRoot);
         removeColgroup(rightBodyRoot);
     }
-    const rootWidth = table.getBoundingClientRect().width;
-    const headerWidthArray = util_1.widthArray(header, columnSize, 'end', 'headerWidthArray');
-    const leftHeaderWidthArray = util_1.widthArray(leftHeader, columnSize, 'end', 'leftHeaderWidthArray');
-    const rightHeaderWidthArray = util_1.widthArray(rightHeader, columnSize, 'start', 'rightHeaderWidthArray');
-    let bodyWidthArray;
-    let leftBodyWidthArray;
-    let rightBodyWidthArray;
+    var rootWidth = table.getBoundingClientRect().width;
+    var headerWidthArray = util_1.widthArray(header, columnSize, 'end', 'headerWidthArray');
+    var leftHeaderWidthArray = util_1.widthArray(leftHeader, columnSize, 'end', 'leftHeaderWidthArray');
+    var rightHeaderWidthArray = util_1.widthArray(rightHeader, columnSize, 'start', 'rightHeaderWidthArray');
+    var bodyWidthArray;
+    var leftBodyWidthArray;
+    var rightBodyWidthArray;
     try {
         bodyWidthArray = util_1.widthArray(body, columnSize, 'end', 'bodyWidthArray');
         leftBodyWidthArray = util_1.widthArray(leftBody, columnSize, 'end', 'leftBodyWidthArray');
@@ -401,33 +471,33 @@ function syncWidthAndHeight(table, columns, rowHeight = -1, dimensionInfo, resiz
     }
     catch (error) {
         if (error.name === 'pad') {
-            const len = error.value.length;
-            throw `sum of column.colSpan: ${columnSize} does not match length of td: ${len}`;
+            var len = error.value.length;
+            throw "sum of column.colSpan: " + columnSize + " does not match length of td: " + len;
         }
     }
-    const columnWidthArray = columns.reduce((prev, curr) => {
-        let { width = -1, colSpan = 1 } = curr, r;
+    var columnWidthArray = columns.reduce(function (prev, curr) {
+        var _a = curr.width, width = _a === void 0 ? -1 : _a, _b = curr.colSpan, colSpan = _b === void 0 ? 1 : _b, r;
         colSpan = colSpan / 1;
         width = width === '*' ? -1 : width / colSpan;
         r = new Array(colSpan);
         r.fill(width, 0, r.length);
         return prev.concat(r);
     }, []);
-    const resizedWidthArray = columns.reduce((prev, curr) => {
-        let { metaKey, colSpan = 1 } = curr, r;
-        let width = resizedWidthInfo.get(metaKey) || -1;
+    var resizedWidthArray = columns.reduce(function (prev, curr) {
+        var metaKey = curr.metaKey, _a = curr.colSpan, colSpan = _a === void 0 ? 1 : _a, r;
+        var width = resizedWidthInfo.get(metaKey) || -1;
         colSpan = colSpan / 1;
         r = new Array(colSpan);
         r.fill(width / colSpan, 0, r.length);
         return prev.concat(r);
     }, []);
-    let originalMaxWidthArray = util_1.max(headerWidthArray, leftHeaderWidthArray, rightHeaderWidthArray, bodyWidthArray, leftBodyWidthArray, rightBodyWidthArray, columnWidthArray);
-    let maxWidthArray = util_1.max(originalMaxWidthArray, resizedWidthArray);
-    let sum = maxWidthArray.reduce((prev, curr) => prev + curr, 0);
-    const leftOver = Math.floor(rootWidth - sum);
+    var originalMaxWidthArray = util_1.max(headerWidthArray, leftHeaderWidthArray, rightHeaderWidthArray, bodyWidthArray, leftBodyWidthArray, rightBodyWidthArray, columnWidthArray);
+    var maxWidthArray = util_1.max(originalMaxWidthArray, resizedWidthArray);
+    var sum = maxWidthArray.reduce(function (prev, curr) { return prev + curr; }, 0);
+    var leftOver = Math.floor(rootWidth - sum);
     if (leftOver > 0) {
-        let balance = leftOver;
-        for (let i = 0, len = columns.length; i < len; i++) {
+        var balance = leftOver;
+        for (var i = 0, len = columns.length; i < len; i++) {
             if (columns[i].width === '*') {
                 maxWidthArray[i] += balance;
                 originalMaxWidthArray[i] += balance;
@@ -436,12 +506,12 @@ function syncWidthAndHeight(table, columns, rowHeight = -1, dimensionInfo, resiz
             }
         }
         if (balance > 0) {
-            for (let i = 0, len = columns.length; i < len; i++) {
-                const userSpecifiedWidth = columns[i].width;
+            for (var i = 0, len = columns.length; i < len; i++) {
+                var userSpecifiedWidth = columns[i].width;
                 if (userSpecifiedWidth && !isNaN(userSpecifiedWidth)) {
                     continue;
                 }
-                let avg = balance / (len - i);
+                var avg = balance / (len - i);
                 avg = avg - avg % 1;
                 maxWidthArray[i] += avg;
                 originalMaxWidthArray[i] += avg;
@@ -450,22 +520,22 @@ function syncWidthAndHeight(table, columns, rowHeight = -1, dimensionInfo, resiz
         }
         sum += leftOver;
     }
-    const mergeMax = (w, i) => w > -1 ? maxWidthArray[i] : w;
-    const positive = w => w > -1;
-    const headerColgroup = createColgroup(maxWidthArray);
-    const leftHeaderColgroup = createColgroup(leftHeaderWidthArray.map(mergeMax).filter(positive));
-    const rightHeaderColgroup = createColgroup(rightHeaderWidthArray.map(mergeMax).filter(positive));
-    const bodyColgroup = createColgroup(maxWidthArray);
-    const leftBodyColgroup = createColgroup(leftBodyWidthArray.map(mergeMax).filter(positive));
-    const rightBodyColgroup = createColgroup(rightBodyWidthArray.map(mergeMax).filter(positive));
-    const tableWidth = sum + 'px';
-    setStyle(leftHeaderRoot, 'minWidth', `${tableWidth}`);
-    setStyle(rightHeaderRoot, 'minWidth', `${tableWidth}`);
-    setStyle(leftBodyRoot, 'minWidth', `${tableWidth}`);
-    setStyle(rightBodyRoot, 'minWidth', `${tableWidth}`);
+    var mergeMax = function (w, i) { return w > -1 ? maxWidthArray[i] : w; };
+    var positive = function (w) { return w > -1; };
+    var headerColgroup = createColgroup(maxWidthArray);
+    var leftHeaderColgroup = createColgroup(leftHeaderWidthArray.map(mergeMax).filter(positive));
+    var rightHeaderColgroup = createColgroup(rightHeaderWidthArray.map(mergeMax).filter(positive));
+    var bodyColgroup = createColgroup(maxWidthArray);
+    var leftBodyColgroup = createColgroup(leftBodyWidthArray.map(mergeMax).filter(positive));
+    var rightBodyColgroup = createColgroup(rightBodyWidthArray.map(mergeMax).filter(positive));
+    var tableWidth = sum + 'px';
+    setStyle(leftHeaderRoot, 'minWidth', "" + tableWidth);
+    setStyle(rightHeaderRoot, 'minWidth', "" + tableWidth);
+    setStyle(leftBodyRoot, 'minWidth', "" + tableWidth);
+    setStyle(rightBodyRoot, 'minWidth', "" + tableWidth);
     if (leftOver < 0) {
-        setStyle(headerRoot, 'minWidth', `${tableWidth}`);
-        setStyle(bodyRoot, 'minWidth', `${tableWidth}`);
+        setStyle(headerRoot, 'minWidth', "" + tableWidth);
+        setStyle(bodyRoot, 'minWidth', "" + tableWidth);
     }
     removeColgroup(headerRoot);
     removeColgroup(leftHeaderRoot);
@@ -479,46 +549,46 @@ function syncWidthAndHeight(table, columns, rowHeight = -1, dimensionInfo, resiz
     appendChild(bodyRoot, bodyColgroup);
     appendChild(leftBodyRoot, leftBodyColgroup);
     appendChild(rightBodyRoot, rightBodyColgroup);
-    const headerHeightArray = heightArray(header);
-    const leftHeaderHeightArray = heightArray(leftHeader);
-    const rightHeaderHeightArray = heightArray(rightHeader);
-    const maxHeaderHeightArray = util_1.max(headerHeightArray, leftHeaderHeightArray, rightHeaderHeightArray);
-    const bodyHeightArray = heightArray(body);
-    const leftBodyHeightArray = heightArray(leftBody);
-    const rightBodyHeightArray = heightArray(rightBody);
-    const maxBodyHeightArray = util_1.max(bodyHeightArray, leftBodyHeightArray.length === 0 ? bodyHeightArray : leftBodyHeightArray, rightBodyHeightArray.length === 0 ? bodyHeightArray : rightBodyHeightArray);
-    const headers = getChildren(header);
-    const leftHeaders = getChildren(leftHeader);
-    const rightHeaders = getChildren(rightHeader);
-    const rows = getChildren(body);
-    const leftRows = getChildren(leftBody);
-    const rightRows = getChildren(rightBody);
-    for (let i = 0, len = maxHeaderHeightArray.length; i < len; i++) {
-        const height = Math.max(maxHeaderHeightArray[i], Math.ceil(rowHeight / depthOfColumns));
-        headers[i].style['height'] = `${height}px`;
-        leftHeaders[i].style['height'] = `${height}px`;
-        rightHeaders[i].style['height'] = `${height}px`;
+    var headerHeightArray = heightArray(header);
+    var leftHeaderHeightArray = heightArray(leftHeader);
+    var rightHeaderHeightArray = heightArray(rightHeader);
+    var maxHeaderHeightArray = util_1.max(headerHeightArray, leftHeaderHeightArray, rightHeaderHeightArray);
+    var bodyHeightArray = heightArray(body);
+    var leftBodyHeightArray = heightArray(leftBody);
+    var rightBodyHeightArray = heightArray(rightBody);
+    var maxBodyHeightArray = util_1.max(bodyHeightArray, leftBodyHeightArray.length === 0 ? bodyHeightArray : leftBodyHeightArray, rightBodyHeightArray.length === 0 ? bodyHeightArray : rightBodyHeightArray);
+    var headers = getChildren(header);
+    var leftHeaders = getChildren(leftHeader);
+    var rightHeaders = getChildren(rightHeader);
+    var rows = getChildren(body);
+    var leftRows = getChildren(leftBody);
+    var rightRows = getChildren(rightBody);
+    for (var i = 0, len = maxHeaderHeightArray.length; i < len; i++) {
+        var height = Math.max(maxHeaderHeightArray[i], Math.ceil(rowHeight / depthOfColumns));
+        headers[i].style['height'] = height + "px";
+        leftHeaders[i].style['height'] = height + "px";
+        rightHeaders[i].style['height'] = height + "px";
     }
-    for (let i = 0, len = maxBodyHeightArray.length; i < len; i++) {
-        const height = Math.max(maxBodyHeightArray[i], rowHeight);
-        rows[i].style['height'] = `${height}px`;
-        leftRows[i] ? leftRows[i].style['height'] = `${height}px` : undefined;
-        rightRows[i] ? rightRows[i].style['height'] = `${height}px` : undefined;
+    for (var i = 0, len = maxBodyHeightArray.length; i < len; i++) {
+        var height = Math.max(maxBodyHeightArray[i], rowHeight);
+        rows[i].style['height'] = height + "px";
+        leftRows[i] ? leftRows[i].style['height'] = height + "px" : undefined;
+        rightRows[i] ? rightRows[i].style['height'] = height + "px" : undefined;
     }
     syncScrollBarStatus(table);
-    window.requestAnimationFrame(() => {
+    window.requestAnimationFrame(function () {
         dimensionInfo.originalMaxWidthArray = originalMaxWidthArray;
         dimensionInfo.dimensionId = dimensionId;
-        const info = getDimensionInfo(table, columnSize);
+        var info = getDimensionInfo(table, columnSize);
         Object.assign(dimensionInfo, info);
     });
 }
 function syncScrollBarStatus(table) {
-    const findDOM = find.bind(null, table);
-    const [headerWrapper, headerRoot, header] = findDOM('header');
-    const [bodyWrapper, bodyRoot, body] = findDOM('body');
-    const [leftBodyWrapper, leftBodyRoot, leftBody] = findDOM('body', 'left');
-    const [rightBodyWrapper, rightBodyRoot, rightBody] = findDOM('body', 'right');
+    var findDOM = find.bind(null, table);
+    var _a = __read(findDOM('header'), 3), headerWrapper = _a[0], headerRoot = _a[1], header = _a[2];
+    var _b = __read(findDOM('body'), 3), bodyWrapper = _b[0], bodyRoot = _b[1], body = _b[2];
+    var _c = __read(findDOM('body', 'left'), 3), leftBodyWrapper = _c[0], leftBodyRoot = _c[1], leftBody = _c[2];
+    var _d = __read(findDOM('body', 'right'), 3), rightBodyWrapper = _d[0], rightBodyRoot = _d[1], rightBody = _d[2];
     if (bodyRoot && bodyRoot.offsetHeight - bodyRoot.parentElement.offsetHeight > 1) {
         syncHeaderBodyVerticalScrollStatus(headerRoot, true);
         hideVerticalScrollBarOfTableFixedHeader(table, true);
@@ -552,48 +622,48 @@ function syncScrollBarStatus(table) {
     }
 }
 function getDimensionInfo(table, columnSize) {
-    const findDOM = find.bind(null, table);
-    const [headerWrapper, headerRoot, header] = findDOM('header');
-    const [leftHeaderWrapper, leftHeaderRoot, leftHeader] = findDOM('header', 'left');
-    const [rightHeaderWrapper, rightHeaderRoot, rightHeader] = findDOM('header', 'right');
-    const [bodyWrapper, bodyRoot, body] = findDOM('body');
-    const [leftBodyWrapper, leftBodyRoot, leftBody] = findDOM('body', 'left');
-    const [rightBodyWrapper, rightBodyRoot, rightBody] = findDOM('body', 'right');
-    const headerWidthArray = util_1.widthArray(header, columnSize, 'end', 'headerWidthArray');
-    const leftHeaderWidthArray = util_1.widthArray(leftHeader, columnSize, 'end', 'leftHeaderWidthArray');
-    const rightHeaderWidthArray = util_1.widthArray(rightHeader, columnSize, 'start', 'rightHeaderWidthArray');
-    const bodyWidthArray = util_1.widthArray(body, columnSize, 'end', 'bodyWidthArray');
-    const leftBodyWidthArray = util_1.widthArray(leftBody, columnSize, 'end', 'leftBodyWidthArray');
-    const rightBodyWidthArray = util_1.widthArray(rightBody, columnSize, 'start', 'rightBodyWidthArray');
-    const maxWidthArray = util_1.max(headerWidthArray, leftHeaderWidthArray, rightHeaderWidthArray, bodyWidthArray, leftBodyWidthArray, rightBodyWidthArray);
-    const headerHeightArray = heightArray(header);
-    const leftHeaderHeightArray = heightArray(leftHeader);
-    const rightHeaderHeightArray = heightArray(rightHeader);
-    const bodyHeightArray = heightArray(body);
-    const leftBodyHeightArray = heightArray(leftBody);
-    const rightBodyHeightArray = heightArray(rightBody);
+    var findDOM = find.bind(null, table);
+    var _a = __read(findDOM('header'), 3), headerWrapper = _a[0], headerRoot = _a[1], header = _a[2];
+    var _b = __read(findDOM('header', 'left'), 3), leftHeaderWrapper = _b[0], leftHeaderRoot = _b[1], leftHeader = _b[2];
+    var _c = __read(findDOM('header', 'right'), 3), rightHeaderWrapper = _c[0], rightHeaderRoot = _c[1], rightHeader = _c[2];
+    var _d = __read(findDOM('body'), 3), bodyWrapper = _d[0], bodyRoot = _d[1], body = _d[2];
+    var _e = __read(findDOM('body', 'left'), 3), leftBodyWrapper = _e[0], leftBodyRoot = _e[1], leftBody = _e[2];
+    var _f = __read(findDOM('body', 'right'), 3), rightBodyWrapper = _f[0], rightBodyRoot = _f[1], rightBody = _f[2];
+    var headerWidthArray = util_1.widthArray(header, columnSize, 'end', 'headerWidthArray');
+    var leftHeaderWidthArray = util_1.widthArray(leftHeader, columnSize, 'end', 'leftHeaderWidthArray');
+    var rightHeaderWidthArray = util_1.widthArray(rightHeader, columnSize, 'start', 'rightHeaderWidthArray');
+    var bodyWidthArray = util_1.widthArray(body, columnSize, 'end', 'bodyWidthArray');
+    var leftBodyWidthArray = util_1.widthArray(leftBody, columnSize, 'end', 'leftBodyWidthArray');
+    var rightBodyWidthArray = util_1.widthArray(rightBody, columnSize, 'start', 'rightBodyWidthArray');
+    var maxWidthArray = util_1.max(headerWidthArray, leftHeaderWidthArray, rightHeaderWidthArray, bodyWidthArray, leftBodyWidthArray, rightBodyWidthArray);
+    var headerHeightArray = heightArray(header);
+    var leftHeaderHeightArray = heightArray(leftHeader);
+    var rightHeaderHeightArray = heightArray(rightHeader);
+    var bodyHeightArray = heightArray(body);
+    var leftBodyHeightArray = heightArray(leftBody);
+    var rightBodyHeightArray = heightArray(rightBody);
     return {
-        headerWidthArray,
-        leftHeaderWidthArray,
-        rightHeaderWidthArray,
-        bodyWidthArray,
-        leftBodyWidthArray,
-        rightBodyWidthArray,
-        headerHeightArray,
-        leftHeaderHeightArray,
-        rightHeaderHeightArray,
-        bodyHeightArray,
-        leftBodyHeightArray,
-        rightBodyHeightArray,
-        maxWidthArray
+        headerWidthArray: headerWidthArray,
+        leftHeaderWidthArray: leftHeaderWidthArray,
+        rightHeaderWidthArray: rightHeaderWidthArray,
+        bodyWidthArray: bodyWidthArray,
+        leftBodyWidthArray: leftBodyWidthArray,
+        rightBodyWidthArray: rightBodyWidthArray,
+        headerHeightArray: headerHeightArray,
+        leftHeaderHeightArray: leftHeaderHeightArray,
+        rightHeaderHeightArray: rightHeaderHeightArray,
+        bodyHeightArray: bodyHeightArray,
+        leftBodyHeightArray: leftBodyHeightArray,
+        rightBodyHeightArray: rightBodyHeightArray,
+        maxWidthArray: maxWidthArray
     };
 }
 function isDimensionChanged(table, columnSize, dimensionInfo) {
-    let result = false;
-    const info = getDimensionInfo(table, columnSize);
-    const keys = Object.keys(info);
-    for (let i = 0, len = keys.length; i < len; i++) {
-        const k = keys[i];
+    var result = false;
+    var info = getDimensionInfo(table, columnSize);
+    var keys = Object.keys(info);
+    for (var i = 0, len = keys.length; i < len; i++) {
+        var k = keys[i];
         if (isArrayChange(dimensionInfo[k], info[k])) {
             result = true;
             break;
@@ -602,35 +672,35 @@ function isDimensionChanged(table, columnSize, dimensionInfo) {
     return result;
 }
 function heightArray(element) {
-    const r = [], array = (element && element.children) || [];
-    for (let i = 0, len = array.length; i < len; i++) {
-        const height = array[i].offsetHeight;
+    var r = [], array = (element && element.children) || [];
+    for (var i = 0, len = array.length; i < len; i++) {
+        var height = array[i].offsetHeight;
         r.push(height);
     }
     return r;
 }
 function removeColgroup(element) {
-    const colgroup = element && element.getElementsByTagName('colgroup')[0];
+    var colgroup = element && element.getElementsByTagName('colgroup')[0];
     if (colgroup) {
         element.removeChild(colgroup);
     }
 }
 function createColgroup(widthArray) {
-    const sum = widthArray.reduce((prev, curr) => prev + curr, 0);
-    const colgroup = document.createElement('colgroup');
-    for (let i = 0, len = widthArray.length; i < len; i++) {
-        const width = widthArray[i] + 'px';
-        const col = document.createElement('col');
+    var sum = widthArray.reduce(function (prev, curr) { return prev + curr; }, 0);
+    var colgroup = document.createElement('colgroup');
+    for (var i = 0, len = widthArray.length; i < len; i++) {
+        var width = widthArray[i] + 'px';
+        var col = document.createElement('col');
         col.style.width = width;
         colgroup.appendChild(col);
     }
     return colgroup;
 }
 function find(table, a, b) {
-    const className = `designare-table-${a}${b ? '-' + b : ''}`;
-    const wrapper = table.getElementsByClassName(className)[0];
-    const container = wrapper && wrapper.getElementsByTagName('table')[0];
-    const content = container && container.getElementsByTagName(a === 'header' ? 'thead' : 'tbody')[0];
+    var className = "designare-table-" + a + (b ? '-' + b : '');
+    var wrapper = table.getElementsByClassName(className)[0];
+    var container = wrapper && wrapper.getElementsByTagName('table')[0];
+    var content = container && container.getElementsByTagName(a === 'header' ? 'thead' : 'tbody')[0];
     return [wrapper, container, content];
 }
 function getChildren(element) {
@@ -642,7 +712,8 @@ function setStyle(element, key, value) {
 function appendChild(element, child) {
     element ? element.appendChild(child) : undefined;
 }
-function hideHorizontalScrollBarOfBody(bodyRoot, scroll = false) {
+function hideHorizontalScrollBarOfBody(bodyRoot, scroll) {
+    if (scroll === void 0) { scroll = false; }
     if (scroll) {
         bodyRoot ? bodyRoot.parentElement.style.height = 'calc(100% + 15px)' : undefined;
         bodyRoot ? bodyRoot.parentElement.parentElement.style.height = 'calc(100% - 15px)' : undefined;
@@ -652,7 +723,8 @@ function hideHorizontalScrollBarOfBody(bodyRoot, scroll = false) {
         bodyRoot ? bodyRoot.parentElement.parentElement.style.height = '100%' : undefined;
     }
 }
-function hideVerticalScrollBarOfBody(bodyRoot, scroll = false) {
+function hideVerticalScrollBarOfBody(bodyRoot, scroll) {
+    if (scroll === void 0) { scroll = false; }
     if (scroll) {
         bodyRoot ? bodyRoot.parentElement.parentElement.style.marginRight = '15px' : undefined;
         bodyRoot ? bodyRoot.parentElement.style.marginRight = '-15px' : undefined;
@@ -662,7 +734,8 @@ function hideVerticalScrollBarOfBody(bodyRoot, scroll = false) {
         bodyRoot ? bodyRoot.parentElement.style.marginRight = '0' : undefined;
     }
 }
-function syncHeaderBodyVerticalScrollStatus(headerRoot, scroll = false) {
+function syncHeaderBodyVerticalScrollStatus(headerRoot, scroll) {
+    if (scroll === void 0) { scroll = false; }
     if (scroll) {
         headerRoot ? headerRoot.parentElement.parentElement.style.overflowY = 'scroll' : undefined;
     }
@@ -670,7 +743,8 @@ function syncHeaderBodyVerticalScrollStatus(headerRoot, scroll = false) {
         headerRoot ? headerRoot.parentElement.parentElement.style.overflowY = 'hidden' : undefined;
     }
 }
-function syncBodyHorizontalScrollStatus(bodyRoot, scroll = false) {
+function syncBodyHorizontalScrollStatus(bodyRoot, scroll) {
+    if (scroll === void 0) { scroll = false; }
     if (scroll) {
         bodyRoot ? bodyRoot.parentElement.style.overflowX = 'scroll' : undefined;
     }
@@ -678,8 +752,9 @@ function syncBodyHorizontalScrollStatus(bodyRoot, scroll = false) {
         bodyRoot ? bodyRoot.parentElement.style.overflowX = 'hidden' : undefined;
     }
 }
-function hideVerticalScrollBarOfTableFixedHeader(table, scroll = false) {
-    const el = table.getElementsByClassName('designare-table-fixed-header')[0];
+function hideVerticalScrollBarOfTableFixedHeader(table, scroll) {
+    if (scroll === void 0) { scroll = false; }
+    var el = table.getElementsByClassName('designare-table-fixed-header')[0];
     if (scroll) {
         el.classList.add('designare-mask');
     }
@@ -688,26 +763,28 @@ function hideVerticalScrollBarOfTableFixedHeader(table, scroll = false) {
     }
 }
 function isArrayChange(a, b) {
-    const len = a.length, length = b.length;
+    var len = a.length, length = b.length;
     if (len !== length)
         return true;
-    for (let i = 0; i < len; i++) {
+    for (var i = 0; i < len; i++) {
         if (a[i] !== b[i])
             return true;
     }
     return false;
 }
-function code(columnsWithMeta, result = [], root = true) {
-    for (let i = 0, len = columnsWithMeta.length; i < len; i++) {
-        const col = columnsWithMeta[i];
-        const { metaKey, width = '' } = col;
+function code(columnsWithMeta, result, root) {
+    if (result === void 0) { result = []; }
+    if (root === void 0) { root = true; }
+    for (var i = 0, len = columnsWithMeta.length; i < len; i++) {
+        var col = columnsWithMeta[i];
+        var metaKey = col.metaKey, _a = col.width, width = _a === void 0 ? '' : _a;
         result.push(metaKey + width);
         col.children ? code(col.children, result, false) : undefined;
     }
     return root ? result.join('') : undefined;
 }
 function getColumnSize(columns) {
-    return columns.reduce((prev, curr) => prev + curr.colSpan, 0);
+    return columns.reduce(function (prev, curr) { return prev + curr.colSpan; }, 0);
 }
 function isBodyEmpty(body) {
     return body && body.children.length === 0;

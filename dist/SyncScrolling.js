@@ -1,17 +1,18 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const debounce = require("lodash/debounce");
-class SyncScrolling {
-    constructor() {
+var debounce = require("lodash/debounce");
+var SyncScrolling = (function () {
+    function SyncScrolling() {
+        var _this = this;
         this.map = new Map();
-        this.onScroll = evt => {
-            const master = evt.target;
-            const { scrollLeft, scrollTop } = master;
-            const direction = this.map.get(master);
-            this.map.forEach((v, k) => {
-                const slave = k === master ? undefined : k;
+        this.onScroll = function (evt) {
+            var master = evt.target;
+            var scrollLeft = master.scrollLeft, scrollTop = master.scrollTop;
+            var direction = _this.map.get(master);
+            _this.map.forEach(function (v, k) {
+                var slave = k === master ? undefined : k;
                 if (slave) {
-                    slave.removeEventListener('scroll', this.onScroll);
+                    slave.removeEventListener('scroll', _this.onScroll);
                     switch (direction) {
                         case 'scrollLeft':
                             slave.scrollLeft = scrollLeft;
@@ -24,26 +25,28 @@ class SyncScrolling {
                             slave.scrollLeft = scrollLeft;
                             break;
                         default:
-                            throw `invalid mode: ${v}. Mode should be one of 'scrollLeft', 'scrollTop', 'both'`;
+                            throw "invalid mode: " + v + ". Mode should be one of 'scrollLeft', 'scrollTop', 'both'";
                     }
                 }
             });
-            this.debouncedReAddOnScroll(master);
+            _this.debouncedReAddOnScroll(master);
         };
-        this.reAddOnScroll = except => {
-            this.map.forEach((v, k) => {
-                k === except ? undefined : k.addEventListener('scroll', this.onScroll);
+        this.reAddOnScroll = function (except) {
+            _this.map.forEach(function (v, k) {
+                k === except ? undefined : k.addEventListener('scroll', _this.onScroll);
             });
         };
-        this.add = (scrollable, mode = 'scrollLeft') => {
-            scrollable.addEventListener('scroll', this.onScroll);
-            this.map.set(scrollable, mode);
+        this.add = function (scrollable, mode) {
+            if (mode === void 0) { mode = 'scrollLeft'; }
+            scrollable.addEventListener('scroll', _this.onScroll);
+            _this.map.set(scrollable, mode);
         };
-        this.remove = scrollable => {
-            scrollable.removeEventListener('scroll', this.onScroll);
-            this.map.delete(scrollable);
+        this.remove = function (scrollable) {
+            scrollable.removeEventListener('scroll', _this.onScroll);
+            _this.map.delete(scrollable);
         };
         this.debouncedReAddOnScroll = debounce(this.reAddOnScroll, 100);
     }
-}
+    return SyncScrolling;
+}());
 exports.default = SyncScrolling;
