@@ -39,7 +39,7 @@ var ReactDOM = require("react-dom");
 var context_1 = require("./context");
 var Icons_1 = require("./Icons");
 var FilterLayer_1 = require("./FilterLayer");
-var defaultStyle = { position: 'absolute', top: 0, right: 0, bottom: 0, display: 'flex', justifyContent: 'center', cursor: 'pointer', userSelect: 'none' };
+var defaultStyle = { position: 'absolute', top: 0, right: 0, display: 'flex', justifyContent: 'center', cursor: 'pointer', userSelect: 'none', height: 'inherit' };
 var Filter = (function (_super) {
     __extends(Filter, _super);
     function Filter() {

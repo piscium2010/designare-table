@@ -4,7 +4,7 @@ import { ThsContext } from './context'
 import Icons from './Icons'
 import FilterLayer from './FilterLayer'
 
-const defaultStyle: React.CSSProperties = { position: 'absolute', top: 0, right: 0, bottom: 0, display: 'flex', justifyContent: 'center', cursor: 'pointer', userSelect: 'none' }
+const defaultStyle: React.CSSProperties = { position: 'absolute', top: 0, right: 0, display: 'flex', justifyContent: 'center', cursor: 'pointer', userSelect: 'none', height: 'inherit' }
 
 interface IFilterProps extends React.HTMLAttributes<HTMLDivElement> {
     activeColor?: string
@@ -210,7 +210,9 @@ export default class Filter extends React.Component<IFilterProps, state> {
 
         return (
             <React.Fragment>
-                <span>&nbsp;&nbsp;&nbsp;</span>
+                <span>
+                    &nbsp;&nbsp;&nbsp;
+                    </span>
                 <div
                     ref={this.ref as any}
                     className={`designare-table-filter designare-transition ${className} ${this.columnMetaKey} ${isActive ? 'active' : ''}`}

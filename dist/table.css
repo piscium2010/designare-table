@@ -32,6 +32,7 @@
 .designare-table table tbody tr th,
 .designare-table table thead tr td,
 .designare-table table tbody tr td {
+  height: inherit !important;
   position: relative;
   padding-top: 0 !important;
   padding-bottom: 0 !important;

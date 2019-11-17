@@ -35,11 +35,12 @@ var __rest = (this && this.__rest) || function (s, e) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = require("react");
+var react_1 = require("react");
 var context_1 = require("./context");
 var Icons_1 = require("./Icons");
 var messages_1 = require("./messages");
-var defaultStyle = { position: 'relative', cursor: 'pointer', userSelect: 'none', padding: '0 4px' };
-var commonStyle = { position: 'absolute', left: 4, top: '50%', width: 9, transform: 'translate(0,-8px)' };
+var defaultStyle = { position: 'absolute', cursor: 'pointer', userSelect: 'none', top: 0, display: 'inline-block', height: 'inherit' };
+var commonStyle = { position: 'absolute', left: 0, top: '0', width: 9, height: 'inherit', display: 'flex' };
 var Sorter = (function (_super) {
     __extends(Sorter, _super);
     function Sorter() {
@@ -128,9 +129,11 @@ var Sorter = (function (_super) {
                 _this.setActiveSorter({ dataKey: dataKey, direction: direction });
             }
         };
-        return (React.createElement("span", __assign({ className: "designare-table-sorter " + className, style: __assign(__assign({}, defaultStyle), style), onClickCapture: onClick }, restProps),
-            "\u00A0\u00A0",
-            React.createElement(Render, { direction: isActive ? status[i] : 'default', directions: directions, defaultColor: this.defaultColor, activeColor: this.activeColor })));
+        return (React.createElement(react_1.Fragment, null,
+            React.createElement("span", null, "\u00A0"),
+            React.createElement("div", __assign({ className: "designare-table-sorter " + className, style: __assign(__assign({}, defaultStyle), style), onClickCapture: onClick }, restProps),
+                React.createElement(Render, { direction: isActive ? status[i] : 'default', directions: directions, defaultColor: this.defaultColor, activeColor: this.activeColor })),
+            React.createElement("span", null, "\u00A0\u00A0")));
     };
     Sorter.contextType = context_1.ThsContext;
     Sorter.defaultProps = {
@@ -143,11 +146,11 @@ var Sorter = (function (_super) {
             return (React.createElement(React.Fragment, null, icons.length === 2
                 ? React.createElement(React.Fragment, null,
                     React.createElement("div", { className: "designare-icon designare-transition", style: __assign(__assign({}, commonStyle), { color: direction === 'asc' ? activeColor : defaultColor }) },
-                        React.createElement(Icons_1.default.SortUp, null)),
+                        React.createElement(Icons_1.default.SortUp, { style: { width: '100%' } })),
                     React.createElement("div", { className: "designare-icon designare-transition", style: __assign(__assign({}, commonStyle), { color: direction === 'des' ? activeColor : defaultColor }) },
-                        React.createElement(Icons_1.default.SortDown, null)))
+                        React.createElement(Icons_1.default.SortDown, { style: { width: '100%' } })))
                 :
-                    React.createElement("div", { className: "designare-icon designare-transition", style: __assign(__assign({}, commonStyle), { top: '50%', transform: icons[0] === 'asc' ? 'translateY(-30%)' : 'translateY(-55%)', color: direction === icons[0] ? activeColor : defaultColor }) }, icons[0] === 'asc' ? React.createElement(Icons_1.default.SortUp, null) : icons[0] === 'des' ? React.createElement(Icons_1.default.SortDown, null) : null)));
+                    React.createElement("div", { className: "designare-icon designare-transition", style: __assign(__assign({}, commonStyle), { color: direction === icons[0] ? activeColor : defaultColor }) }, icons[0] === 'asc' ? React.createElement(Icons_1.default.SortUp, { style: { width: '100%' } }) : icons[0] === 'des' ? React.createElement(Icons_1.default.SortDown, { style: { width: '100%' } }) : null)));
         }
     };
     return Sorter;
