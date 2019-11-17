@@ -4,8 +4,8 @@ import { ThsContext } from './context'
 import Icons from './Icons'
 import { ERR3 } from './messages'
 
-const defaultStyle: React.CSSProperties = { position: 'absolute', cursor: 'pointer', userSelect: 'none', top: 0, display:'inline-block', height:'inherit' }
-const commonStyle: React.CSSProperties = { position: 'absolute', left: 0, top: '0', width: 9, height:'inherit', display: 'flex' }
+const defaultStyle: React.CSSProperties = { position: 'absolute', cursor: 'pointer', userSelect: 'none', top: 0, display: 'inline-block', height: 'inherit' }
+const commonStyle: React.CSSProperties = { position: 'absolute', left: 0, top: '0', width: 9, height: 'inherit', display: 'flex' }
 
 interface ISorterProps extends React.HTMLAttributes<HTMLDivElement> {
     activeColor?: string
@@ -29,10 +29,10 @@ export default class Sorter extends React.Component<ISorterProps, {}> {
                         icons.length === 2
                             ? <React.Fragment>
                                 <div className={`designare-icon designare-transition`} style={{ ...commonStyle, color: direction === 'asc' ? activeColor : defaultColor }}>
-                                    <Icons.SortUp style={{width:'100%'}}/>
+                                    <Icons.SortUp style={{ width: '100%' }} />
                                 </div>
                                 <div className={`designare-icon designare-transition`} style={{ ...commonStyle, color: direction === 'des' ? activeColor : defaultColor }}>
-                                    <Icons.SortDown style={{width:'100%'}}/>
+                                    <Icons.SortDown style={{ width: '100%' }} />
                                 </div>
                             </React.Fragment>
                             :
@@ -41,7 +41,7 @@ export default class Sorter extends React.Component<ISorterProps, {}> {
                                 color: direction === icons[0] ? activeColor : defaultColor
                             }}
                             >
-                                {icons[0] === 'asc' ? <Icons.SortUp style={{width:'100%'}}/> : icons[0] === 'des' ? <Icons.SortDown style={{width:'100%'}}/> : null}
+                                {icons[0] === 'asc' ? <Icons.SortUp style={{ width: '100%' }} /> : icons[0] === 'des' ? <Icons.SortDown style={{ width: '100%' }} /> : null}
                             </div>
                     }
                 </React.Fragment>
@@ -125,11 +125,12 @@ export default class Sorter extends React.Component<ISorterProps, {}> {
 
         return (
             <Fragment>
-                <span>&nbsp;</span>
-                <div className={`designare-table-sorter ${className}`} style={{ ...defaultStyle, ...style }} onClickCapture={onClick} {...restProps}>
-                    <Render direction={isActive ? status[i] : 'default'} directions={directions} defaultColor={this.defaultColor} activeColor={this.activeColor} />
-                </div>
-                <span>&nbsp;&nbsp;</span>
+                <span style={{ height: 'inherit', paddingRight: 12 }}>
+                    &nbsp;
+                    <div className={`designare-table-sorter ${className}`} style={{ ...defaultStyle, ...style }} onClickCapture={onClick} {...restProps}>
+                        <Render direction={isActive ? status[i] : 'default'} directions={directions} defaultColor={this.defaultColor} activeColor={this.activeColor} />
+                    </div>
+                </span>
             </Fragment>
         )
     }

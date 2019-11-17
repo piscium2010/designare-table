@@ -130,10 +130,10 @@ var Sorter = (function (_super) {
             }
         };
         return (React.createElement(react_1.Fragment, null,
-            React.createElement("span", null, "\u00A0"),
-            React.createElement("div", __assign({ className: "designare-table-sorter " + className, style: __assign(__assign({}, defaultStyle), style), onClickCapture: onClick }, restProps),
-                React.createElement(Render, { direction: isActive ? status[i] : 'default', directions: directions, defaultColor: this.defaultColor, activeColor: this.activeColor })),
-            React.createElement("span", null, "\u00A0\u00A0")));
+            React.createElement("span", { style: { height: 'inherit', paddingRight: 12 } },
+                "\u00A0",
+                React.createElement("div", __assign({ className: "designare-table-sorter " + className, style: __assign(__assign({}, defaultStyle), style), onClickCapture: onClick }, restProps),
+                    React.createElement(Render, { direction: isActive ? status[i] : 'default', directions: directions, defaultColor: this.defaultColor, activeColor: this.activeColor })))));
     };
     Sorter.contextType = context_1.ThsContext;
     Sorter.defaultProps = {
