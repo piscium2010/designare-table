@@ -102,17 +102,17 @@ var Rows = function (_a) {
 };
 var MinusSquare = function (_a) {
     var _b = _a.style, style = _b === void 0 ? {} : _b, restProps = __rest(_a, ["style"]);
-    return (React.createElement("svg", __assign({ "aria-hidden": "true", focusable: "false", role: "img", xmlns: xmlns, viewBox: "0 0 448 512" }, restProps, { style: __assign(__assign({ width: 14 }, defaultStyle), style) }),
+    return (React.createElement("svg", __assign({ "aria-hidden": "true", focusable: "false", role: "img", xmlns: xmlns, viewBox: "0 0 448 512" }, restProps, { style: __assign(__assign({ width: 14, height: 16 }, defaultStyle), style) }),
         React.createElement("path", { fill: "currentColor", d: "M400 64c8.8 0 16 7.2 16 16v352c0 8.8-7.2 16-16 16H48c-8.8 0-16-7.2-16-16V80c0-8.8 7.2-16 16-16h352m0-32H48C21.5 32 0 53.5 0 80v352c0 26.5 21.5 48 48 48h352c26.5 0 48-21.5 48-48V80c0-26.5-21.5-48-48-48zm-60 242c6.6 0 12-5.4 12-12v-12c0-6.6-5.4-12-12-12H108c-6.6 0-12 5.4-12 12v12c0 6.6 5.4 12 12 12h232z" })));
 };
 var PlusSquare = function (_a) {
     var _b = _a.style, style = _b === void 0 ? {} : _b, restProps = __rest(_a, ["style"]);
-    return (React.createElement("svg", __assign({ "aria-hidden": "true", focusable: "false", role: "img", xmlns: xmlns, viewBox: "0 0 448 512" }, restProps, { style: __assign(__assign({ width: 14 }, defaultStyle), style) }),
+    return (React.createElement("svg", __assign({ "aria-hidden": "true", focusable: "false", role: "img", xmlns: xmlns, viewBox: "0 0 448 512" }, restProps, { style: __assign(__assign({ width: 14, height: 16 }, defaultStyle), style) }),
         React.createElement("path", { fill: "currentColor", d: "M400 64c8.8 0 16 7.2 16 16v352c0 8.8-7.2 16-16 16H48c-8.8 0-16-7.2-16-16V80c0-8.8 7.2-16 16-16h352m0-32H48C21.5 32 0 53.5 0 80v352c0 26.5 21.5 48 48 48h352c26.5 0 48-21.5 48-48V80c0-26.5-21.5-48-48-48zm-60 206h-98v-98c0-6.6-5.4-12-12-12h-12c-6.6 0-12 5.4-12 12v98h-98c-6.6 0-12 5.4-12 12v12c0 6.6 5.4 12 12 12h98v98c0 6.6 5.4 12 12 12h12c6.6 0 12-5.4 12-12v-98h98c6.6 0 12-5.4 12-12v-12c0-6.6-5.4-12-12-12z" })));
 };
 var Loading = function (_a) {
     var _b = _a.style, style = _b === void 0 ? {} : _b, restProps = __rest(_a, ["style"]);
-    return (React.createElement("svg", __assign({ "aria-hidden": "true", focusable: "false", role: "img", xmlns: xmlns, viewBox: "0 0 512 512" }, restProps, { style: __assign(__assign({ width: 28 }, defaultStyle), style) }),
+    return (React.createElement("svg", __assign({ "aria-hidden": "true", focusable: "false", role: "img", xmlns: xmlns, viewBox: "0 0 512 512" }, restProps, { style: __assign(__assign({ width: 28, height: 28 }, defaultStyle), style) }),
         React.createElement("path", { fill: "currentColor", d: "M288 32c0 17.673-14.327 32-32 32s-32-14.327-32-32 14.327-32 32-32 32 14.327 32 32zm-32 416c-17.673 0-32 14.327-32 32s14.327 32 32 32 32-14.327 32-32-14.327-32-32-32zm256-192c0-17.673-14.327-32-32-32s-32 14.327-32 32 14.327 32 32 32 32-14.327 32-32zm-448 0c0-17.673-14.327-32-32-32S0 238.327 0 256s14.327 32 32 32 32-14.327 32-32zm33.608 126.392c-17.673 0-32 14.327-32 32s14.327 32 32 32 32-14.327 32-32-14.327-32-32-32zm316.784 0c-17.673 0-32 14.327-32 32s14.327 32 32 32 32-14.327 32-32-14.327-32-32-32zM97.608 65.608c-17.673 0-32 14.327-32 32 0 17.673 14.327 32 32 32s32-14.327 32-32c0-17.673-14.327-32-32-32z" })));
 };
 exports.default = { CaretUp: CaretUp, CaretDown: CaretDown, SortUp: SortUp, SortDown: SortDown, Filter: Filter, First: First, Last: Last, Prev: Prev, Next: Next, Page: Page, List: List, Th: Th, UList: UList, Rows: Rows, MinusSquare: MinusSquare, PlusSquare: PlusSquare, Loading: Loading };
