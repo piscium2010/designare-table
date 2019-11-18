@@ -1,5 +1,5 @@
 const fs = require('fs')
-const { series, src } = require('gulp')
+const { series, src, watch } = require('gulp')
 const gulp = require('gulp')
 const ts = require('gulp-typescript')
 const less = require('gulp-less')
@@ -70,4 +70,6 @@ function rmDir(dirPath, removeSelf = false) {
     }
 }
 
-exports.default = series(clean, stylesheet, compile, copy)
+exports.default = function() {
+    watch('src/**/*', series(clean, stylesheet, compile, copy))
+}

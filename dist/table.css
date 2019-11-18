@@ -24,7 +24,7 @@
 }
 .designare-table table thead tr,
 .designare-table table tbody tr {
-  border-width: 1px;
+  border-width: 1px !important;
   border-style: solid;
   border-color: inherit;
 }

@@ -664,6 +664,8 @@ function isDimensionChanged(table, columnSize, dimensionInfo) {
     for (var i = 0, len = keys.length; i < len; i++) {
         var k = keys[i];
         if (isArrayChange(dimensionInfo[k], info[k])) {
+            console.log(k, ' is resized');
+            console.log(dimensionInfo[k], info[k]);
             result = true;
             break;
         }
@@ -673,7 +675,7 @@ function isDimensionChanged(table, columnSize, dimensionInfo) {
 function heightArray(element) {
     var r = [], array = (element && element.children) || [];
     for (var i = 0, len = array.length; i < len; i++) {
-        var height = array[i].offsetHeight;
+        var height = Math.max(array[i].offsetHeight - 2, 0);
         r.push(height);
     }
     return r;
