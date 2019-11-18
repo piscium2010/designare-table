@@ -13,23 +13,23 @@ export default class SyncScrolling {
         const { scrollLeft, scrollTop } = master
         const direction = this.map.get(master)
 
-        this.map.forEach((v, k) => {
+        this.map.forEach((slaveDirection, k) => {
             const slave = k === master ? undefined : k
             if (slave) {
                 slave.removeEventListener('scroll', this.onScroll)
                 switch (direction) {
                     case 'scrollLeft':
-                        slave.scrollLeft = scrollLeft
+                        slaveDirection === 'scrollTop'? undefined : slave.scrollLeft = scrollLeft
                         break
                     case 'scrollTop':
-                        slave.scrollTop = scrollTop
+                        slaveDirection === 'scrollLeft' ?  undefined : slave.scrollTop = scrollTop
                         break
                     case 'both':
-                        slave.scrollTop = scrollTop
-                        slave.scrollLeft = scrollLeft
+                         slaveDirection === 'both' || slaveDirection === 'scrollTop' ? slave.scrollTop = scrollTop : undefined
+                         slaveDirection === 'both' || slaveDirection === 'scrollLeft' ? slave.scrollLeft = scrollLeft : undefined
                         break
                     default:
-                        throw `invalid mode: ${v}. Mode should be one of 'scrollLeft', 'scrollTop', 'both'`
+                        throw `invalid mode: ${direction}. Mode should be one of 'scrollLeft', 'scrollTop', 'both'`
                 }
             }
         })

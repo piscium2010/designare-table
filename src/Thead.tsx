@@ -4,6 +4,7 @@ import HTMLThead from './HTMLThead'
 import Animate from './Animate'
 import { Context } from './context'
 import * as debounce from 'lodash/debounce'
+import { childrenLength } from './util'
 
 interface ITheadProps extends React.HTMLAttributes<HTMLDivElement> {
     tr?: (args?: {
@@ -96,7 +97,9 @@ export default class Thead extends React.Component<ITheadProps, {}> {
                 style={{ flex: '0 0 auto', overflow: 'hidden', opacity: isInit() ? 1 : 0, ...style }}
                 {...restProps}
             >
-                <Animate style={{ marginBottom: 0, position: 'relative', overflowX: 'hidden', backgroundColor: 'inherit' }}>
+                <Animate style={{ marginBottom: 0, position: 'relative', overflowX: 'hidden', backgroundColor: 'inherit', zIndex: 1 }}
+                onScroll={evt => { evt.preventDefault(); evt.stopPropagation(); evt.target.scrollTop = 0; console.log('ss'); evt.returnValue= false}}
+                >
                     <Left leftRef={this.leftRef}>
                         <HTMLThead fixed='left' tr={tr} />
                     </Left>

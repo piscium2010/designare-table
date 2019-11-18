@@ -589,26 +589,28 @@ function syncScrollBarStatus(table) {
     var _c = __read(findDOM('body', 'left'), 3), leftBodyWrapper = _c[0], leftBodyRoot = _c[1], leftBody = _c[2];
     var _d = __read(findDOM('body', 'right'), 3), rightBodyWrapper = _d[0], rightBodyRoot = _d[1], rightBody = _d[2];
     if (bodyRoot && bodyRoot.offsetHeight - bodyRoot.parentElement.offsetHeight > 1) {
-        syncHeaderBodyVerticalScrollStatus(headerRoot, true);
+        toggleHeaderBodyVerticalScroll(headerRoot, true);
         hideVerticalScrollBarOfTableFixedHeader(table, true);
         hideVerticalScrollBarOfBody(leftBodyRoot, true);
+        toggleBodyVerticalScroll(rightBodyRoot, true);
     }
     else {
-        syncHeaderBodyVerticalScrollStatus(headerRoot, false);
+        toggleHeaderBodyVerticalScroll(headerRoot, false);
         hideVerticalScrollBarOfTableFixedHeader(table, false);
         hideVerticalScrollBarOfBody(leftBodyRoot, false);
+        toggleBodyVerticalScroll(rightBodyRoot, false);
     }
     if (bodyRoot && bodyRoot.offsetWidth - bodyRoot.parentElement.offsetWidth > 1) {
         hideHorizontalScrollBarOfBody(leftBodyRoot, true);
         hideHorizontalScrollBarOfBody(rightBodyRoot, true);
-        syncBodyHorizontalScrollStatus(leftBodyRoot, true);
-        syncBodyHorizontalScrollStatus(rightBodyRoot, true);
+        toggleBodyHorizontalScrollStatus(leftBodyRoot, true);
+        toggleBodyHorizontalScrollStatus(rightBodyRoot, true);
     }
     else {
         hideHorizontalScrollBarOfBody(leftBodyRoot, false);
         hideHorizontalScrollBarOfBody(rightBodyRoot, false);
-        syncBodyHorizontalScrollStatus(leftBodyRoot, false);
-        syncBodyHorizontalScrollStatus(rightBodyRoot, false);
+        toggleBodyHorizontalScrollStatus(leftBodyRoot, false);
+        toggleBodyHorizontalScrollStatus(rightBodyRoot, false);
     }
     if (isBodyEmpty(rightBody)) {
         hideVerticalScrollBarOfBody(rightBodyRoot, true);
@@ -735,7 +737,7 @@ function hideVerticalScrollBarOfBody(bodyRoot, scroll) {
         bodyRoot ? bodyRoot.parentElement.style.marginRight = '0' : undefined;
     }
 }
-function syncHeaderBodyVerticalScrollStatus(headerRoot, scroll) {
+function toggleHeaderBodyVerticalScroll(headerRoot, scroll) {
     if (scroll === void 0) { scroll = false; }
     if (scroll) {
         headerRoot ? headerRoot.parentElement.parentElement.style.overflowY = 'scroll' : undefined;
@@ -744,13 +746,22 @@ function syncHeaderBodyVerticalScrollStatus(headerRoot, scroll) {
         headerRoot ? headerRoot.parentElement.parentElement.style.overflowY = 'hidden' : undefined;
     }
 }
-function syncBodyHorizontalScrollStatus(bodyRoot, scroll) {
+function toggleBodyHorizontalScrollStatus(bodyRoot, scroll) {
     if (scroll === void 0) { scroll = false; }
     if (scroll) {
         bodyRoot ? bodyRoot.parentElement.style.overflowX = 'scroll' : undefined;
     }
     else {
         bodyRoot ? bodyRoot.parentElement.style.overflowX = 'hidden' : undefined;
+    }
+}
+function toggleBodyVerticalScroll(bodyRoot, scroll) {
+    if (scroll === void 0) { scroll = false; }
+    if (scroll) {
+        bodyRoot ? bodyRoot.parentElement.style.overflowY = 'scroll' : undefined;
+    }
+    else {
+        bodyRoot ? bodyRoot.parentElement.style.overflowY = 'hidden' : undefined;
     }
 }
 function hideVerticalScrollBarOfTableFixedHeader(table, scroll) {

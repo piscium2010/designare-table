@@ -810,26 +810,28 @@ function syncScrollBarStatus(table) {
 
     if (bodyRoot && bodyRoot.offsetHeight - bodyRoot.parentElement.offsetHeight > 1) {
         //body scroll vertically
-        syncHeaderBodyVerticalScrollStatus(headerRoot, true)
+        toggleHeaderBodyVerticalScroll(headerRoot, true)
         hideVerticalScrollBarOfTableFixedHeader(table, true)
         hideVerticalScrollBarOfBody(leftBodyRoot, true)
+        toggleBodyVerticalScroll(rightBodyRoot, true)
     } else {
-        syncHeaderBodyVerticalScrollStatus(headerRoot, false)
+        toggleHeaderBodyVerticalScroll(headerRoot, false)
         hideVerticalScrollBarOfTableFixedHeader(table, false)
         hideVerticalScrollBarOfBody(leftBodyRoot, false)
+        toggleBodyVerticalScroll(rightBodyRoot, false)
     }
 
     if (bodyRoot && bodyRoot.offsetWidth - bodyRoot.parentElement.offsetWidth > 1) {
         //body scroll horizontally
         hideHorizontalScrollBarOfBody(leftBodyRoot, true)
         hideHorizontalScrollBarOfBody(rightBodyRoot, true)
-        syncBodyHorizontalScrollStatus(leftBodyRoot, true)
-        syncBodyHorizontalScrollStatus(rightBodyRoot, true)
+        toggleBodyHorizontalScrollStatus(leftBodyRoot, true)
+        toggleBodyHorizontalScrollStatus(rightBodyRoot, true)
     } else {
         hideHorizontalScrollBarOfBody(leftBodyRoot, false)
         hideHorizontalScrollBarOfBody(rightBodyRoot, false)
-        syncBodyHorizontalScrollStatus(leftBodyRoot, false)
-        syncBodyHorizontalScrollStatus(rightBodyRoot, false)
+        toggleBodyHorizontalScrollStatus(leftBodyRoot, false)
+        toggleBodyHorizontalScrollStatus(rightBodyRoot, false)
     }
 
 
@@ -991,7 +993,7 @@ function hideVerticalScrollBarOfBody(bodyRoot, scroll = false) {
     }
 }
 
-function syncHeaderBodyVerticalScrollStatus(headerRoot, scroll = false) {
+function toggleHeaderBodyVerticalScroll(headerRoot, scroll = false) {
     if (scroll) {
         headerRoot ? headerRoot.parentElement.parentElement.style.overflowY = 'scroll' : undefined
     } else {
@@ -999,11 +1001,19 @@ function syncHeaderBodyVerticalScrollStatus(headerRoot, scroll = false) {
     }
 }
 
-function syncBodyHorizontalScrollStatus(bodyRoot, scroll = false) {
+function toggleBodyHorizontalScrollStatus(bodyRoot, scroll = false) {
     if (scroll) {
         bodyRoot ? bodyRoot.parentElement.style.overflowX = 'scroll' : undefined
     } else {
         bodyRoot ? bodyRoot.parentElement.style.overflowX = 'hidden' : undefined
+    }
+}
+
+function toggleBodyVerticalScroll(bodyRoot, scroll = false) {
+    if (scroll) {
+        bodyRoot ? bodyRoot.parentElement.style.overflowY = 'scroll' : undefined
+    } else {
+        bodyRoot ? bodyRoot.parentElement.style.overflowY = 'hidden' : undefined
     }
 }
 

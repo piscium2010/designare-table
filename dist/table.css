@@ -122,7 +122,7 @@
   z-index: 2;
 }
 .designare-table-header-left.designare-shadow .designare-fixed::after {
-  content: '';
+  content: ' ';
   display: block;
   width: 4px;
   position: absolute;
@@ -131,6 +131,7 @@
   bottom: -1px;
   background-image: linear-gradient(to right, rgba(9, 9, 9, 0.05) 1%, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0)), linear-gradient(to right, rgba(9, 9, 9, 0.1), rgba(0, 0, 0, 0));
   pointer-events: none;
+  height: inherit;
 }
 .designare-table-header-left::after {
   content: '';
@@ -154,7 +155,7 @@
   z-index: 1;
 }
 .designare-table-header-right.designare-shadow .designare-fixed::after {
-  content: '';
+  content: ' ';
   display: block;
   width: 5px;
   position: absolute;
@@ -163,9 +164,10 @@
   bottom: -1px;
   background-image: linear-gradient(to left, rgba(9, 9, 9, 0.05) 1%, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0)), linear-gradient(to left, rgba(9, 9, 9, 0.1), rgba(0, 0, 0, 0));
   pointer-events: none;
+  height: inherit;
 }
 .designare-table-header-right::after {
-  content: '';
+  content: ' ';
   display: block;
   width: 1px;
   position: absolute;
@@ -204,6 +206,7 @@
   bottom: -1px;
   background-image: linear-gradient(to right, rgba(9, 9, 9, 0.05) 1%, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0)), linear-gradient(to right, rgba(9, 9, 9, 0.1), rgba(0, 0, 0, 0));
   pointer-events: none;
+  height: inherit;
 }
 .designare-table-body-left::after {
   content: '';
@@ -238,6 +241,7 @@
   bottom: -1px;
   background-image: linear-gradient(to left, rgba(9, 9, 9, 0.05) 1%, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0)), linear-gradient(to left, rgba(9, 9, 9, 0.1), rgba(0, 0, 0, 0));
   pointer-events: none;
+  height: inherit;
 }
 .designare-table-body-right::after {
   content: '';

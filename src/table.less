@@ -151,7 +151,7 @@
             &.designare-shadow {
                 .designare-fixed {
                     &::after {
-                        content:'';
+                        content:' ';
                         display: block;
                         width: 4px;
                         position: absolute;
@@ -162,6 +162,7 @@
                             linear-gradient(to right, rgba(9,9,9,.05) 1%, rgba(0,0,0,0), rgba(0,0,0,0)),
                             linear-gradient(to right, rgba(9,9,9,.1), rgba(0,0,0,0));
                         pointer-events: none;
+                        height: inherit;
                     }
                 }
             }
@@ -197,7 +198,7 @@
             &.designare-shadow {
                 .designare-fixed {
                     &::after {
-                        content:'';
+                        content:' ';
                         display: block;
                         width: 5px;
                         position: absolute;
@@ -208,11 +209,12 @@
                         linear-gradient(to left, rgba(9,9,9,.05) 1%, rgba(0,0,0,0), rgba(0,0,0,0)),
                         linear-gradient(to left, rgba(9,9,9,.1), rgba(0,0,0,0));
                         pointer-events: none;
+                        height: inherit;
                     }
                 }
             }
             &::after { // mask
-                content:'';
+                content:' ';
                 display: block;
                 width: 1px;
                 position: absolute;
@@ -274,7 +276,7 @@
                             linear-gradient(to right, rgba(9,9,9,.05) 1%, rgba(0,0,0,0), rgba(0,0,0,0)),
                             linear-gradient(to right, rgba(9,9,9,.1), rgba(0,0,0,0));
                         pointer-events: none;
-
+                        height: inherit;
                     }
                 }
             }
@@ -324,6 +326,7 @@
                             linear-gradient(to left, rgba(9,9,9,.05) 1%, rgba(0,0,0,0), rgba(0,0,0,0)),
                             linear-gradient(to left, rgba(9,9,9,.1), rgba(0,0,0,0));
                         pointer-events: none;
+                        height: inherit;
                     }
                 }
             }

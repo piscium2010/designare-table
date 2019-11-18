@@ -3,6 +3,10 @@ import { ThsContext } from './context'
 import ReSizing from './ReSizing'
 import { metaColumn } from './util'
 
+const preventDefault = evt => {
+    evt.preventDefault()
+    evt.stopPropagation()
+}
 const resizableElementWidth = 3
 const resizableElementStyle: React.CSSProperties = {
     position: 'absolute',
@@ -153,7 +157,8 @@ export default class Th extends React.Component<IThProps, {}> {
         return (
             <th
                 ref={deliverRef as any}
-                className={`${fixedColumnShadowClass} ${className}`}
+                className={`${fixedColumnShadowClass} ${className} designare-table-th`}
+                onWheel={preventDefault}
                 {...restProps}
                 colSpan={colSpan}
                 rowSpan={rowSpan}

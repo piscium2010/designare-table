@@ -8,23 +8,23 @@ var SyncScrolling = (function () {
             var master = evt.target;
             var scrollLeft = master.scrollLeft, scrollTop = master.scrollTop;
             var direction = _this.map.get(master);
-            _this.map.forEach(function (v, k) {
+            _this.map.forEach(function (slaveDirection, k) {
                 var slave = k === master ? undefined : k;
                 if (slave) {
                     slave.removeEventListener('scroll', _this.onScroll);
                     switch (direction) {
                         case 'scrollLeft':
-                            slave.scrollLeft = scrollLeft;
+                            slaveDirection === 'scrollTop' ? undefined : slave.scrollLeft = scrollLeft;
                             break;
                         case 'scrollTop':
-                            slave.scrollTop = scrollTop;
+                            slaveDirection === 'scrollLeft' ? undefined : slave.scrollTop = scrollTop;
                             break;
                         case 'both':
-                            slave.scrollTop = scrollTop;
-                            slave.scrollLeft = scrollLeft;
+                            slaveDirection === 'both' || slaveDirection === 'scrollTop' ? slave.scrollTop = scrollTop : undefined;
+                            slaveDirection === 'both' || slaveDirection === 'scrollLeft' ? slave.scrollLeft = scrollLeft : undefined;
                             break;
                         default:
-                            throw "invalid mode: " + v + ". Mode should be one of 'scrollLeft', 'scrollTop', 'both'";
+                            throw "invalid mode: " + direction + ". Mode should be one of 'scrollLeft', 'scrollTop', 'both'";
                     }
                 }
             });

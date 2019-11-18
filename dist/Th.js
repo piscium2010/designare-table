@@ -53,6 +53,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var React = require("react");
 var context_1 = require("./context");
 var ReSizing_1 = require("./ReSizing");
+var preventDefault = function (evt) {
+    evt.preventDefault();
+    evt.stopPropagation();
+};
 var resizableElementWidth = 3;
 var resizableElementStyle = {
     position: 'absolute',
@@ -173,7 +177,7 @@ var Th = (function (_super) {
             ? { zIndex: fixHeader === 'left' ? 2 : 1 }
             : { visibility: 'hidden', pointerEvents: 'none', zIndex: 0 };
         var fixedColumnShadowClass = isMyColumn && (isFirstFixedColumn || isLastFixedColumn) ? 'designare-fixed' : '';
-        return (React.createElement("th", __assign({ ref: deliverRef, className: fixedColumnShadowClass + " " + className }, restProps, { colSpan: colSpan, rowSpan: rowSpan, style: __assign(__assign({}, thStyle), style) }),
+        return (React.createElement("th", __assign({ ref: deliverRef, className: fixedColumnShadowClass + " " + className + " designare-table-th", onWheel: preventDefault }, restProps, { colSpan: colSpan, rowSpan: rowSpan, style: __assign(__assign({}, thStyle), style) }),
             isLeaf && !isFirst && this.resizable &&
                 React.createElement("div", { className: "designare-resize-element-left", style: __assign(__assign({}, resizableElementStyle), { left: 0 }), "data-p": 'left', onMouseDown: this.onMouseDown }),
             isMyColumn
