@@ -44,6 +44,12 @@
   border-right: none;
   border-left: none;
 }
+.designare-table table thead tr th > span,
+.designare-table table tbody tr th > span {
+  position: relative !important;
+  display: table-cell !important;
+  vertical-align: middle;
+}
 .designare-table table tbody tr {
   border-top-color: rgba(0, 0, 0, 0);
   border-bottom-color: rgba(0, 0, 0, 0.12);

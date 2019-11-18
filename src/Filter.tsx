@@ -212,7 +212,7 @@ export default class Filter extends React.Component<IFilterProps, state> {
             <React.Fragment>
                 <span>
                     &nbsp;&nbsp;&nbsp;
-                    </span>
+                </span>
                 <div
                     ref={this.ref as any}
                     className={`designare-table-filter designare-transition ${className} ${this.columnMetaKey} ${isActive ? 'active' : ''}`}
