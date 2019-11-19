@@ -2,7 +2,6 @@ import * as React from 'react'
 import { useRef, useEffect } from 'react'
 import HTMLTbody from './HTMLTbody'
 import { Context } from './context'
-import * as debounce from 'lodash/debounce'
 
 interface ITbodyProps extends React.HTMLAttributes<HTMLDivElement> {
     tr?: (args?: {
@@ -20,23 +19,25 @@ export default class Tbody extends React.Component<ITbodyProps, {}> {
 
     private _bodyWidth: number
     private _tableWidth: number
+    private scrollLeft: number
     private bodyRef: React.RefObject<HTMLDivElement>
     private tableRef: React.RefObject<HTMLTableElement>
     private leftRef: React.RefObject<HTMLDivElement>
     private rightRef: React.RefObject<HTMLDivElement>
     private shadowLeft: boolean
     private shadowRight: boolean
-    private debouncedReset: () => void
+    private time: any
 
     constructor(props) {
         super(props)
+        this.scrollLeft = -1
         this.bodyRef
         this.tableRef = React.createRef()
         this.leftRef = React.createRef()
         this.rightRef = React.createRef()
         this.shadowLeft = false
         this.shadowRight = false
-        this.debouncedReset = debounce(this.reset, 100)
+        this.time = new Date()
     }
 
     get bodyWidth() {
@@ -58,10 +59,16 @@ export default class Tbody extends React.Component<ITbodyProps, {}> {
     onScroll = evt => {
         this.shadow(evt.target.scrollLeft)
         this.props.onScroll(evt)
-        this.debouncedReset()
     }
 
     shadow = scrollLeft => {
+        if(this.scrollLeft === scrollLeft) return
+        this.scrollLeft = scrollLeft
+
+        const current: any = new Date()
+        current - this.time > 2000 ? this.reset() : undefined
+        this.time = current
+
         const scrollRight = this.tableWidth - scrollLeft - this.bodyWidth
 
         if (scrollLeft == 0) {
@@ -78,7 +85,6 @@ export default class Tbody extends React.Component<ITbodyProps, {}> {
             this.shadowRight ? undefined : this.rightRef.current.classList.add('designare-shadow')
             this.shadowRight = true
         }
-
     }
 
     reset = () => {

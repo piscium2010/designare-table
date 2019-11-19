@@ -3,8 +3,6 @@ import { useRef, useEffect } from 'react'
 import HTMLThead from './HTMLThead'
 import Animate from './Animate'
 import { Context } from './context'
-import * as debounce from 'lodash/debounce'
-import { childrenLength } from './util'
 
 interface ITheadProps extends React.HTMLAttributes<HTMLDivElement> {
     tr?: (args?: {
@@ -20,13 +18,14 @@ export default class Thead extends React.Component<ITheadProps, {}> {
 
     private _headerWidth: number
     private _tableWidth: number
+    private scrollLeft: number
     private headerRef: React.RefObject<HTMLDivElement>
     private tableRef: React.RefObject<HTMLTableElement>
     private leftRef: React.RefObject<HTMLDivElement>
     private rightRef: React.RefObject<HTMLDivElement>
     private shadowLeft: boolean
     private shadowRight: boolean
-    private debouncedReset: () => void
+    private time: any
 
     get headerWidth() {
         return this._headerWidth || (this._headerWidth = this.headerRef.current.offsetWidth)
@@ -46,23 +45,31 @@ export default class Thead extends React.Component<ITheadProps, {}> {
 
     constructor(props) {
         super(props)
+        this.scrollLeft = -1
         this.headerRef
         this.tableRef = React.createRef()
         this.leftRef = React.createRef()
         this.rightRef = React.createRef()
         this.shadowLeft = false
         this.shadowRight = false
-        this.debouncedReset = debounce(this.reset, 100)
+        this.time = new Date()
     }
 
     onScroll = evt => {
         this.shadow(evt.target.scrollLeft)
         this.props.onScroll(evt)
-        this.debouncedReset()
     }
 
     shadow = scrollLeft => {
+        if(this.scrollLeft === scrollLeft) return
+        this.scrollLeft = scrollLeft
+
+        const current: any = new Date()
+        current - this.time > 2000 ? this.reset() : undefined
+        this.time = current
+
         const scrollRight = this.tableWidth - scrollLeft - this.headerWidth
+
         if (scrollLeft == 0) {
             this.shadowLeft ? this.leftRef.current.classList.remove('designare-shadow') : undefined
             this.shadowLeft = false

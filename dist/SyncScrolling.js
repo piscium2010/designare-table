@@ -44,7 +44,7 @@ var SyncScrolling = (function () {
             scrollable.removeEventListener('scroll', _this.onScroll);
             _this.map.delete(scrollable);
         };
-        this.debouncedReAddOnScroll = debounce(this.reAddOnScroll, 100);
+        this.debouncedReAddOnScroll = debounce(this.reAddOnScroll, 1000);
     }
     return SyncScrolling;
 }());

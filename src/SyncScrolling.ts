@@ -5,7 +5,7 @@ export default class SyncScrolling {
     private debouncedReAddOnScroll: (except?: HTMLElement) => void
 
     constructor() {
-        this.debouncedReAddOnScroll = debounce(this.reAddOnScroll, 100)
+        this.debouncedReAddOnScroll = debounce(this.reAddOnScroll, 1000)
     }
 
     onScroll = evt => {
@@ -19,7 +19,7 @@ export default class SyncScrolling {
                 slave.removeEventListener('scroll', this.onScroll)
                 switch (direction) {
                     case 'scrollLeft':
-                        slaveDirection === 'scrollTop'? undefined : slave.scrollLeft = scrollLeft
+                        slaveDirection === 'scrollTop' ? undefined : slave.scrollLeft = scrollLeft
                         break
                     case 'scrollTop':
                         slaveDirection === 'scrollLeft' ?  undefined : slave.scrollTop = scrollTop
