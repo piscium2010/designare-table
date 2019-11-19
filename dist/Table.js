@@ -666,8 +666,6 @@ function isDimensionChanged(table, columnSize, dimensionInfo) {
     for (var i = 0, len = keys.length; i < len; i++) {
         var k = keys[i];
         if (isArrayChange(dimensionInfo[k], info[k])) {
-            console.log(k, ' is resized');
-            console.log(dimensionInfo[k], info[k]);
             result = true;
             break;
         }

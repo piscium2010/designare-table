@@ -8,7 +8,8 @@ var SyncScrolling = (function () {
             var master = evt.target;
             var scrollLeft = master.scrollLeft, scrollTop = master.scrollTop;
             var direction = _this.map.get(master);
-            _this.map.forEach(function (slaveDirection, k) {
+            for (var i = 0, len = _this.listeners.length; i < len; i++) {
+                var _a = _this.listeners[i], slaveDirection = _a.value, k = _a.key;
                 var slave = k === master ? undefined : k;
                 if (slave) {
                     slave.removeEventListener('scroll', _this.onScroll);
@@ -24,10 +25,9 @@ var SyncScrolling = (function () {
                             slaveDirection === 'both' || slaveDirection === 'scrollLeft' ? slave.scrollLeft = scrollLeft : undefined;
                             break;
                         default:
-                            throw "invalid mode: " + direction + ". Mode should be one of 'scrollLeft', 'scrollTop', 'both'";
                     }
                 }
-            });
+            }
             _this.debouncedReAddOnScroll(master);
         };
         this.reAddOnScroll = function (except) {
@@ -37,12 +37,28 @@ var SyncScrolling = (function () {
         };
         this.add = function (scrollable, mode) {
             if (mode === void 0) { mode = 'scrollLeft'; }
+            switch (mode) {
+                case 'scrollLeft':
+                    break;
+                case 'scrollTop':
+                    break;
+                case 'both':
+                    break;
+                default:
+                    throw "invalid mode: " + mode + ". Mode should be one of 'scrollLeft', 'scrollTop', 'both'";
+            }
             scrollable.addEventListener('scroll', _this.onScroll);
             _this.map.set(scrollable, mode);
+            _this.refill();
         };
         this.remove = function (scrollable) {
             scrollable.removeEventListener('scroll', _this.onScroll);
             _this.map.delete(scrollable);
+            _this.refill();
+        };
+        this.refill = function () {
+            _this.listeners = [];
+            _this.map.forEach(function (value, key) { return _this.listeners.push({ value: value, key: key }); });
         };
         this.debouncedReAddOnScroll = debounce(this.reAddOnScroll, 1000);
     }

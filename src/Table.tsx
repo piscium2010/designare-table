@@ -863,7 +863,6 @@ function getDimensionInfo(table, columnSize) {
     const [rightBodyWrapper, rightBodyRoot, rightBody] = findDOM('body', 'right')
 
     const headerWidthArray = widthArray(header, columnSize, 'end', 'headerWidthArray')
-    // console.log(`headerWidthArray`,headerWidthArray)
     const leftHeaderWidthArray = widthArray(leftHeader, columnSize, 'end', 'leftHeaderWidthArray')
     const rightHeaderWidthArray = widthArray(rightHeader, columnSize, 'start', 'rightHeaderWidthArray')
     const bodyWidthArray = widthArray(body, columnSize, 'end', 'bodyWidthArray')
@@ -911,8 +910,8 @@ function isDimensionChanged(table, columnSize, dimensionInfo) {
     for (let i = 0, len = keys.length; i < len; i++) {
         const k = keys[i]
         if (isArrayChange(dimensionInfo[k], info[k])) {
-            console.log(k, ' is resized')
-            console.log(dimensionInfo[k], info[k])
+            // console.log(k, ' is resized')
+            // console.log(dimensionInfo[k], info[k])
             result = true
             break
         }

@@ -57,15 +57,14 @@ export default class Tbody extends React.Component<ITbodyProps, {}> {
     }
 
     onScroll = evt => {
-        this.shadow(evt.target.scrollLeft)
+        this.shadow(evt.target.scrollLeft, evt.timeStamp)
         this.props.onScroll(evt)
     }
 
-    shadow = scrollLeft => {
+    shadow = (scrollLeft, current) => {
         if(this.scrollLeft === scrollLeft) return
         this.scrollLeft = scrollLeft
 
-        const current: any = new Date()
         current - this.time > 2000 ? this.reset() : undefined
         this.time = current
 
@@ -93,7 +92,7 @@ export default class Tbody extends React.Component<ITbodyProps, {}> {
     }
 
     componentDidUpdate() {
-        this.shadow(this.bodyRef.current.scrollLeft)
+        this.shadow(this.bodyRef.current.scrollLeft, new Date())
     }
 
     render() {
