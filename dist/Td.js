@@ -60,8 +60,8 @@ var Td = (function (_super) {
         var _a = this.context, isFirstFixedCell = _a.isFirstFixedCell, isLastFixedCell = _a.isLastFixedCell, fixed = _a.fixed;
         var leftLastFixedCellClassName = fixed === 'left' && isLastFixedCell ? 'designare-fixed' : '';
         var rightFirstFixedCellClassName = fixed === 'right' && isFirstFixedCell ? 'designare-fixed' : '';
-        var _b = this.props, _c = _b.className, className = _c === void 0 ? '' : _c, style = _b.style, children = _b.children, restProps = __rest(_b, ["className", "style", "children"]);
-        return (React.createElement("td", __assign({ className: leftLastFixedCellClassName + " " + rightFirstFixedCellClassName + " " + className, style: __assign({ height: this.rowHeight }, style) }, restProps), children));
+        var _b = this.props, _c = _b.className, className = _c === void 0 ? '' : _c, children = _b.children, restProps = __rest(_b, ["className", "children"]);
+        return (React.createElement("td", __assign({ className: leftLastFixedCellClassName + " " + rightFirstFixedCellClassName + " " + className }, restProps), children));
     };
     Td.contextType = context_1.TdsContext;
     return Td;

@@ -43,12 +43,18 @@
   border-color: inherit;
   border-right: none;
   border-left: none;
+  border-top: none;
+  overflow: hidden !important;
 }
 .designare-table table thead tr th > span,
 .designare-table table tbody tr th > span {
   position: relative !important;
   display: table-cell !important;
   vertical-align: middle;
+}
+.designare-table table thead tr:last-child th,
+.designare-table table tbody tr:last-child th {
+  border-bottom: none;
 }
 .designare-table table tbody tr {
   border-top-color: rgba(0, 0, 0, 0);
@@ -126,12 +132,11 @@
   display: block;
   width: 4px;
   position: absolute;
-  right: -4px;
+  right: 0;
   top: -1px;
-  bottom: -1px;
   background-image: linear-gradient(to right, rgba(9, 9, 9, 0.05) 1%, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0)), linear-gradient(to right, rgba(9, 9, 9, 0.1), rgba(0, 0, 0, 0));
   pointer-events: none;
-  height: inherit;
+  height: 500%;
 }
 .designare-table-header-left::after {
   content: '';
@@ -157,14 +162,13 @@
 .designare-table-header-right.designare-shadow .designare-fixed::after {
   content: ' ';
   display: block;
-  width: 5px;
+  width: 4px;
   position: absolute;
-  left: -5px;
+  left: 0;
   top: -1px;
-  bottom: -1px;
   background-image: linear-gradient(to left, rgba(9, 9, 9, 0.05) 1%, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0)), linear-gradient(to left, rgba(9, 9, 9, 0.1), rgba(0, 0, 0, 0));
   pointer-events: none;
-  height: inherit;
+  height: 500%;
 }
 .designare-table-header-right::after {
   content: ' ';
@@ -201,12 +205,11 @@
   display: block;
   width: 4px;
   position: absolute;
-  right: -4px;
+  right: 0;
   top: -1px;
-  bottom: -1px;
   background-image: linear-gradient(to right, rgba(9, 9, 9, 0.05) 1%, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0)), linear-gradient(to right, rgba(9, 9, 9, 0.1), rgba(0, 0, 0, 0));
   pointer-events: none;
-  height: inherit;
+  height: 500%;
 }
 .designare-table-body-left::after {
   content: '';
@@ -236,12 +239,11 @@
   display: block;
   width: 4px;
   position: absolute;
-  left: -4px;
+  left: 0;
   top: -1px;
-  bottom: -1px;
   background-image: linear-gradient(to left, rgba(9, 9, 9, 0.05) 1%, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0)), linear-gradient(to left, rgba(9, 9, 9, 0.1), rgba(0, 0, 0, 0));
   pointer-events: none;
-  height: inherit;
+  height: 500%;
 }
 .designare-table-body-right::after {
   content: '';

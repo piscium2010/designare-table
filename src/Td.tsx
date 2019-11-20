@@ -21,14 +21,10 @@ export default class Td extends React.Component<React.HTMLAttributes<HTMLElement
         const { isFirstFixedCell, isLastFixedCell, fixed } = this.context
         const leftLastFixedCellClassName = fixed === 'left' && isLastFixedCell ? 'designare-fixed' : ''
         const rightFirstFixedCellClassName = fixed === 'right' && isFirstFixedCell ? 'designare-fixed' : ''
-        const { className = '', style, children, ...restProps } = this.props
+        const { className = '', children, ...restProps } = this.props
         return (
             <td
                 className={`${leftLastFixedCellClassName} ${rightFirstFixedCellClassName} ${className}`}
-                style={{
-                    height: this.rowHeight,
-                    ...style
-                }}
                 {...restProps}
             >
                 {children}
