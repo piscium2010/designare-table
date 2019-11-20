@@ -76,7 +76,7 @@ export default class Thead extends React.Component<ITheadProps, {}> {
             this.shadowLeft ? undefined : this.leftRef.current.classList.add('designare-shadow')
             this.shadowLeft = true
         }
-        if (scrollRight <= 0) {
+        if (scrollRight - 17 <= 0) {
             this.shadowRight ? this.rightRef.current.classList.remove('designare-shadow') : undefined
             this.shadowRight = false
         } else {
@@ -104,7 +104,7 @@ export default class Thead extends React.Component<ITheadProps, {}> {
                 {...restProps}
             >
                 <Animate style={{ marginBottom: 0, position: 'relative', overflowX: 'hidden', backgroundColor: 'inherit', zIndex: 1 }}
-                onScroll={evt => { evt.preventDefault(); evt.stopPropagation(); evt.target.scrollTop = 0; console.log('ss'); evt.returnValue= false}}
+                onScroll={evt => { evt.preventDefault(); evt.target.scrollTop = 0}}
                 >
                     <Left leftRef={this.leftRef}>
                         <HTMLThead fixed='left' tr={tr} />
