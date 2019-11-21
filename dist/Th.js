@@ -65,7 +65,8 @@ var resizableElementStyle = {
     width: resizableElementWidth,
     cursor: 'col-resize',
     zIndex: 1,
-    userSelect: 'none'
+    userSelect: 'none',
+    height: '500%'
 };
 var Th = (function (_super) {
     __extends(Th, _super);

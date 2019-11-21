@@ -15,7 +15,8 @@ const resizableElementStyle: React.CSSProperties = {
     width: resizableElementWidth,
     cursor: 'col-resize',
     zIndex: 1,
-    userSelect: 'none'
+    userSelect: 'none',
+    height: '500%'
 }
 
 interface IThProps extends React.HTMLAttributes<HTMLDivElement> {
