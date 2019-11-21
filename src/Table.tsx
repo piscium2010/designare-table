@@ -486,7 +486,6 @@ export default class Table extends React.Component<ITableProps, state> {
             dimensionInfo
         )
         if (isReSized) {
-            // console.log(`resized`)
             this.debouncedSyncWidthAndHeight(force)
         }
     }
@@ -713,8 +712,6 @@ function syncWidthAndHeight(table, columns, rowHeight = -1, dimensionInfo, resiz
         }
         sum += leftOver
     }
-    // console.log(`originalMaxWidthArray`,originalMaxWidthArray)
-    // console.log(`leftOver`,leftOver)
 
     const mergeMax = (w, i) => w > -1 ? maxWidthArray[i] : w
     const positive = w => w > -1
