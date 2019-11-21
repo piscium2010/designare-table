@@ -56,43 +56,19 @@ var DragTr = (function (_super) {
         };
         _this.highlightTop = function () {
             var el = _this.ref.current;
-            if (_this.originalBorderTopColor !== undefined || _this.originalBorderTopStyle !== undefined)
-                return;
-            _this.originalBorderTopColor = el.style.borderTopColor;
-            _this.originalBorderTopStyle = el.style.borderTopStyle;
-            _this.originalBorderTopWidth = el.style.borderTopWidth;
-            el.style.borderTopColor = _this.activeColor;
-            el.style.borderTopStyle = 'dashed';
-            el.style.borderTopWidth = _this.originalBorderTopWidth || '1px';
+            el.classList.add('designare-highlight-top');
         };
         _this.deHighlightTop = function () {
             var el = _this.ref.current;
-            el.style.borderTopColor = _this.originalBorderTopColor;
-            el.style.borderTopStyle = _this.originalBorderTopStyle;
-            el.style.borderTopWidth = _this.originalBorderTopWidth;
-            _this.originalBorderTopColor = undefined;
-            _this.originalBorderTopStyle = undefined;
-            _this.originalBorderTopWidth = undefined;
+            el.classList.remove('designare-highlight-top');
         };
         _this.highlightBottom = function () {
             var el = _this.ref.current;
-            if (_this.originalBorderBottomColor !== undefined || _this.originalBorderBottomStyle !== undefined)
-                return;
-            _this.originalBorderBottomColor = el.style.borderBottomColor;
-            _this.originalBorderBottomStyle = el.style.borderBottomStyle;
-            _this.originalBorderBottomWidth = el.style.borderBottomWidth;
-            el.style.borderBottomColor = _this.activeColor;
-            el.style.borderBottomStyle = 'dashed';
-            el.style.borderBottomWidth = _this.originalBorderBottomWidth || '1px';
+            el.classList.add('designare-highlight-bottom');
         };
         _this.deHighlightBottom = function () {
             var el = _this.ref.current;
-            el.style.borderBottomColor = _this.originalBorderBottomColor;
-            el.style.borderBottomStyle = _this.originalBorderBottomStyle;
-            el.style.borderBottomWidth = _this.originalBorderBottomWidth;
-            _this.originalBorderBottomColor = undefined;
-            _this.originalBorderBottomStyle = undefined;
-            _this.originalBorderBottomWidth = undefined;
+            el.classList.remove('designare-highlight-bottom');
         };
         _this.onDragStart = function (evt) {
             _this.global['designare-draggable-row-index'] = _this.getRowIndex(_this.props.row);

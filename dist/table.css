@@ -333,3 +333,30 @@
 .designare-table .animate .designare-transition {
   transition: color 0.3s, background-color 0.3s;
 }
+.designare-table .designare-highlight-top td {
+  background-image: linear-gradient(to right, #1890ff, #1890ff);
+  background-size: 100% 1px;
+  background-repeat: repeat-x;
+  background-position: left top;
+}
+.designare-table .designare-highlight-bottom td {
+  background-image: linear-gradient(to right, #1890ff, #1890ff);
+  background-size: 100% 1px;
+  background-repeat: repeat-x;
+  background-position: left bottom;
+}
+.designare-table .designare-highlight-left {
+  background-image: linear-gradient(to bottom, #1890ff, #1890ff);
+  background-size: 1px 100%;
+  background-repeat: repeat-y;
+  background-position: top left;
+}
+.designare-table .designare-highlight-right {
+  background-image: linear-gradient(to bottom, #1890ff, #1890ff);
+  background-size: 1px 100%;
+  background-repeat: repeat-y;
+  background-position: top right;
+}
+.designare-table .designare-highlight-right:last-child {
+  background-size: 2px 100%;
+}

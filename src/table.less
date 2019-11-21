@@ -432,4 +432,46 @@
             transition: color .3s, background-color .3s;
         }
     }
+
+    .designare-highlight {
+        .th() {
+            background-image: linear-gradient(to bottom, #1890ff, #1890ff);
+            background-size: 1px 100%;
+            background-repeat: repeat-y;
+        }
+
+        .td(){
+            background-image: linear-gradient(to right, #1890ff, #1890ff);
+            background-size: 100% 1px;
+            background-repeat: repeat-x;
+        }
+
+        &-top {
+            td {
+                .td;
+                background-position: left top;
+            }
+        }
+
+        &-bottom {
+            td {
+                .td;
+                background-position: left bottom;
+            }
+        }
+
+        &-left {
+            .th;
+            background-position: top left;
+        }
+
+        &-right {
+            .th;
+            background-position: top right;
+            &:last-child {
+                background-size: 2px 100%;
+            }
+        }
+    }
+    
 }

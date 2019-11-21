@@ -46,43 +46,19 @@ var DragTh = (function (_super) {
         _this.ref = React.createRef();
         _this.highlightRight = function () {
             var el = _this.ref.current;
-            if (_this.originalBorderRightColor !== undefined || _this.originalBorderRightStyle !== undefined)
-                return;
-            _this.originalBorderRightColor = el.style.borderRightColor;
-            _this.originalBorderRightStyle = el.style.borderRightStyle;
-            _this.originalBorderRightWidth = el.style.borderRightWidth;
-            el.style.borderRightColor = _this.activeColor;
-            el.style.borderRightStyle = 'dashed';
-            el.style.borderRightWidth = _this.originalBorderRightWidth || '1px';
+            el.classList.add('designare-highlight-right');
         };
         _this.deHighlightRight = function () {
             var el = _this.ref.current;
-            el.style.borderRightColor = _this.originalBorderRightColor;
-            el.style.borderRightStyle = _this.originalBorderRightStyle;
-            el.style.borderRightWidth = _this.originalBorderRightWidth;
-            _this.originalBorderRightColor = undefined;
-            _this.originalBorderRightStyle = undefined;
-            _this.originalBorderRightWidth = undefined;
+            el.classList.remove('designare-highlight-right');
         };
         _this.highlightLeft = function () {
             var el = _this.ref.current;
-            if (_this.originalBorderLeftColor !== undefined || _this.originalBorderLeftStyle !== undefined)
-                return;
-            _this.originalBorderLeftColor = el.style.borderLeftColor;
-            _this.originalBorderLeftStyle = el.style.borderLeftStyle;
-            _this.originalBorderLeftWidth = el.style.borderLeftWidth;
-            el.style.borderLeftColor = _this.activeColor;
-            el.style.borderLeftStyle = 'dashed';
-            el.style.borderLeftWidth = _this.originalBorderLeftWidth || '1px';
+            el.classList.add('designare-highlight-left');
         };
         _this.deHighlightLeft = function () {
             var el = _this.ref.current;
-            el.style.borderLeftColor = _this.originalBorderLeftColor;
-            el.style.borderLeftStyle = _this.originalBorderLeftStyle;
-            el.style.borderLeftWidth = _this.originalBorderLeftWidth;
-            _this.originalBorderLeftColor = undefined;
-            _this.originalBorderLeftStyle = undefined;
-            _this.originalBorderLeftWidth = undefined;
+            el.classList.remove('designare-highlight-left');
         };
         _this.onDragStart = function (evt) {
             var column = _this.column;

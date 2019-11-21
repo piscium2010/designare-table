@@ -38,44 +38,48 @@ export default class DragTh extends React.Component<IDragThProps, {}> {
 
     highlightRight = () => {
         const el = this.ref.current
-        if (this.originalBorderRightColor !== undefined || this.originalBorderRightStyle !== undefined) return
-        this.originalBorderRightColor = el.style.borderRightColor
-        this.originalBorderRightStyle = el.style.borderRightStyle
-        this.originalBorderRightWidth = el.style.borderRightWidth
-        el.style.borderRightColor = this.activeColor
-        el.style.borderRightStyle = 'dashed'
-        el.style.borderRightWidth = this.originalBorderRightWidth || '1px'
+        el.classList.add('designare-highlight-right')
+        // if (this.originalBorderRightColor !== undefined || this.originalBorderRightStyle !== undefined) return
+        // this.originalBorderRightColor = el.style.borderRightColor
+        // this.originalBorderRightStyle = el.style.borderRightStyle
+        // this.originalBorderRightWidth = el.style.borderRightWidth
+        // el.style.borderRightColor = this.activeColor
+        // el.style.borderRightStyle = 'dashed'
+        // el.style.borderRightWidth = this.originalBorderRightWidth || '1px'
     }
 
     deHighlightRight = () => {
         const el = this.ref.current
-        el.style.borderRightColor = this.originalBorderRightColor
-        el.style.borderRightStyle = this.originalBorderRightStyle
-        el.style.borderRightWidth = this.originalBorderRightWidth
-        this.originalBorderRightColor = undefined
-        this.originalBorderRightStyle = undefined
-        this.originalBorderRightWidth = undefined
+        el.classList.remove('designare-highlight-right')
+        // el.style.borderRightColor = this.originalBorderRightColor
+        // el.style.borderRightStyle = this.originalBorderRightStyle
+        // el.style.borderRightWidth = this.originalBorderRightWidth
+        // this.originalBorderRightColor = undefined
+        // this.originalBorderRightStyle = undefined
+        // this.originalBorderRightWidth = undefined
     }
 
     highlightLeft = () => {
         const el = this.ref.current
-        if (this.originalBorderLeftColor !== undefined || this.originalBorderLeftStyle !== undefined) return
-        this.originalBorderLeftColor = el.style.borderLeftColor
-        this.originalBorderLeftStyle = el.style.borderLeftStyle
-        this.originalBorderLeftWidth = el.style.borderLeftWidth
-        el.style.borderLeftColor = this.activeColor
-        el.style.borderLeftStyle = 'dashed'
-        el.style.borderLeftWidth = this.originalBorderLeftWidth || '1px'
+        el.classList.add('designare-highlight-left')
+        // if (this.originalBorderLeftColor !== undefined || this.originalBorderLeftStyle !== undefined) return
+        // this.originalBorderLeftColor = el.style.borderLeftColor
+        // this.originalBorderLeftStyle = el.style.borderLeftStyle
+        // this.originalBorderLeftWidth = el.style.borderLeftWidth
+        // el.style.borderLeftColor = this.activeColor
+        // el.style.borderLeftStyle = 'dashed'
+        // el.style.borderLeftWidth = this.originalBorderLeftWidth || '1px'
     }
 
     deHighlightLeft = () => {
         const el = this.ref.current
-        el.style.borderLeftColor = this.originalBorderLeftColor
-        el.style.borderLeftStyle = this.originalBorderLeftStyle
-        el.style.borderLeftWidth = this.originalBorderLeftWidth
-        this.originalBorderLeftColor = undefined
-        this.originalBorderLeftStyle = undefined
-        this.originalBorderLeftWidth = undefined
+        el.classList.remove('designare-highlight-left')
+        // el.style.borderLeftColor = this.originalBorderLeftColor
+        // el.style.borderLeftStyle = this.originalBorderLeftStyle
+        // el.style.borderLeftWidth = this.originalBorderLeftWidth
+        // this.originalBorderLeftColor = undefined
+        // this.originalBorderLeftStyle = undefined
+        // this.originalBorderLeftWidth = undefined
     }
 
     onDragStart = evt => {

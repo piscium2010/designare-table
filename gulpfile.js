@@ -72,5 +72,5 @@ function rmDir(dirPath, removeSelf = false) {
 
 exports.default = function() {
     series(clean, stylesheet, compile, copy)()
-    watch('src/**/*', series(clean, stylesheet, compile, copy))
+    watch('src/**/*', series(stylesheet, compile, copy))
 }

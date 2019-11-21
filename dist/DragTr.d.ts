@@ -6,12 +6,6 @@ interface IDragTrProps extends React.HTMLAttributes<HTMLElement> {
 export default class DragTr extends React.Component<IDragTrProps, {}> {
     static contextType: React.Context<{}>;
     private ref;
-    private originalBorderTopColor;
-    private originalBorderTopStyle;
-    private originalBorderTopWidth;
-    private originalBorderBottomColor;
-    private originalBorderBottomStyle;
-    private originalBorderBottomWidth;
     private onDragEnd;
     constructor(props: any);
     get global(): any;

@@ -11,12 +11,6 @@ interface IDragTrProps extends React.HTMLAttributes<HTMLElement> {
 export default class DragTr extends React.Component<IDragTrProps, {}> {
     static contextType = TBodyContext
     private ref: React.RefObject<HTMLElement>
-    private originalBorderTopColor: string
-    private originalBorderTopStyle: string
-    private originalBorderTopWidth: string
-    private originalBorderBottomColor: string
-    private originalBorderBottomStyle: string
-    private originalBorderBottomWidth: string
     private onDragEnd: (event: React.DragEvent<HTMLTableRowElement>) => void
 
     constructor(props) {
@@ -25,7 +19,6 @@ export default class DragTr extends React.Component<IDragTrProps, {}> {
         if (!props.getRowId) throw ERR4
         if (!props.row) throw ERR5
     }
-
 
     get global() {
         return this.context.global
@@ -54,44 +47,22 @@ export default class DragTr extends React.Component<IDragTrProps, {}> {
 
     highlightTop = () => {
         const el = this.ref.current
-        if (this.originalBorderTopColor !== undefined || this.originalBorderTopStyle !== undefined) return
-        this.originalBorderTopColor = el.style.borderTopColor
-        this.originalBorderTopStyle = el.style.borderTopStyle
-        this.originalBorderTopWidth = el.style.borderTopWidth
-        el.style.borderTopColor = this.activeColor
-        el.style.borderTopStyle = 'dashed'
-        el.style.borderTopWidth = this.originalBorderTopWidth || '1px'
+        el.classList.add('designare-highlight-top')
     }
 
     deHighlightTop = () => {
         const el = this.ref.current
-        el.style.borderTopColor = this.originalBorderTopColor
-        el.style.borderTopStyle = this.originalBorderTopStyle
-        el.style.borderTopWidth = this.originalBorderTopWidth
-        this.originalBorderTopColor = undefined
-        this.originalBorderTopStyle = undefined
-        this.originalBorderTopWidth = undefined
+        el.classList.remove('designare-highlight-top')
     }
 
     highlightBottom = () => {
         const el = this.ref.current
-        if (this.originalBorderBottomColor !== undefined || this.originalBorderBottomStyle !== undefined) return
-        this.originalBorderBottomColor = el.style.borderBottomColor
-        this.originalBorderBottomStyle = el.style.borderBottomStyle
-        this.originalBorderBottomWidth = el.style.borderBottomWidth
-        el.style.borderBottomColor = this.activeColor
-        el.style.borderBottomStyle = 'dashed'
-        el.style.borderBottomWidth = this.originalBorderBottomWidth || '1px'
+        el.classList.add('designare-highlight-bottom')
     }
 
     deHighlightBottom = () => {
         const el = this.ref.current
-        el.style.borderBottomColor = this.originalBorderBottomColor
-        el.style.borderBottomStyle = this.originalBorderBottomStyle
-        el.style.borderBottomWidth = this.originalBorderBottomWidth
-        this.originalBorderBottomColor = undefined
-        this.originalBorderBottomStyle = undefined
-        this.originalBorderBottomWidth = undefined
+        el.classList.remove('designare-highlight-bottom')
     }
 
     onDragStart = evt => {
