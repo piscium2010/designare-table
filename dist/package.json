@@ -1,7 +1,7 @@
 {
   "name": "designare-table",
   "version": "1.2.3",
-  "description": "",
+  "description": "Just a table that even works in IE.",
   "main": "index.js",
   "scripts": {
     "test": "jest",
@@ -10,6 +10,7 @@
   "keywords": [
     "table",
     "react",
+    "ie",
     "designare"
   ],
   "author": "piscium2010 <541032442@qq.com>",
