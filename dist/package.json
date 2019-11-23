@@ -1,6 +1,6 @@
 {
   "name": "designare-table",
-  "version": "1.2.3",
+  "version": "1.2.4",
   "description": "Just a table that even works in IE.",
   "main": "index.js",
   "scripts": {
