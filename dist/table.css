@@ -87,6 +87,21 @@
 .designare-table-fixed-header > div {
   margin: -9px 0 -9px 0 !important;
 }
+.designare-table-fixed-header > div::-webkit-scrollbar {
+  width: 15px;
+  height: 15px;
+}
+.designare-table-fixed-header > div::-webkit-scrollbar-track {
+  background-color: white;
+}
+.designare-table-fixed-header > div::-webkit-scrollbar-thumb {
+  background: #c1c1c1;
+  border: 3px solid white;
+  border-radius: 8px;
+}
+.designare-table-fixed-header > div::-webkit-scrollbar-thumb:hover {
+  background: #7d7d7d;
+}
 .designare-table-fixed-body {
   border-left: none !important;
   border-right: none !important;
@@ -185,6 +200,21 @@
   background-color: inherit;
   position: relative;
 }
+.designare-table-body::-webkit-scrollbar {
+  width: 15px;
+  height: 15px;
+}
+.designare-table-body::-webkit-scrollbar-track {
+  background-color: white;
+}
+.designare-table-body::-webkit-scrollbar-thumb {
+  background: #c1c1c1;
+  border: 3px solid white;
+  border-radius: 8px;
+}
+.designare-table-body::-webkit-scrollbar-thumb:hover {
+  background: #7d7d7d;
+}
 .designare-table-body table tbody tr td {
   z-index: 1;
 }
@@ -196,6 +226,21 @@
   bottom: 15px;
   overflow: hidden;
   height: 100%;
+}
+.designare-table-body-left > div::-webkit-scrollbar {
+  width: 15px;
+  height: 15px;
+}
+.designare-table-body-left > div::-webkit-scrollbar-track {
+  background-color: white;
+}
+.designare-table-body-left > div::-webkit-scrollbar-thumb {
+  background: #c1c1c1;
+  border: 3px solid white;
+  border-radius: 8px;
+}
+.designare-table-body-left > div::-webkit-scrollbar-thumb:hover {
+  background: #7d7d7d;
 }
 .designare-table-body-left table tbody tr td {
   z-index: 2;
@@ -230,6 +275,21 @@
   overflow: hidden;
   height: 100%;
   background-color: inherit;
+}
+.designare-table-body-right > div::-webkit-scrollbar {
+  width: 15px;
+  height: 15px;
+}
+.designare-table-body-right > div::-webkit-scrollbar-track {
+  background-color: white;
+}
+.designare-table-body-right > div::-webkit-scrollbar-thumb {
+  background: #c1c1c1;
+  border: 3px solid white;
+  border-radius: 8px;
+}
+.designare-table-body-right > div::-webkit-scrollbar-thumb:hover {
+  background: #7d7d7d;
 }
 .designare-table-body-right table tbody tr td {
   z-index: 1;
