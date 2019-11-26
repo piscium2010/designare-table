@@ -96,11 +96,12 @@
 }
 .designare-table-fixed-header > div::-webkit-scrollbar-thumb {
   background: #c1c1c1;
-  border: 3px solid white;
+  border: 3px solid transparent;
   border-radius: 8px;
+  background-clip: padding-box;
 }
 .designare-table-fixed-header > div::-webkit-scrollbar-thumb:hover {
-  background: #7d7d7d;
+  background-color: #7d7d7d;
 }
 .designare-table-fixed-body {
   border-left: none !important;
@@ -209,11 +210,12 @@
 }
 .designare-table-body::-webkit-scrollbar-thumb {
   background: #c1c1c1;
-  border: 3px solid white;
+  border: 3px solid transparent;
   border-radius: 8px;
+  background-clip: padding-box;
 }
 .designare-table-body::-webkit-scrollbar-thumb:hover {
-  background: #7d7d7d;
+  background-color: #7d7d7d;
 }
 .designare-table-body table tbody tr td {
   z-index: 1;
@@ -236,11 +238,12 @@
 }
 .designare-table-body-left > div::-webkit-scrollbar-thumb {
   background: #c1c1c1;
-  border: 3px solid white;
+  border: 3px solid transparent;
   border-radius: 8px;
+  background-clip: padding-box;
 }
 .designare-table-body-left > div::-webkit-scrollbar-thumb:hover {
-  background: #7d7d7d;
+  background-color: #7d7d7d;
 }
 .designare-table-body-left table tbody tr td {
   z-index: 2;
@@ -285,11 +288,12 @@
 }
 .designare-table-body-right > div::-webkit-scrollbar-thumb {
   background: #c1c1c1;
-  border: 3px solid white;
+  border: 3px solid transparent;
   border-radius: 8px;
+  background-clip: padding-box;
 }
 .designare-table-body-right > div::-webkit-scrollbar-thumb:hover {
-  background: #7d7d7d;
+  background-color: #7d7d7d;
 }
 .designare-table-body-right table tbody tr td {
   z-index: 1;

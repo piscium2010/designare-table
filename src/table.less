@@ -12,11 +12,12 @@
 
     &::-webkit-scrollbar-thumb {
         background: #c1c1c1;
-        border: 3px solid white;
+        border: 3px solid transparent;
         border-radius: 8px;
+        background-clip: padding-box;
 
         &:hover {
-            background: #7d7d7d;
+            background-color: #7d7d7d;
         }
     }
 }
