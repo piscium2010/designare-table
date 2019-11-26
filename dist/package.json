@@ -1,7 +1,7 @@
 {
   "name": "designare-table",
-  "version": "1.2.6",
-  "description": "Just a table that even works in IE.",
+  "version": "1.2.7",
+  "description": "react table that even works in IE.",
   "main": "index.js",
   "scripts": {
     "test": "jest",
