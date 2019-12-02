@@ -5,4 +5,10 @@
 With plain UI output, it spares room for re-designing; Common features included, but it is still customizable. It has light size and less API.
 It is trying to reach the balance point between code brevity and feature flexibility.
 
+## install
+
+```shell
+npm install -S designare-table
+```
+
 [docs](https://piscium2010.github.io/designare-table)
